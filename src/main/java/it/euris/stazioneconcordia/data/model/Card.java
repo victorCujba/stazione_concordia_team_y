@@ -5,6 +5,8 @@ import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import it.euris.stazioneconcordia.data.enums.Priority;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +19,8 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "card")
+@SQLDelete(sql = "UPDATE card SET closed = true WHERE id = ?")
+@Where(clause = "closed = false")
 public class Card implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
