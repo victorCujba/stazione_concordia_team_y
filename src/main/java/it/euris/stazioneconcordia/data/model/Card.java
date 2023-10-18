@@ -26,6 +26,7 @@ public class Card implements Model {
     @Column(name = "name")
     private String name;
 
+
     @Column(name = "position")
     private Long position;
 

@@ -28,8 +28,8 @@ public class ListDTO implements Dto {
                 .builder()
                 .id(stringToLong(id))
                 .name(name)
-                .closed(stringToBoolean(closed))
                 .position(stringToLong(position))
+                .closed(stringToBoolean(closed))
                 .board(Board.builder().id(stringToLong(idBoard)).build())
                 .build();
     }
