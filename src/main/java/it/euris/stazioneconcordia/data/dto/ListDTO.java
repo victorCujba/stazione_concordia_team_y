@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
+import it.euris.stazioneconcordia.model.Board;
 import it.euris.stazioneconcordia.model.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,20 +18,20 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 public class ListDTO implements Dto {
 
     private String id;
-    private String idBoard;
     private String name;
-    private String closed;
     private String position;
+    private String closed;
+    private String idBoard;
 
     @Override
     public List toModel() {
         return List
                 .builder()
                 .id(stringToLong(id))
-                .idBoard(stringToLong(idBoard))
                 .name(name)
                 .closed(stringToBoolean(closed))
                 .position(stringToLong(position))
+                .board(Board.builder().id(stringToLong(idBoard)).build())
                 .build();
     }
 }

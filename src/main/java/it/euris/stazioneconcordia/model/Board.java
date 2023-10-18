@@ -29,16 +29,12 @@ public class Board {
     @Column(name = "url")
     private String url;
 
-    @Column(name = "closed")
-    @Builder.Default
-    private Boolean closed=false;
-
     @Column(name = "date_last_activity")
     private LocalDateTime dateLastActivity;
 
+    @Column(name = "closed")
     @Builder.Default
-    @OneToMany(mappedBy="idBoard", fetch = FetchType.EAGER)
-    private List<it.euris.stazioneconcordia.model.List> lists = new ArrayList<>();
+    private Boolean closed=false;
 
 
 

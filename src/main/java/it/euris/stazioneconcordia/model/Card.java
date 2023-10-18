@@ -6,7 +6,6 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 @Builder
 @Getter
@@ -31,12 +30,8 @@ public class Card {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    @Column(name = "descriptions")
-    private String descriptions;
-
-    @Column(name = "closed")
-    @Builder.Default
-    private Boolean closed = false;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "expiration_date")
     private LocalDateTime expirationDate;
@@ -44,8 +39,13 @@ public class Card {
     @Column(name = "date_last_activity")
     private LocalDateTime dateLastActivity;
 
+    @Column(name = "closed")
     @Builder.Default
-    @OneToMany(mappedBy = "idCard", fetch = FetchType.EAGER)
-    private List<Comment> commentList = new ArrayList<>();
+    private Boolean closed = false;
+
+    @ManyToOne
+    @MapsId("id_list")
+    @JoinColumn(name = "id_list")
+    private List list;
 
 }

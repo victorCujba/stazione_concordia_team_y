@@ -20,8 +20,9 @@ public class BoardDTO implements Dto {
     private String name;
     private String description;
     private String url;
-    private String closed;
     private String dateLastActivity;
+    private String closed;
+
 
     @Override
     public Board toModel() {
@@ -31,8 +32,8 @@ public class BoardDTO implements Dto {
                 .name(name)
                 .description(description)
                 .url(url)
-                .closed(stringToBoolean(closed))
                 .dateLastActivity(stringToLocalDateTime(dateLastActivity))
+                .closed(stringToBoolean(closed))
                 .build();
     }
 }

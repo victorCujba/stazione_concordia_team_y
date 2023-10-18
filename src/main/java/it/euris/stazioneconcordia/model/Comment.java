@@ -17,24 +17,24 @@ public class Comment {
     @Column(name = "id")
     private Long id;
 
-
     @Column(name = "date")
     private LocalDateTime date;
 
     @Column(name = "comment_body")
     private String commentBody;
 
-    @Column(name = "description" )
-    private String description;
-
     @Column(name = "deleted")
     private Boolean deleted=false;
 
-    @Column(name = "id_card")
-    private Long idCard;
+    @ManyToOne
+    @MapsId("id_card")
+    @JoinColumn(name = "id_card")
+    private Card card;
 
-    @Column(name = "id_user")
-    private Long idUser;
+    @ManyToOne
+    @MapsId("id_user")
+    @JoinColumn(name = "id_user")
+    private User user;
 
 
 

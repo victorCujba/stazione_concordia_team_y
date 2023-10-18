@@ -35,9 +35,4 @@ public class User {
     @Builder.Default
     private Boolean status=false;
 
-
-    @Builder.Default
-    @OneToMany(mappedBy="idUser", fetch = FetchType.EAGER)
-    private List<Comment> commentList = new ArrayList<>();
-
 }

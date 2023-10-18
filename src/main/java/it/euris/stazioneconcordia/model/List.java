@@ -21,15 +21,17 @@ public class List {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "position")
+    private Long position;
+
     @Column(name = "closed")
     @Builder.Default
     private Boolean closed = false;
 
-    @Column(name = "position")
-    private Long position;
-
-    @Column(name = "id_board")
-    private Long idBoard;
+    @ManyToOne
+    @MapsId("id_board")
+    @JoinColumn(name = "id_board")
+    private Board board;
 
 
 
