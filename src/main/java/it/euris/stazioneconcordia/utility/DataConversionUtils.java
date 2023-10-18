@@ -18,6 +18,7 @@ public class DataConversionUtils {
         return value == null ? null : Long.parseLong(value);
     }
 
+
     public static LocalDateTime stringToLocalDateTime(String value) {
         return value == null ? null : LocalDateTime.parse(value);
     }
