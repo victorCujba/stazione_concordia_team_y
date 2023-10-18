@@ -1,7 +1,7 @@
 package it.euris.stazioneconcordia.utility;
 
 
-import it.euris.stazioneconcordia.enums.Priority;
+import it.euris.stazioneconcordia.data.enums.Priority;
 
 import java.time.LocalDateTime;
 

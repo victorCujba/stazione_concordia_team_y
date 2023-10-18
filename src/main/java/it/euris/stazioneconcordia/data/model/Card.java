@@ -1,13 +1,12 @@
-package it.euris.stazioneconcordia.model;
+package it.euris.stazioneconcordia.data.model;
 
 import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
-import it.euris.stazioneconcordia.enums.Priority;
+import it.euris.stazioneconcordia.data.enums.Priority;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
