@@ -1,7 +1,6 @@
 package it.euris.stazioneconcordia.model;
 
 import it.euris.stazioneconcordia.data.dto.KeyTokenDTO;
-import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
