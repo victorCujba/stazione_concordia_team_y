@@ -24,6 +24,9 @@ public class Card {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "id_list")
+    private Long idList;
+
     @Column(name = "position")
     private Long position;
 
