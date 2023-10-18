@@ -22,7 +22,7 @@ public class User {
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "bio" , nullable = false)
+    @Column(name = "bio")
     private String bio;
 
     @Column(name = "avatar_url")
@@ -32,7 +32,8 @@ public class User {
     private String email;
 
     @Column(name = "status")
-    private String status;
+    @Builder.Default
+    private Boolean status=false;
 
 
     @Builder.Default

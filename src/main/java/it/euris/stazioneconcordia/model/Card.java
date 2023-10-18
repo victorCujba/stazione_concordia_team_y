@@ -31,14 +31,14 @@ public class Card {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    @Column(name = "descriptions", nullable = false)
+    @Column(name = "descriptions")
     private String descriptions;
 
     @Column(name = "closed")
     @Builder.Default
     private Boolean closed = false;
 
-    @Column(name = "expiration_date", nullable = false)
+    @Column(name = "expiration_date")
     private LocalDateTime expirationDate;
 
     @Column(name = "date_last_activity")
