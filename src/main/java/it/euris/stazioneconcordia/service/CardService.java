@@ -1,7 +1,7 @@
 package it.euris.stazioneconcordia.service;
 
-import it.euris.stazioneconcordia.enums.Priority;
-import it.euris.stazioneconcordia.model.Card;
+import it.euris.stazioneconcordia.data.enums.Priority;
+import it.euris.stazioneconcordia.data.model.Card;
 
 import java.time.LocalDateTime;
 import java.util.List;

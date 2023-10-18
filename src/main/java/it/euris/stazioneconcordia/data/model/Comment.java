@@ -1,4 +1,4 @@
-package it.euris.stazioneconcordia.model;
+package it.euris.stazioneconcordia.data.model;
 
 import it.euris.stazioneconcordia.data.dto.CommentDTO;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;

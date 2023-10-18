@@ -1,6 +1,6 @@
 package it.euris.stazioneconcordia.service;
 
-import it.euris.stazioneconcordia.model.Comment;
+import it.euris.stazioneconcordia.data.model.Comment;
 
 import java.util.List;
 

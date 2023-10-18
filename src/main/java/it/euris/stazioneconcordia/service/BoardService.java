@@ -1,6 +1,6 @@
 package it.euris.stazioneconcordia.service;
 
-import it.euris.stazioneconcordia.model.Board;
+import it.euris.stazioneconcordia.data.model.Board;
 
 import java.util.List;
 
