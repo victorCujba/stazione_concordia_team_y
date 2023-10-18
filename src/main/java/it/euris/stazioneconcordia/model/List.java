@@ -1,14 +1,12 @@
 package it.euris.stazioneconcordia.model;
 
 import it.euris.stazioneconcordia.data.dto.ListDTO;
-import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.booleanToString;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.numberToString;
 
 @Builder
 @Getter

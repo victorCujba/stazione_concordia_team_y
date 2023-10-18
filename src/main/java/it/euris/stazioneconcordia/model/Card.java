@@ -41,7 +41,7 @@ public class Card implements Model {
     private String description;
 
     @Column(name = "id_list")
-    private String idList;
+    private Long idList;
 
     @Column(name = "closed")
     @Builder.Default
@@ -66,7 +66,7 @@ public class Card implements Model {
                 .id(numberToString(id))
                 .idList(numberToString(idList))
                 .name(name)
-                .poition(numberToString(position))
+                .position(numberToString(position))
                 .priority(priorityToString(priority))
                 .description(description)
                 .closed(booleanToString(closed))
