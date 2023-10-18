@@ -35,7 +35,7 @@ public class CardDTO implements Dto {
                 .name(name)
                 .position(stringToLong(position))
                 .priority(stringToPriority(priority))
-                .descriptions(description)
+                .description(description)
                 .closed(stringToBoolean(closed))
                 .expirationDate(stringToLocalDateTime(expirationDate))
                 .dateLastActivity(stringToLocalDateTime(dateLastActivity))
