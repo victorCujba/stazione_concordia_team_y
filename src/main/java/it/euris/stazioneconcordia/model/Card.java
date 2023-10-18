@@ -44,6 +44,9 @@ public class Card {
     @Column(name = "date_last_activity")
     private LocalDateTime dateLastActivity;
 
+    @Column(name = "id_user")
+    private String idUser;
+
     @Builder.Default
     @OneToMany(mappedBy = "idCard", fetch = FetchType.EAGER)
     private List<Comment> commentList = new ArrayList<>();

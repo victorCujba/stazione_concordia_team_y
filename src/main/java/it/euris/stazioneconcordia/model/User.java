@@ -35,6 +35,9 @@ public class User {
     @Builder.Default
     private Boolean status=false;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "idUser", fetch = FetchType.EAGER)
+    private List<Card> cards = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy="idUser", fetch = FetchType.EAGER)
