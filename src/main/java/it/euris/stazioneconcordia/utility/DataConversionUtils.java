@@ -1,6 +1,7 @@
 package it.euris.stazioneconcordia.utility;
 
-import it.euris.stazioneconcordia.data.enums.Priority;
+
+import it.euris.stazioneconcordia.enums.Priority;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +18,7 @@ public class DataConversionUtils {
     public static Long stringToLong(String value) {
         return value == null ? null : Long.parseLong(value);
     }
+
 
     public static LocalDateTime stringToLocalDateTime(String value) {
         return value == null ? null : LocalDateTime.parse(value);

@@ -1,11 +1,16 @@
 package it.euris.stazioneconcordia.model;
 
+import it.euris.stazioneconcordia.data.dto.BoardDTO;
+import it.euris.stazioneconcordia.data.dto.archetype.Dto;
+import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 @Builder
 @Getter
@@ -14,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "board")
-public class Board {
+public class Board implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -37,5 +42,15 @@ public class Board {
     private Boolean closed=false;
 
 
-
+    @Override
+    public BoardDTO toDto() {
+        return BoardDTO.builder()
+                .id(numberToString(id))
+                .name(name)
+                .description(description)
+                .url(url)
+                .closed(booleanToString(closed))
+                .dateLastActivity(localDateTimeToString(dateLastActivity))
+                .build();
+    }
 }

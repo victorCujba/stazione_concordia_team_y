@@ -1,11 +1,15 @@
 package it.euris.stazioneconcordia.model;
 
+import it.euris.stazioneconcordia.data.dto.CardDTO;
+import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import it.euris.stazioneconcordia.enums.Priority;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 @Builder
 @Getter
@@ -14,7 +18,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @Entity
 @Table(name = "card")
-public class Card {
+public class Card implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -48,4 +52,18 @@ public class Card {
     @JoinColumn(name = "id_list")
     private List list;
 
+    @Override
+    public CardDTO toDto() {
+        return CardDTO.builder()
+                .id(numberToString(id))
+                .idList(numberToString(list.getId()))
+                .name(name)
+                .position(numberToString(position))
+                .priority(priorityToString(priority))
+                .description(description)
+                .closed(booleanToString(closed))
+                .expirationDate(localDateTimeToString(expirationDate))
+                .dateLastActivity(localDateTimeToString(dateLastActivity))
+                .build();
+    }
 }
