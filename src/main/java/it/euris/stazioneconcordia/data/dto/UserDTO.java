@@ -7,8 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLong;
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToUserStatus;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 @Data
 @AllArgsConstructor
@@ -32,7 +31,7 @@ public class UserDTO implements Dto {
                 .bio(bio)
                 .avatarUrl(avatarUrl)
                 .email(email)
-                .status(stringToUserStatus(status))
+                .status(stringToBoolean(status))
                 .build();
     }
 }

@@ -1,7 +1,6 @@
 package it.euris.stazioneconcordia.utility;
 
 import it.euris.stazioneconcordia.data.enums.Priority;
-import it.euris.stazioneconcordia.data.enums.UserStatus;
 
 import java.time.LocalDateTime;
 
@@ -47,17 +46,6 @@ public class DataConversionUtils {
         return value == null ? null : value.name();
     }
 
-    public static UserStatus stringToUserStatus(String value) {
-        for (UserStatus userStatusValue : UserStatus.values()) {
-            if (userStatusValue.name().equalsIgnoreCase(value))
-                return userStatusValue;
-        }
-        return null;
-    }
-
-    public static String userStatusToString(UserStatus value) {
-        return value == null ? null : value.name();
-    }
 
 
 }
