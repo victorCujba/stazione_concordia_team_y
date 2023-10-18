@@ -24,6 +24,8 @@ public class Comment {
     @Column(name = "comment_body")
     private String commentBody;
 
+    @Column(name = "description" )
+    private String description;
 
     @Column(name = "deleted")
     private Boolean deleted=false;
