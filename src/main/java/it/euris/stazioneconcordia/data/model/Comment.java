@@ -29,7 +29,7 @@ public class Comment implements Model {
     private String commentBody;
 
     @Column(name = "deleted")
-    private Boolean deleted=false;
+    private Boolean deleted = false;
 
     @ManyToOne
     @MapsId("id_card")
