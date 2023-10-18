@@ -1,9 +1,15 @@
 package it.euris.stazioneconcordia.model;
 
+import it.euris.stazioneconcordia.data.dto.CommentDTO;
+import it.euris.stazioneconcordia.data.dto.archetype.Dto;
+import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
+
 @Builder
 @Getter
 @Setter
@@ -11,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "comment")
-public class Comment {
+public class Comment implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -37,6 +43,16 @@ public class Comment {
     private Long idUser;
 
 
-
-
+    @Override
+    public CommentDTO toDto() {
+        return CommentDTO
+                .builder()
+                .id(numberToString(id))
+                .idCard(numberToString(idCard))
+                .idUser(numberToString(idUser))
+                .date(localDateTimeToString(date))
+                .commentBody(commentBody)
+                .deleted(booleanToString(deleted))
+                .build();
+    }
 }

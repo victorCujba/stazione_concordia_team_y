@@ -1,9 +1,14 @@
 package it.euris.stazioneconcordia.model;
 
+import it.euris.stazioneconcordia.data.dto.ListDTO;
+import it.euris.stazioneconcordia.data.dto.archetype.Dto;
+import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 @Builder
 @Getter
@@ -12,7 +17,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @Entity
 @Table(name = "list")
-public class List {
+public class List implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -32,7 +37,15 @@ public class List {
     private Long idBoard;
 
 
-
-
+    @Override
+    public ListDTO toDto() {
+        return ListDTO.builder()
+                .id(numberToString(id))
+                .idBoard(numberToString(idBoard))
+                .name(name)
+                .closed(booleanToString(closed))
+                .position(numberToString(position))
+                .build();
+    }
 }
 
