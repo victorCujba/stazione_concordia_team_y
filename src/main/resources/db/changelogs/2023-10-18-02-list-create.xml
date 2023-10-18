@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="2023-10-18-02-list-create" author="Matteo Buosi">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="list"/>
+            </not>
+        </preConditions>
+        <comment>List table create</comment>
+        <createTable tableName="list">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="position" type="BIGINT(20)"/>
+            <column name="closed" type="BOOLEAN"/>
+            <column name="id_board" type="BIGINT(20)"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="list" baseColumnNames="id_board" constraintName="FK_BOARD_ON_LIST"
+                                 referencedTableName="board"
+                                 referencedColumnNames="id"/>
+
+        <rollback>
+            <dropTable tableName="list"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
