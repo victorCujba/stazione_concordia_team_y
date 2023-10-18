@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
+import it.euris.stazioneconcordia.model.Board;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,7 +29,7 @@ public class BoardDTO implements Dto {
                 .builder()
                 .id(stringToLong(id))
                 .name(name)
-                .desctiption(description)
+                .description(description)
                 .url(url)
                 .closed(stringToBoolean(closed))
                 .dateLastActivity(stringToLocalDateTime(dateLastActivity))

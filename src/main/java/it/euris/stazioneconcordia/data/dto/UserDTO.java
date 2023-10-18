@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
+import it.euris.stazioneconcordia.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class UserDTO implements Dto {
 
     @Override
     public User toModel() {
-        return Used
+        return User
                 .builder()
                 .id(stringToLong(id))
                 .fullName(fullName)
