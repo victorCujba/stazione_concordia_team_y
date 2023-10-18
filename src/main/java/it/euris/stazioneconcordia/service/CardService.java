@@ -14,13 +14,13 @@ public interface CardService {
 
     Card findByExpirationDate(LocalDateTime expirationDate);
 
-    Card insert(Card board);
+    Card insert(Card card);
 
-    Card update(Card board);
+    Card update(Card card);
 
-    Boolean deleteById(Integer idCard);
+    Boolean deleteById(Long idCard);
 
-    Card findById(Integer idCard);
+    Card findById(Long idCard);
 
 
 }

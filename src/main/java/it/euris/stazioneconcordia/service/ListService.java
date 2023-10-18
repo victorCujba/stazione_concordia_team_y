@@ -6,15 +6,15 @@ import java.util.List;
 public interface ListService {
 
 
-    List<List> findAll();
+    List<it.euris.stazioneconcordia.data.model.List> findAll();
 
-    List insert(List list);
+    it.euris.stazioneconcordia.data.model.List insert(it.euris.stazioneconcordia.data.model.List list);
 
-    List update(List list);
+    it.euris.stazioneconcordia.data.model.List update(it.euris.stazioneconcordia.data.model.List list);
 
     Boolean deleteById(Long idList);
 
-    List findById(Long idList);
+    it.euris.stazioneconcordia.data.model.List findById(Long idList);
 
 
 }
