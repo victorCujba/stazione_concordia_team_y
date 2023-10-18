@@ -1,9 +1,14 @@
 package it.euris.stazioneconcordia.model;
 
+import it.euris.stazioneconcordia.data.dto.CommentDTO;
+import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
+
 @Builder
 @Getter
 @Setter
@@ -11,12 +16,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "comment")
-public class Comment {
+public class Comment implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
 
     @Column(name = "date")
     private LocalDateTime date;
@@ -24,19 +28,30 @@ public class Comment {
     @Column(name = "comment_body")
     private String commentBody;
 
-    @Column(name = "description" )
-    private String description;
-
     @Column(name = "deleted")
-    private Boolean deleted=false;
+    private Boolean deleted = false;
 
-    @Column(name = "id_card")
-    private Long idCard;
+    @ManyToOne
+    @MapsId("id_card")
+    @JoinColumn(name = "id_card")
+    private Card card;
 
-    @Column(name = "id_user")
-    private Long idUser;
+    @ManyToOne
+    @MapsId("id_user")
+    @JoinColumn(name = "id_user")
+    private User user;
 
 
-
-
+    @Override
+    public CommentDTO toDto() {
+        return CommentDTO
+                .builder()
+                .id(numberToString(id))
+                .idCard(numberToString(card.getId()))
+                .idUser(numberToString(user.getId()))
+                .date(localDateTimeToString(date))
+                .commentBody(commentBody)
+                .deleted(booleanToString(deleted))
+                .build();
+    }
 }
