@@ -8,5 +8,6 @@
     <include file="db/changelogs/2023-10-18-03-card-create.xml"/>
     <include file="db/changelogs/2023-10-18-04-user-create.xml"/>
     <include file="db/changelogs/2023-10-18-05-comment-create.xml"/>
+    <include file="db/changelogs/2023-10-18-06-card-alter.xml"/>
 
 </databaseChangeLog>
