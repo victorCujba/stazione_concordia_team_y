@@ -60,7 +60,7 @@ public class CardController {
         return cardService.findById(idCard).toDto();
     }
 
-    @GetMapping("/v1/expirationDate")
+    @GetMapping("/v1/expiration-date")
     public List<CardDTO> findByExpirationDate() {
         return cardService.findAllCardsWhitExpirationDateInLast5Days()
                 .stream()

@@ -2,7 +2,7 @@ package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.model.Card;
-import it.euris.stazioneconcordia.data.model.List;
+import it.euris.stazioneconcordia.data.model.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,7 +39,7 @@ public class CardDTO implements Dto {
                 .expirationDate(stringToLocalDateTime(expirationDate))
                 .dateLastActivity(stringToLocalDateTime(dateLastActivity))
                 .closed(stringToBoolean(closed))
-                .list(List.builder().id(stringToLong(idList)).build())
+                .lists(Lists.builder().id(stringToLong(idList)).build())
                 .build();
     }
 }
