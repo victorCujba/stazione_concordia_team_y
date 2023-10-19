@@ -1,6 +1,7 @@
 package it.euris.stazioneconcordia.service;
 
 import it.euris.stazioneconcordia.data.model.Lists;
+import it.euris.stazioneconcordia.data.model.User;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.ListsRepository;
@@ -98,7 +99,7 @@ class ListsServiceImplTest {
     }
 
     @Test
-    void shouldNotUpdateAnyUser() {
+    void shouldNotUpdateAnyLists() {
 
         Lists list = Lists
                 .builder()
@@ -109,6 +110,21 @@ class ListsServiceImplTest {
         assertThatThrownBy(() -> listsService.update(list))
                 .isInstanceOf(IdMustNotBeNullException.class);
     }
+    @Test
+    void shouldUpdateAnyLists() {
 
+        Lists list = Lists
+                .builder()
+                .id(1L)
+                .name("test name")
+                .build();
+        when(listsRepository.save(any())).thenReturn(list);
+
+        Lists returnedLists = listsService.update(list);
+        assertThat(returnedLists.getName())
+                .isEqualTo(list.getName());
+        assertThat(returnedLists.getId())
+                .isEqualTo(list.getId());
+    }
 
 }
