@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +27,7 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public List<Card> findByPriority(Priority priority) {
+
         List<Card> cards = cardRepository.findAll();
         List<Card> cardsWithPriority = cards.stream()
                 .filter(card -> card.getPriority() == priority)
@@ -54,7 +54,10 @@ public class CardServiceImpl implements CardService {
 
         }
         return cardsNearExpiration;
+
     }
+
+
 
     @Override
     public Card insert(Card card) {
