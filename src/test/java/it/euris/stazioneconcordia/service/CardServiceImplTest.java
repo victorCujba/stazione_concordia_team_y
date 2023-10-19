@@ -41,7 +41,7 @@ class CardServiceImplTest {
         Card card1 = Card
                 .builder()
                 .id(1L)
-                .priority(Priority.HIGH)
+                .priority(Priority.LOW)
                 .build();
         Card card2 = Card
                 .builder()
@@ -61,11 +61,11 @@ class CardServiceImplTest {
         List<Card> cardsWithPriority = cardService.findByPriority(Priority.HIGH);
 
         assertThat(cardsWithPriority)
-                .hasSize(2)
+                .hasSize(1)
                 .first()
                 .usingRecursiveComparison()
                 .withIntrospectionStrategy(new ComparingSnakeOrCamelCaseFields())
-                .isEqualTo(card1);
+                .isEqualTo(card3);
     }
 
     @Test

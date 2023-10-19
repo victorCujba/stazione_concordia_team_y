@@ -68,7 +68,7 @@ public class CardController {
                 .toList();
     }
 
-    @GetMapping("/v1/{priority}")
+    @GetMapping("/v1/priority/{priority}")
     public List<CardDTO> findByPriority(@PathVariable("priority") Priority priority) {
         return cardService.findByPriority(priority)
                 .stream()
