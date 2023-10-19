@@ -86,7 +86,6 @@ class UserServiceImplTest {
     }
 
 
-
     @Test
     void shouldDeleteAUser() {
         //arrange
@@ -97,6 +96,7 @@ class UserServiceImplTest {
         assertTrue(userService.deleteById(id));
         Mockito.verify(userRepository, times(1)).deleteById(id);
     }
+
     @Test
     void shouldNotUpdateAnyUser() {
 
@@ -110,5 +110,24 @@ class UserServiceImplTest {
                 .isInstanceOf(IdMustNotBeNullException.class);
     }
 
+    @Test
+    void shouldUpdateAnyUser() {
 
+        User user1 = User
+                .builder()
+                .id(1L)
+                .fullName("test name")
+                .bio("test bio")
+                .build();
+        when(userRepository.save(any())).thenReturn(user1);
+
+        User returnedUser = userService.update(user1);
+        assertThat(returnedUser.getFullName())
+                .isEqualTo(user1.getFullName());
+        assertThat(returnedUser.getBio())
+                .isEqualTo(user1.getBio());
+    }
 }
+
+
+
