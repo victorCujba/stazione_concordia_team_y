@@ -10,11 +10,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @AllArgsConstructor
 @Service
@@ -36,15 +34,11 @@ public class CardServiceImpl implements CardService {
                 .collect(Collectors.toList());
 
         return cardsWithPriority;
-
-
     }
 
 
     @Override
     public List<Card> findAllCardsWhitExpirationDateInLast5Days() {
-
-
         List<Card> cards = cardRepository.findAll();
 
         List<Card> cardsNearExpiration = cards
@@ -62,6 +56,8 @@ public class CardServiceImpl implements CardService {
         return cardsNearExpiration;
 
     }
+
+
 
     @Override
     public Card insert(Card card) {
