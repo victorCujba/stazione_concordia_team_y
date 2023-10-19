@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.controller;
 
 
 import it.euris.stazioneconcordia.data.dto.CardDTO;
+import it.euris.stazioneconcordia.data.enums.Priority;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
@@ -57,6 +58,22 @@ public class CardController {
     @GetMapping("/v1/{id}")
     public CardDTO findById(@PathVariable("id") Long idCard) {
         return cardService.findById(idCard).toDto();
+    }
+
+    @GetMapping("/v1/expirationDate")
+    public List<CardDTO> findByExpirationDate() {
+        return cardService.findAllCardsWithExpirationDateInLast5Days()
+                .stream()
+                .map(Card::toDto)
+                .toList();
+    }
+
+    @GetMapping("/v1/{priority}")
+    public List<CardDTO> findByPriority(@PathVariable("priority") Priority priority) {
+        return cardService.findByPriority(priority)
+                .stream()
+                .map(Card::toDto)
+                .toList();
     }
 
 
