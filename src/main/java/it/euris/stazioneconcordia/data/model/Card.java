@@ -54,13 +54,13 @@ public class Card implements Model {
     @ManyToOne
     @MapsId("id_list")
     @JoinColumn(name = "id_list")
-    private List list;
+    private Lists lists;
 
     @Override
     public CardDTO toDto() {
         return CardDTO.builder()
                 .id(numberToString(id))
-                .idList(numberToString(list.getId()))
+                .idList(numberToString(lists.getId()))
                 .name(name)
                 .position(numberToString(position))
                 .priority(priorityToString(priority))
