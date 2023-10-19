@@ -8,6 +8,7 @@ import it.euris.stazioneconcordia.service.CommentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -50,6 +51,13 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment getLastComment() {
-        return null;
+        List<Comment> comments = commentRepository.findAll();
+        Comment lastComment = Comment.builder().date(LocalDateTime.MIN).build();
+        for (Comment comment : comments) {
+            if (comment.getDate().isAfter(lastComment.getDate())) {
+                lastComment = comment;
+            }
+        }
+        return lastComment;
     }
 }
