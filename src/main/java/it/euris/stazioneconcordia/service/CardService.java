@@ -10,9 +10,9 @@ public interface CardService {
 
     List<Card> findAll();
 
-    List<Card> findByPriority(Priority priority);
+   List<Card>  findByPriority(Priority priority);
 
-    List<Card> findAllCardsWithExpirationDateInLast5Days();
+    List<Card> findAllCardsWhitExpirationDateInLast5Days();
 
     Card insert(Card card);
 
