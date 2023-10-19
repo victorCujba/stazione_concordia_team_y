@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @AllArgsConstructor
@@ -24,13 +26,40 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card findByPriority(Priority priority) {
-        return null;
+    public List<Card> findByPriority(Priority priority) {
+        List<Card> cards = cardRepository.findAll();
+        List<Card> cardsWithPriority = new ArrayList<>();
+        for (Card card : cards) {
+            if (card.getPriority() == priority) {
+                cardsWithPriority.add(card);
+            }
+        }
+        return cardsWithPriority;
     }
 
     @Override
-    public Card findByExpirationDate(LocalDateTime expirationDate) {
-        return null;
+    public List<Card> findAllCardsWithExpirationDateInLast5Days() {
+        List<Card> cards = cardRepository.findAll();
+        List<Card> cardsNearExpiration = new ArrayList<>();
+        for (Card card : cards) {
+            if (card.getExpirationDate().isAfter(LocalDateTime.now().minusDays(5L))) {
+                cardsNearExpiration.add(card);
+            }
+        }
+        if (cardsNearExpiration.size()>1) {
+            for (int j = 0; j < cardsNearExpiration.size(); j++) {
+
+                for (int i = 0; i < cardsNearExpiration.size()-1; i++) {
+                    Card change;
+                    if ((cardsNearExpiration.get(i).getExpirationDate()).isBefore(cardsNearExpiration.get(i + 1).getExpirationDate())) {
+                        change = cardsNearExpiration.get(i + 1);
+                        cardsNearExpiration.set(i + 1, cardsNearExpiration.get(i));
+                        cardsNearExpiration.set(i, change);
+                    }
+                }
+            }
+        }
+        return cardsNearExpiration;
     }
 
     @Override
