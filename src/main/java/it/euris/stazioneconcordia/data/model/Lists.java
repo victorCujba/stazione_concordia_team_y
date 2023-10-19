@@ -1,6 +1,6 @@
 package it.euris.stazioneconcordia.data.model;
 
-import it.euris.stazioneconcordia.data.dto.ListDTO;
+import it.euris.stazioneconcordia.data.dto.ListsDTO;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,8 +42,8 @@ public class Lists implements Model {
 
 
     @Override
-    public ListDTO toDto() {
-        return ListDTO.builder()
+    public ListsDTO toDto() {
+        return ListsDTO.builder()
                 .id(numberToString(id))
                 .idBoard(numberToString(board.getId()))
                 .name(name)
