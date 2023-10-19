@@ -1,6 +1,7 @@
 package it.euris.stazioneconcordia.controller;
 
 import it.euris.stazioneconcordia.data.dto.CommentDTO;
+import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
@@ -55,9 +56,9 @@ public class CommentController {
         return commentService.findById(idComment).toDto();
     }
 
-    @GetMapping("/v1/last-comment")
-    public CommentDTO getLastComment() {
-        return commentService.getLastComment().toDto();
+    @GetMapping("/v1/last-comment/{card-id}")
+    public CommentDTO getLastComment(@PathVariable(name = "card-id") Long idCard) {
+        return commentService.getLastComment(Card.builder().id(idCard).build()).toDto();
     }
 
 }

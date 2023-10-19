@@ -1,5 +1,6 @@
 package it.euris.stazioneconcordia.service;
 
+import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
@@ -37,21 +38,26 @@ class CommentServiceImplTest {
 
     @Test
     void shouldReturnLastComment() {
+        Card card1 = Card.builder().id(1L).build();
+        Card card2 = Card.builder().id(2L).build();
         Comment comment1 = Comment
                 .builder()
                 .id(1L)
+                .card(card1)
                 .date(LocalDateTime.now().minusDays(1L))
                 .build();
 
         Comment comment2 = Comment
                 .builder()
                 .id(2L)
+                .card(card2)
                 .date(LocalDateTime.now().minusHours(1L))
                 .build();
 
         Comment comment3 = Comment
                 .builder()
                 .id(3L)
+                .card(card1)
                 .date(LocalDateTime.now().minusHours(15L))
                 .build();
 
@@ -59,10 +65,10 @@ class CommentServiceImplTest {
 
         when(commentRepository.findAll()).thenReturn(comments);
 
-        Comment lastComment = commentService.getLastComment();
+        Comment lastComment = commentService.getLastComment(card1);
 
         assertThat(lastComment)
-                .isEqualTo(comment2);
+                .isEqualTo(comment3);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package it.euris.stazioneconcordia.service;
 
+import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface CommentService {
 
     Comment findById(Long idComment);
 
-    Comment getLastComment();
+    Comment getLastComment(Card card);
 
 
 }

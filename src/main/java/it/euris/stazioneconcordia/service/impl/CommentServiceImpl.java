@@ -1,5 +1,6 @@
 package it.euris.stazioneconcordia.service.impl;
 
+import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
@@ -50,14 +51,20 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment getLastComment() {
+    public Comment getLastComment(Card card) {
         List<Comment> comments = commentRepository.findAll();
-        Comment lastComment = Comment.builder().date(LocalDateTime.MIN).build();
+        Comment lastCommentOfACard = Comment
+                .builder()
+                .card(card)
+                .date(LocalDateTime.MIN)
+                .build();
         for (Comment comment : comments) {
-            if (comment.getDate().isAfter(lastComment.getDate())) {
-                lastComment = comment;
+            if (comment.getCard().equals(lastCommentOfACard.getCard())) {
+                if (comment.getDate().isAfter(lastCommentOfACard.getDate())) {
+                    lastCommentOfACard = comment;
+                }
             }
         }
-        return lastComment;
+        return lastCommentOfACard;
     }
 }
