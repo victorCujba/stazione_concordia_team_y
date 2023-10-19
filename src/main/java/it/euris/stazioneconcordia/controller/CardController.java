@@ -62,7 +62,7 @@ public class CardController {
 
     @GetMapping("/v1/expirationDate")
     public List<CardDTO> findByExpirationDate() {
-        return cardService.findAllCardsWithExpirationDateInLast5Days()
+        return cardService.findAllCardsWhitExpirationDateInLast5Days()
                 .stream()
                 .map(Card::toDto)
                 .toList();

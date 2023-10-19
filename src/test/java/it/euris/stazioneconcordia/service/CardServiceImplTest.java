@@ -80,7 +80,7 @@ class CardServiceImplTest {
 
         when(cardRepository.findAll()).thenReturn(cards);
 
-        List<Card> cardsNearExipiration = cardService.findAllCardsWithExpirationDateInLast5Days();
+        List<Card> cardsNearExipiration = cardService.findAllCardsWhitExpirationDateInLast5Days();
 
         assertThat(cardsNearExipiration)
                 .hasSize(2)
