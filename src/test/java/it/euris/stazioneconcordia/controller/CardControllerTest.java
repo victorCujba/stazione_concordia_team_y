@@ -246,7 +246,7 @@ class CardControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/cards/v1/priority/MEDIUM")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(card.toDto())))
+                        .content(objectMapper.writeValueAsString(card1.toDto())))
                 .andDo(print())
                 .andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$").isArray())

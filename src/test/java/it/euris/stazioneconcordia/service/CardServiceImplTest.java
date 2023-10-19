@@ -197,12 +197,29 @@ class CardServiceImplTest {
     }
 
     @Test
-    void shouldDeleteACourse() {
+    void shouldDeleteACard() {
         Long id = 12L;
 
         doNothing().when(cardRepository).deleteById(anyLong());
         when(cardRepository.findById(id)).thenReturn(Optional.empty());
         assertTrue(cardService.deleteById(id));
         Mockito.verify(cardRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    void shouldGetACardById(){
+        Long id = 1L;
+
+        Card card = Card
+                .builder()
+                .id(1L)
+                .name("Test name")
+                .description("Test description")
+                .build();
+        lenient().when(cardRepository.findById(id)).thenReturn(Optional.ofNullable(card));
+
+        assertThat(card).isNotNull();
+        assertThat(card.getId()).isEqualTo(id);
+        assertThat(card.getName()).isEqualTo("Test name");
     }
 }
