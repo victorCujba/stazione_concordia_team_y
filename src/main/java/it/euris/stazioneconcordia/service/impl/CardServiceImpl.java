@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -38,17 +37,30 @@ public class CardServiceImpl implements CardService {
         return cardsWithPriority;
     }
 
+
     @Override
     public List<Card> findAllCardsWhitExpirationDateInLast5Days() {
-//        List<Card> cards = cardRepository.findAll();
-//
-//        LocalDateTime threshold = LocalDateTime.now().minusDays(5); // or any other desired value
-//
-//        return cards.stream()
-//                .filter(card -> card.getExpirationDate().compareTo(threshold) > 0)
-//                .sorted(Comparator.comparing(Card::getExpirationDate))
-//                .collect(Collectors.toList());
-        return null;
+        List<Card> cards = cardRepository.findAll();
+        List<Card> cardsNearExpiration = new ArrayList<>();
+        for (Card card : cards) {
+            if (card.getExpirationDate().isAfter(LocalDateTime.now().minusDays(5L))) {
+                cardsNearExpiration.add(card);
+            }
+        }
+        if (cardsNearExpiration.size()>1) {
+            for (int j = 0; j < cardsNearExpiration.size(); j++) {
+
+                for (int i = 0; i < cardsNearExpiration.size()-1; i++) {
+                    Card change;
+                    if ((cardsNearExpiration.get(i).getExpirationDate()).isBefore(cardsNearExpiration.get(i + 1).getExpirationDate())) {
+                        change = cardsNearExpiration.get(i + 1);
+                        cardsNearExpiration.set(i + 1, cardsNearExpiration.get(i));
+                        cardsNearExpiration.set(i, change);
+                    }
+                }
+            }
+        }
+        return cardsNearExpiration;
     }
 
     @Override

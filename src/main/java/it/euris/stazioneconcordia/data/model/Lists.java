@@ -1,6 +1,6 @@
 package it.euris.stazioneconcordia.data.model;
 
-import it.euris.stazioneconcordia.data.dto.ListDTO;
+import it.euris.stazioneconcordia.data.dto.ListsDTO;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,7 +19,7 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.numberToStr
 @Table(name = "list")
 @SQLDelete(sql = "UPDATE list SET closed = true WHERE id = ?")
 @Where(clause = "closed = false")
-public class List implements Model {
+public class Lists implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -42,8 +42,8 @@ public class List implements Model {
 
 
     @Override
-    public ListDTO toDto() {
-        return ListDTO.builder()
+    public ListsDTO toDto() {
+        return ListsDTO.builder()
                 .id(numberToString(id))
                 .idBoard(numberToString(board.getId()))
                 .name(name)
