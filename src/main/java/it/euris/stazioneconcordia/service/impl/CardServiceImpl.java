@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -28,12 +29,10 @@ public class CardServiceImpl implements CardService {
     @Override
     public List<Card> findByPriority(Priority priority) {
         List<Card> cards = cardRepository.findAll();
-        List<Card> cardsWithPriority = new ArrayList<>();
-        for (Card card : cards) {
-            if (card.getPriority() == priority) {
-                cardsWithPriority.add(card);
-            }
-        }
+        List<Card> cardsWithPriority = cards.stream()
+                .filter(card -> card.getPriority() == priority)
+                .collect(Collectors.toList());
+
         return cardsWithPriority;
     }
 
@@ -41,24 +40,18 @@ public class CardServiceImpl implements CardService {
     @Override
     public List<Card> findAllCardsWhitExpirationDateInLast5Days() {
         List<Card> cards = cardRepository.findAll();
-        List<Card> cardsNearExpiration = new ArrayList<>();
-        for (Card card : cards) {
-            if (card.getExpirationDate().isAfter(LocalDateTime.now().minusDays(5L))) {
-                cardsNearExpiration.add(card);
-            }
-        }
-        if (cardsNearExpiration.size()>1) {
-            for (int j = 0; j < cardsNearExpiration.size(); j++) {
 
-                for (int i = 0; i < cardsNearExpiration.size()-1; i++) {
-                    Card change;
-                    if ((cardsNearExpiration.get(i).getExpirationDate()).isBefore(cardsNearExpiration.get(i + 1).getExpirationDate())) {
-                        change = cardsNearExpiration.get(i + 1);
-                        cardsNearExpiration.set(i + 1, cardsNearExpiration.get(i));
-                        cardsNearExpiration.set(i, change);
-                    }
-                }
-            }
+        List<Card> cardsNearExpiration = cards
+                .stream()
+                .filter(Card -> Card.getExpirationDate().isAfter(LocalDateTime.now().minusDays(5L)))
+                .collect(Collectors.toList());
+
+
+        if (cardsNearExpiration.size() > 1) {
+            return cardsNearExpiration.stream()
+                    .sorted(Comparator.comparing(Card::getExpirationDate).reversed())
+                    .collect(Collectors.toList());
+
         }
         return cardsNearExpiration;
     }
