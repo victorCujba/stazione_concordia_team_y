@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -35,6 +36,8 @@ public class CardServiceImpl implements CardService {
             }
         }
         return cardsWithPriority;
+
+
     }
 
 
@@ -47,10 +50,10 @@ public class CardServiceImpl implements CardService {
                 cardsNearExpiration.add(card);
             }
         }
-        if (cardsNearExpiration.size()>1) {
+        if (cardsNearExpiration.size() > 1) {
             for (int j = 0; j < cardsNearExpiration.size(); j++) {
 
-                for (int i = 0; i < cardsNearExpiration.size()-1; i++) {
+                for (int i = 0; i < cardsNearExpiration.size() - 1; i++) {
                     Card change;
                     if ((cardsNearExpiration.get(i).getExpirationDate()).isBefore(cardsNearExpiration.get(i + 1).getExpirationDate())) {
                         change = cardsNearExpiration.get(i + 1);

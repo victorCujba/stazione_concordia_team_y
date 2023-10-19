@@ -55,7 +55,7 @@ public class CommentController {
         return commentService.findById(idComment).toDto();
     }
 
-    @GetMapping("/v1")
+    @GetMapping("/v1/last-comment")
     public CommentDTO getLastComment() {
         return commentService.getLastComment().toDto();
     }
