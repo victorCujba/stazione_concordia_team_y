@@ -165,7 +165,7 @@ class CommentControllerTest {
         CommentDTO testComment2 = CommentDTO.builder()
                 .id("1")
                 .idCard(cardDTO.getId())
-                .date("2000-12-10T12:12:12")
+                .date("2023-09-10T12:12:12")
                 .commentBody("Last comment")
                 .build();
         List<CommentDTO> commentsDto = List.of(testComment1, testComment2);
