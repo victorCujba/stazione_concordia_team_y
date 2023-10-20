@@ -1,8 +1,11 @@
 package it.euris.stazioneconcordia.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.dto.CommentDTO;
+import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
+import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.service.CommentService;
 import jakarta.servlet.ServletException;
@@ -22,6 +25,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -143,38 +147,36 @@ class CommentControllerTest {
     @Test
     void shouldGetLastCommentFromCard() throws Exception {
 
-        // devo implementare......
+        Card testCard = Card.builder()
+                .id(1L)
+                .lists(Lists.builder().id(1L).build())
+                .name("test card")
+                .build();
+        CardDTO cardDTO = testCard.toDto();
+        Long id = cardDTO.toModel().getId();
 
-//        Card testCard = Card.builder()
-//                .id(1L)
-//                .lists(Lists.builder().id(1L).build())
-//                .name("test card")
-//                .build();
-//        CardDTO cardDTO = testCard.toDto();
-//        Long id = cardDTO.toModel().getId();
-//
-//
-//        CommentDTO testComment1 = CommentDTO.builder()
-//                .id("1")
-//                .idCard(cardDTO.getId())
-//                .date("2000-12-01T12:12:12")
-//                .commentBody("First comment")
-//                .build();
-//        CommentDTO testComment2 = CommentDTO.builder()
-//                .id("1")
-//                .idCard(cardDTO.getId())
-//                .date("2000-12-10T12:12:12")
-//                .commentBody("Last comment")
-//                .build();
-//        List<CommentDTO> commentsDto = List.of(testComment1, testComment2);
-//        List<Comment> comments = commentsDto.stream().map(CommentDTO::toModel).toList();
-//
-//        when(commentService.getLastComment(testCard)).thenReturn(comments.get(0));
-//
-//        mockMvc.perform(MockMvcRequestBuilders.get("/comments/v1/last-comment/{card-id}", id)
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.id").value(testComment1.getId()));
+
+        CommentDTO testComment1 = CommentDTO.builder()
+                .id("1")
+                .idCard(cardDTO.getId())
+                .date("2023-10-18T12:12:12")
+                .commentBody("First comment")
+                .build();
+        CommentDTO testComment2 = CommentDTO.builder()
+                .id("1")
+                .idCard(cardDTO.getId())
+                .date("2000-12-10T12:12:12")
+                .commentBody("Last comment")
+                .build();
+        List<CommentDTO> commentsDto = List.of(testComment1, testComment2);
+        List<Comment> comments = commentsDto.stream().map(CommentDTO::toModel).toList();
+
+        when(commentService.getLastComment(any())).thenReturn(comments.get(0));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/comments/v1/last-comment/{card-id}", id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(testComment1.getId()));
     }
 
 
@@ -206,6 +208,7 @@ class CommentControllerTest {
     private CommentDTO generateCommentDTO() {
         return CommentDTO
                 .builder()
+                .date("2023-10-19T12:00:00")
                 .idUser("1")
                 .idCard("1")
                 .commentBody("comment body")
@@ -216,6 +219,7 @@ class CommentControllerTest {
         return CommentDTO
                 .builder()
                 .id("1")
+                .date("2023-10-19T12:00:00")
                 .idUser("1")
                 .idCard("1")
                 .commentBody("comment body")
