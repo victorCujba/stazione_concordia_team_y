@@ -1,6 +1,7 @@
 package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
+import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.model.Lists;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class ListsDTO implements Dto {
     private String name;
     private String position;
     private String closed;
+    private String idLabel;
     private String idBoard;
 
     @Override
@@ -30,6 +32,7 @@ public class ListsDTO implements Dto {
                 .name(name)
                 .position(stringToLong(position))
                 .closed(stringToBoolean(closed))
+                .label(stringToListLabel(idLabel))
                 .board(Board.builder().id(idBoard).build())
                 .build();
     }

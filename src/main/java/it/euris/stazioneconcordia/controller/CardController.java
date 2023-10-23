@@ -4,9 +4,12 @@ package it.euris.stazioneconcordia.controller;
 import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.enums.Priority;
 import it.euris.stazioneconcordia.data.model.Card;
+import it.euris.stazioneconcordia.data.model.CardState;
+import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.service.CardService;
+import it.euris.stazioneconcordia.service.ListsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,8 @@ import java.util.List;
 public class CardController {
 
     CardService cardService;
+
+    ListsService listsService;
 
     @GetMapping("/v1")
     public List<CardDTO> findAll() {

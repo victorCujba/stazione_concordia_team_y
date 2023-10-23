@@ -58,7 +58,6 @@ public class CardServiceImpl implements CardService {
     }
 
 
-
     @Override
     public Card insert(Card card) {
         if (card.getId() != null) {
