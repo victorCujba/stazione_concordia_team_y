@@ -76,13 +76,13 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Boolean deleteById(Long idCard) {
+    public Boolean deleteById(String idCard) {
         cardRepository.deleteById(idCard);
         return cardRepository.findById(idCard).isEmpty();
     }
 
     @Override
-    public Card findById(Long idCard) {
+    public Card findById(String idCard) {
         return cardRepository.findById(idCard).orElse(Card.builder().build());
     }
 }

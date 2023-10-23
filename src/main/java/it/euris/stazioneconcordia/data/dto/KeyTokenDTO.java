@@ -26,7 +26,7 @@ public class KeyTokenDTO implements Dto {
         .id(stringToLong(id))
         .key(key)
         .token(token)
-        .board(Board.builder().id(stringToLong(idBoard)).build())
+        .board(Board.builder().id(idBoard).build())
         .build();
   }
 }

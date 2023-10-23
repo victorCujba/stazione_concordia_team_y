@@ -36,7 +36,7 @@ class UserServiceImplTest {
 
         User user1 = User
                 .builder()
-                .id(1L)
+                .id("1")
                 .build();
 
         List<User> users = List.of(user1);
@@ -72,7 +72,7 @@ class UserServiceImplTest {
     void shouldNotInsertAnyUser() {
         User user1 = User
                 .builder()
-                .id(1L)
+                .id("1")
                 .build();
 
 
@@ -89,9 +89,9 @@ class UserServiceImplTest {
     @Test
     void shouldDeleteAUser() {
         //arrange
-        Long id = 12L;
+        String id = "12";
 
-        doNothing().when(userRepository).deleteById(anyLong());
+        doNothing().when(userRepository).deleteById(anyString());
         when(userRepository.findById(id)).thenReturn(Optional.empty());
         assertTrue(userService.deleteById(id));
         Mockito.verify(userRepository, times(1)).deleteById(id);
@@ -115,7 +115,7 @@ class UserServiceImplTest {
 
         User user1 = User
                 .builder()
-                .id(1L)
+                .id("1")
                 .fullName("test name")
                 .bio("test bio")
                 .build();

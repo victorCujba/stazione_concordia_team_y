@@ -38,13 +38,13 @@ public class ListsServiceImpl implements ListsService {
     }
 
     @Override
-    public Boolean deleteById(Long idLists) {
+    public Boolean deleteById(String idLists) {
         listsRepository.deleteById(idLists);
         return listsRepository.findById(idLists).isEmpty();
     }
 
     @Override
-    public Lists findById(Long idLists) {
+    public Lists findById(String idLists) {
         return listsRepository.findById(idLists).orElse(Lists.builder().build());
     }
 }

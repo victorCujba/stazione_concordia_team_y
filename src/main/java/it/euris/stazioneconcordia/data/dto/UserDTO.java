@@ -27,7 +27,7 @@ public class UserDTO implements Dto {
     public User toModel() {
         return User
                 .builder()
-                .id(stringToLong(id))
+                .id(id)
                 .fullName(fullName)
                 .bio(bio)
                 .avatarUrl(avatarUrl)

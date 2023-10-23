@@ -38,25 +38,25 @@ class CommentServiceImplTest {
 
     @Test
     void shouldReturnLastComment() {
-        Card card1 = Card.builder().id(1L).build();
-        Card card2 = Card.builder().id(2L).build();
+        Card card1 = Card.builder().id("1").build();
+        Card card2 = Card.builder().id("2").build();
         Comment comment1 = Comment
                 .builder()
-                .id(1L)
+                .id("1")
                 .card(card1)
                 .date(LocalDateTime.now().minusDays(1L))
                 .build();
 
         Comment comment2 = Comment
                 .builder()
-                .id(2L)
+                .id("2")
                 .card(card2)
                 .date(LocalDateTime.now().minusHours(1L))
                 .build();
 
         Comment comment3 = Comment
                 .builder()
-                .id(3L)
+                .id("3")
                 .card(card1)
                 .date(LocalDateTime.now().minusHours(15L))
                 .build();
@@ -76,7 +76,7 @@ class CommentServiceImplTest {
 
         Comment comment = Comment
                 .builder()
-                .id(1L)
+                .id("1")
                 .commentBody("Test body")
                 .build();
 
@@ -118,7 +118,7 @@ class CommentServiceImplTest {
 
         Comment comment = Comment
                 .builder()
-                .id(1L)
+                .id("1")
                 .commentBody("Test body")
                 .date(LocalDateTime.parse("2023-10-18T12:00:00"))
                 .build();
@@ -136,7 +136,7 @@ class CommentServiceImplTest {
 
         Comment comment = Comment
                 .builder()
-                .id(1L)
+                .id("1")
                 .commentBody("Test body")
                 .date(LocalDateTime.parse("2023-10-18T12:00:00"))
                 .build();
@@ -169,9 +169,9 @@ class CommentServiceImplTest {
     @Test
     void shouldDeleteAComment() {
 
-        Long id = 1L;
+        String id = "1";
 
-        doNothing().when(commentRepository).deleteById(anyLong());
+        doNothing().when(commentRepository).deleteById(anyString());
         when(commentRepository.findById(id)).thenReturn(Optional.empty());
         assertTrue(commentService.deleteById(id));
         Mockito.verify(commentRepository, times(1)).deleteById(id);

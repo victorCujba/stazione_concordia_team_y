@@ -25,11 +25,10 @@ public class Card implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private String id;
 
     @Column(name = "name")
     private String name;
-
 
     @Column(name = "position")
     private Long position;
@@ -59,8 +58,8 @@ public class Card implements Model {
     @Override
     public CardDTO toDto() {
         return CardDTO.builder()
-                .id(numberToString(id))
-                .idList(numberToString(lists.getId()))
+                .id(id)
+                .idList(lists.getId())
                 .name(name)
                 .position(numberToString(position))
                 .priority(priorityToString(priority))

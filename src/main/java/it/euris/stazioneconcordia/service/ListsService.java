@@ -14,9 +14,9 @@ public interface ListsService {
 
     Lists update(Lists lists);
 
-    Boolean deleteById(Long idLists);
+    Boolean deleteById(String idLists);
 
-    Lists findById(Long idLists);
+    Lists findById(String idLists);
 
 
 }

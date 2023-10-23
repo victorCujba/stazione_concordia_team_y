@@ -38,13 +38,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Boolean deleteById(Long idBoard) {
+    public Boolean deleteById(String idBoard) {
         boardRepository.deleteById(idBoard);
         return boardRepository.findById(idBoard).isEmpty();
     }
 
     @Override
-    public Board findById(Long idBoard) {
+    public Board findById(String idBoard) {
         return boardRepository.findById(idBoard).orElse(Board.builder().build());
     }
 }

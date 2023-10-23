@@ -1,7 +1,6 @@
 package it.euris.stazioneconcordia.service;
 
 import it.euris.stazioneconcordia.data.model.Lists;
-import it.euris.stazioneconcordia.data.model.User;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.ListsRepository;
@@ -22,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,7 +35,7 @@ class ListsServiceImplTest {
 
         Lists list = Lists
                 .builder()
-                .id(1L)
+                .id("1")
                 .build();
 
         List<Lists> lists = List.of(list);
@@ -74,7 +72,7 @@ class ListsServiceImplTest {
     void shouldNotInsertAnyLists() {
         Lists list = Lists
                 .builder()
-                .id(1L)
+                .id("1")
                 .build();
 
 
@@ -90,9 +88,9 @@ class ListsServiceImplTest {
     @Test
     void shouldDeleteALists() {
         //arrange
-        Long id = 12L;
+        String id = "12";
 
-        doNothing().when(listsRepository).deleteById(anyLong());
+        doNothing().when(listsRepository).deleteById(anyString());
         when(listsRepository.findById(id)).thenReturn(Optional.empty());
         assertTrue(listsService.deleteById(id));
         Mockito.verify(listsRepository, times(1)).deleteById(id);
@@ -115,7 +113,7 @@ class ListsServiceImplTest {
 
         Lists list = Lists
                 .builder()
-                .id(1L)
+                .id("1")
                 .name("test name")
                 .build();
         when(listsRepository.save(any())).thenReturn(list);

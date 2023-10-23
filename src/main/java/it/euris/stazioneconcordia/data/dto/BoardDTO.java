@@ -27,7 +27,7 @@ public class BoardDTO implements Dto {
     public Board toModel() {
         return Board
                 .builder()
-                .id(stringToLong(id))
+                .id(id)
                 .name(name)
                 .description(description)
                 .url(url)

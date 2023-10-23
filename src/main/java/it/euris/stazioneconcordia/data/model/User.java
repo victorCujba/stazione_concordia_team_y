@@ -22,7 +22,7 @@ public class User implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private String id;
 
     @Column(name = "full_name")
     private String fullName;
@@ -43,7 +43,7 @@ public class User implements Model {
     @Override
     public UserDTO toDto() {
         return UserDTO.builder()
-                .id(numberToString(id))
+                .id(id)
                 .fullName(fullName)
                 .bio(bio)
                 .avatarUrl(avatarUrl)

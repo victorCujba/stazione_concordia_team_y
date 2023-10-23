@@ -39,7 +39,7 @@ public class KeyToken implements Model {
         .id(numberToString(id))
         .key(key)
         .token(token)
-        .idBoard(numberToString(board.getId()))
+        .idBoard(board.getId())
         .build();
   }
 }

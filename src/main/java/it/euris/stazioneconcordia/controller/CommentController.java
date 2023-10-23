@@ -21,7 +21,10 @@ public class CommentController {
 
     @GetMapping("/v1")
     public List<CommentDTO> getAllComments() {
-        return commentService.findAll().stream().map(Comment::toDto).toList();
+        return commentService.findAll()
+                .stream()
+                .map(Comment::toDto)
+                .toList();
     }
 
     @PostMapping("/v1")
@@ -47,17 +50,17 @@ public class CommentController {
     }
 
     @DeleteMapping("/v1/{id}")
-    public Boolean deleteComment(@PathVariable("id") Long idComment) {
+    public Boolean deleteComment(@PathVariable("id") String idComment) {
         return commentService.deleteById(idComment);
     }
 
     @GetMapping("/v1/{id}")
-    public CommentDTO getCommentById(@PathVariable("id") Long idComment) {
+    public CommentDTO getCommentById(@PathVariable("id") String idComment) {
         return commentService.findById(idComment).toDto();
     }
 
     @GetMapping("/v1/last-comment/{card-id}")
-    public CommentDTO getLastComment(@PathVariable(name = "card-id") Long idCard) {
+    public CommentDTO getLastComment(@PathVariable(name = "card-id") String idCard) {
         return commentService.getLastComment(Card.builder().id(idCard).build()).toDto();
     }
 

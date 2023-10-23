@@ -40,13 +40,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Boolean deleteById(Long idComment) {
+    public Boolean deleteById(String idComment) {
         commentRepository.deleteById(idComment);
         return commentRepository.findById(idComment).isEmpty();
     }
 
     @Override
-    public Comment findById(Long idComment) {
+    public Comment findById(String idComment) {
         return commentRepository.findById(idComment).orElse(Comment.builder().build());
     }
 

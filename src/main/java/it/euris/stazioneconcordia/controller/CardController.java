@@ -51,12 +51,12 @@ public class CardController {
     }
 
     @DeleteMapping("/v1/{id}")
-    public Boolean deleteById(@PathVariable("id") Long idCard) {
+    public Boolean deleteById(@PathVariable("id") String idCard) {
         return cardService.deleteById(idCard);
     }
 
     @GetMapping("/v1/{id}")
-    public CardDTO findById(@PathVariable("id") Long idCard) {
+    public CardDTO findById(@PathVariable("id") String idCard) {
         return cardService.findById(idCard).toDto();
     }
 

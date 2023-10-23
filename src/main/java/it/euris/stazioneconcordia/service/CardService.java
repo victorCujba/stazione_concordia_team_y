@@ -18,9 +18,9 @@ public interface CardService {
 
     Card update(Card card);
 
-    Boolean deleteById(Long idCard);
+    Boolean deleteById(String idCard);
 
-    Card findById(Long idCard);
+    Card findById(String idCard);
 
 
 }
