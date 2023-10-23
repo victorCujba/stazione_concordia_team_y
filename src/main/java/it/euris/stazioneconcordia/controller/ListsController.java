@@ -50,12 +50,12 @@ public class ListsController {
     }
 
     @DeleteMapping("/v1/{id}")
-    public Boolean deleteById(@PathVariable("id") Long idCard) {
+    public Boolean deleteById(@PathVariable("id") String idCard) {
         return listsService.deleteById(idCard);
     }
 
     @GetMapping("/v1/{id}")
-    public ListsDTO findById(@PathVariable("id") Long idCard) {
+    public ListsDTO findById(@PathVariable("id") String idCard) {
         return listsService.findById(idCard).toDto();
     }
 

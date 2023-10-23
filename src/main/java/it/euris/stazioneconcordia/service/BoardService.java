@@ -12,7 +12,7 @@ public interface BoardService {
 
     Board update(Board board);
 
-    Boolean deleteById(Long idBoard);
+    Boolean deleteById(String idBoard);
 
-    Board findById(Long idBoard);
+    Board findById(String idBoard);
 }

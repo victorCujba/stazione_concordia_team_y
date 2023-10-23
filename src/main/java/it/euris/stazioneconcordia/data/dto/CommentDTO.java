@@ -29,12 +29,12 @@ public class CommentDTO implements Dto {
     public Comment toModel() {
         return Comment
                 .builder()
-                .id(stringToLong(id))
+                .id(id)
                 .date(stringToLocalDateTime(date))
                 .commentBody(commentBody)
                 .deleted(stringToBoolean(deleted))
-                .card(Card.builder().id(stringToLong(idCard)).build())
-                .user(User.builder().id(stringToLong(idUser)).build())
+                .card(Card.builder().id(idCard).build())
+                .user(User.builder().id(idUser).build())
                 .build();
     }
 }

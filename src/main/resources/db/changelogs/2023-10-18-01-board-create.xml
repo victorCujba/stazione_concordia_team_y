@@ -14,7 +14,7 @@
         </preConditions>
         <comment>Board table create</comment>
         <createTable tableName="board">
-            <column name="id" type="BIGINT(20)" autoIncrement="true">
+            <column name="id" type="VARCHAR(255)">
                 <constraints primaryKey="true"/>
             </column>
             <column name="name" type="VARCHAR(255)"/>

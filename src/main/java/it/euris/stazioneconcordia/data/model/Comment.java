@@ -24,7 +24,7 @@ public class Comment implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private String id;
 
     @Column(name = "date")
     private LocalDateTime date;
@@ -50,9 +50,9 @@ public class Comment implements Model {
     public CommentDTO toDto() {
         return CommentDTO
                 .builder()
-                .id(numberToString(id))
-                .idCard(numberToString(card.getId()))
-                .idUser(numberToString(user.getId()))
+                .id(id)
+                .idCard(card.getId())
+                .idUser(user.getId())
                 .date(localDateTimeToString(date))
                 .commentBody(commentBody)
                 .deleted(booleanToString(deleted))

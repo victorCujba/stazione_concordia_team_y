@@ -40,17 +40,17 @@ class CardServiceImplTest {
     void shouldReturnCardsWithHighPriority() {
         Card card1 = Card
                 .builder()
-                .id(1L)
+                .id("1")
                 .priority(Priority.LOW)
                 .build();
         Card card2 = Card
                 .builder()
-                .id(2L)
+                .id("2")
                 .priority(Priority.MEDIUM)
                 .build();
         Card card3 = Card
                 .builder()
-                .id(3L)
+                .id("3")
                 .priority(Priority.HIGH)
                 .build();
 
@@ -72,17 +72,17 @@ class CardServiceImplTest {
     void shouldReturnCardsWithExpirationDateInLast5Days() {
         Card card1 = Card
                 .builder()
-                .id(1L)
+                .id("1")
                 .expirationDate(LocalDateTime.now().minusDays(4L))
                 .build();
         Card card2 = Card
                 .builder()
-                .id(2L)
+                .id("2")
                 .expirationDate(LocalDateTime.now().minusDays(8L))
                 .build();
         Card card3 = Card
                 .builder()
-                .id(3L)
+                .id("3")
                 .expirationDate(LocalDateTime.now().minusDays(2L))
                 .build();
 
@@ -105,7 +105,7 @@ class CardServiceImplTest {
 
         Card card = Card
                 .builder()
-                .id(1L)
+                .id("1")
                 .name("Test name")
                 .description("Test desc")
                 .build();
@@ -149,7 +149,7 @@ class CardServiceImplTest {
 
         Card card = Card
                 .builder()
-                .id(1L)
+                .id("1")
                 .name("Test name")
                 .description("Test desc")
                 .build();
@@ -167,7 +167,7 @@ class CardServiceImplTest {
 
         Card card = Card
                 .builder()
-                .id(1L)
+                .id("1")
                 .name("Test name")
                 .description("Test desc")
                 .build();
@@ -198,9 +198,9 @@ class CardServiceImplTest {
 
     @Test
     void shouldDeleteACard() {
-        Long id = 12L;
+        String id = "12";
 
-        doNothing().when(cardRepository).deleteById(anyLong());
+        doNothing().when(cardRepository).deleteById(anyString());
         when(cardRepository.findById(id)).thenReturn(Optional.empty());
         assertTrue(cardService.deleteById(id));
         Mockito.verify(cardRepository, times(1)).deleteById(id);
@@ -208,11 +208,11 @@ class CardServiceImplTest {
 
     @Test
     void shouldGetACardById(){
-        Long id = 1L;
+        String id = "1";
 
         Card card = Card
                 .builder()
-                .id(1L)
+                .id("1")
                 .name("Test name")
                 .description("Test description")
                 .build();

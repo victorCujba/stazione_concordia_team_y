@@ -26,11 +26,11 @@ public class ListsDTO implements Dto {
     public Lists toModel() {
         return Lists
                 .builder()
-                .id(stringToLong(id))
+                .id(id)
                 .name(name)
                 .position(stringToLong(position))
                 .closed(stringToBoolean(closed))
-                .board(Board.builder().id(stringToLong(idBoard)).build())
+                .board(Board.builder().id(idBoard).build())
                 .build();
     }
 }

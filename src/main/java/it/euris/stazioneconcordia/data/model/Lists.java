@@ -23,7 +23,7 @@ public class Lists implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private String id;
 
     @Column(name = "name")
     private String name;
@@ -44,8 +44,8 @@ public class Lists implements Model {
     @Override
     public ListsDTO toDto() {
         return ListsDTO.builder()
-                .id(numberToString(id))
-                .idBoard(numberToString(board.getId()))
+                .id(id)
+                .idBoard(board.getId())
                 .name(name)
                 .closed(booleanToString(closed))
                 .position(numberToString(position))

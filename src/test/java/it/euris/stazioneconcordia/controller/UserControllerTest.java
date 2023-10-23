@@ -39,7 +39,7 @@ class UserControllerTest {
 
         User user = User
                 .builder()
-                .id(1L)
+                .id("1")
                 .fullName("Test name")
                 .bio("Test bio")
                 .avatarUrl("Test url")
@@ -66,7 +66,7 @@ class UserControllerTest {
 
         User user = User
                 .builder()
-                .id(1L)
+                .id("1")
                 .fullName("Test name")
                 .bio("Test bio")
                 .avatarUrl("Test url")
@@ -88,7 +88,7 @@ class UserControllerTest {
     public void shouldUpdateAUser() throws Exception {
         User user = User
                 .builder()
-                .id(1L)
+                .id("1")
                 .fullName("Test name")
                 .bio("Test bio")
                 .avatarUrl("Test url")
@@ -108,7 +108,7 @@ class UserControllerTest {
 
     @Test
     public void shouldDeleteAUserById() throws Exception {
-        Long idUser = 1L;
+        String idUser = "1";
 
         when(userService.deleteById(idUser)).thenReturn(true);
 
@@ -119,11 +119,11 @@ class UserControllerTest {
 
     @Test
     public void shouldGetUserById() throws Exception {
-        Long idUser = 1L;
+        String idUser = "1";
 
         User user = User
                 .builder()
-                .id(1L)
+                .id("1")
                 .fullName("Test name")
                 .bio("Test bio")
                 .avatarUrl("Test url")

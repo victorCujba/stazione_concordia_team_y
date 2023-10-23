@@ -27,7 +27,7 @@ public class Board implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private String id;
 
     @Column(name = "name")
     private String name;
@@ -49,7 +49,7 @@ public class Board implements Model {
     @Override
     public BoardDTO toDto() {
         return BoardDTO.builder()
-                .id(numberToString(id))
+                .id(id)
                 .name(name)
                 .description(description)
                 .url(url)

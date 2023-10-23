@@ -38,7 +38,7 @@ class BoardControllerTest {
 
         Board board = Board
                 .builder()
-                .id(1L)
+                .id("1")
                 .name("Test name")
                 .description("Test desc")
                 .url("Test url")
@@ -103,7 +103,7 @@ class BoardControllerTest {
 
     @Test
     public void shouldDeleteABoardById() throws Exception {
-        Long idBoard = 1L;
+        String idBoard = "1";
 
         when(boardService.deleteById(idBoard)).thenReturn(true);
 
@@ -114,7 +114,7 @@ class BoardControllerTest {
 
     @Test
     public void shouldGetBoardById() throws Exception {
-        Long idBoard = 1L;
+        String idBoard = "1";
 
         Board board = Board
                 .builder()

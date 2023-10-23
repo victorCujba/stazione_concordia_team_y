@@ -31,7 +31,7 @@ public class CardDTO implements Dto {
     public Card toModel() {
         return Card
                 .builder()
-                .id(stringToLong(id))
+                .id(id)
                 .name(name)
                 .position(stringToLong(position))
                 .priority(stringToPriority(priority))
@@ -39,7 +39,7 @@ public class CardDTO implements Dto {
                 .expirationDate(stringToLocalDateTime(expirationDate))
                 .dateLastActivity(stringToLocalDateTime(dateLastActivity))
                 .closed(stringToBoolean(closed))
-                .lists(Lists.builder().id(stringToLong(idList)).build())
+                .lists(Lists.builder().id(idList).build())
                 .build();
     }
 }

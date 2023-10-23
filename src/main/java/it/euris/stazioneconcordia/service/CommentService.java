@@ -14,9 +14,9 @@ public interface CommentService {
 
     Comment update(Comment comment);
 
-    Boolean deleteById(Long idComment);
+    Boolean deleteById(String idComment);
 
-    Comment findById(Long idComment);
+    Comment findById(String idComment);
 
     Comment getLastComment(Card card);
 

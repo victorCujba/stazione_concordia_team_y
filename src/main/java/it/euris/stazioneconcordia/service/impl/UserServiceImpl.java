@@ -38,14 +38,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean deleteById(Long idUser) {
+    public Boolean deleteById(String idUser) {
         userRepository.deleteById(idUser);
         return userRepository.findById(idUser).isEmpty();
 
     }
 
     @Override
-    public User findById(Long idUser) {
+    public User findById(String idUser) {
 
         return userRepository.findById(idUser).orElse(User.builder().build());
     }

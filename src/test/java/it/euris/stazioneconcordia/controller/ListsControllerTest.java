@@ -38,10 +38,10 @@ class ListsControllerTest {
 
         Lists list = Lists
                 .builder()
-                .id(1L)
+                .id("1")
                 .name("Test name")
                 .position(1L)
-                .board(Board.builder().id(1L).build())
+                .board(Board.builder().id("1").build())
                 .build();
 
         List<Lists> lists = List.of(list);
@@ -64,10 +64,10 @@ class ListsControllerTest {
 
         Lists list = Lists
                 .builder()
-                .id(1L)
+                .id("1")
                 .name("Test name")
                 .position(1L)
-                .board(Board.builder().id(1L).build())
+                .board(Board.builder().id("1").build())
                 .build();
 
         when(listsService.insert(any())).thenReturn(list);
@@ -85,10 +85,10 @@ class ListsControllerTest {
     public void shouldUpdateAList() throws Exception {
         Lists list = Lists
                 .builder()
-                .id(1L)
+                .id("1")
                 .name("Test name")
                 .position(1L)
-                .board(Board.builder().id(1L).build())
+                .board(Board.builder().id("1").build())
                 .build();
 
         when(listsService.update(any())).thenReturn(list);
@@ -104,7 +104,7 @@ class ListsControllerTest {
 
     @Test
     public void shouldDeleteAListById() throws Exception {
-        Long idList = 1L;
+        String idList = "1";
 
         when(listsService.deleteById(idList)).thenReturn(true);
 
@@ -115,14 +115,14 @@ class ListsControllerTest {
 
     @Test
     public void shouldGetListById() throws Exception {
-        Long idList = 1L;
+        String idList = "1";
 
         Lists list = Lists
                 .builder()
-                .id(1L)
+                .id("1")
                 .name("Test name")
                 .position(1L)
-                .board(Board.builder().id(1L).build())
+                .board(Board.builder().id("1").build())
                 .build();
 
         when(listsService.findById(idList)).thenReturn(list);

@@ -120,7 +120,7 @@ class CommentControllerTest {
     @Test
     void shouldDeleteCommentById() throws Exception {
 
-        Long idComment = 1L;
+        String idComment = "1";
 
         when(commentService.deleteById(idComment)).thenReturn(true);
 
@@ -135,7 +135,7 @@ class CommentControllerTest {
         List<Comment> comments = commentsDto.stream().map(CommentDTO::toModel).toList();
 
         when(commentService.findById(comments.get(0).getId())).thenReturn(comments.get(0));
-        Long id = comments.get(0).getId();
+        String id = comments.get(0).getId();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/comments/v1/{id}", id))
                 .andDo(print())
@@ -148,12 +148,12 @@ class CommentControllerTest {
     void shouldGetLastCommentFromCard() throws Exception {
 
         Card testCard = Card.builder()
-                .id(1L)
-                .lists(Lists.builder().id(1L).build())
+                .id("1")
+                .lists(Lists.builder().id("1").build())
                 .name("test card")
                 .build();
         CardDTO cardDTO = testCard.toDto();
-        Long id = cardDTO.toModel().getId();
+        String id = cardDTO.toModel().getId();
 
 
         CommentDTO testComment1 = CommentDTO.builder()
