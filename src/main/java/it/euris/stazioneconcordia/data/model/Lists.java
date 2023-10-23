@@ -2,13 +2,15 @@ package it.euris.stazioneconcordia.data.model;
 
 import it.euris.stazioneconcordia.data.dto.ListsDTO;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
+import it.euris.stazioneconcordia.data.enums.ListLabel;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.booleanToString;
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.numberToString;
+import java.util.List;
+
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 @Builder
 @Getter
@@ -35,10 +37,17 @@ public class Lists implements Model {
     @Builder.Default
     private Boolean closed = false;
 
+    @Column(name = "label")
+    @Enumerated(EnumType.STRING)
+    private ListLabel label;
+
     @ManyToOne
     @MapsId("id_board")
     @JoinColumn(name = "id_board")
     private Board board;
+
+    @OneToMany(mappedBy = "lists", cascade = CascadeType.ALL)
+    private List<Card> cards;
 
 
     @Override
@@ -48,6 +57,7 @@ public class Lists implements Model {
                 .idBoard(board.getId())
                 .name(name)
                 .closed(booleanToString(closed))
+                .idLabel(listLabelToString(label))
                 .position(numberToString(position))
                 .build();
     }

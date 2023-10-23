@@ -1,7 +1,6 @@
 package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
-import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.CardState;
 import lombok.AllArgsConstructor;
@@ -9,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToCardStatus;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToListLabel;
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLocalDateTime;
 
 @Data
@@ -30,8 +29,8 @@ public class CardStateDTO implements Dto {
                 .builder()
                 .id(id)
                 .card(Card.builder().id(id).build())
-                .fromList(stringToCardStatus(fromList))
-                .toList(stringToCardStatus(toList))
+                .fromList(stringToListLabel(fromList))
+                .toList(stringToListLabel(toList))
                 .dateLastUpdate(stringToLocalDateTime(dateLastUpdate))
                 .build();
     }

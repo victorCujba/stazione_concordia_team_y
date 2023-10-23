@@ -1,6 +1,7 @@
 package it.euris.stazioneconcordia.utility;
 
 
+import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.enums.Priority;
 
 import java.time.LocalDateTime;
@@ -48,6 +49,18 @@ public class DataConversionUtils {
         return value == null ? null : value.name();
     }
 
+
+    public static ListLabel stringToListLabel(String value) {
+        for (ListLabel cardStatusValue : ListLabel.values()) {
+            if (cardStatusValue.name().equalsIgnoreCase(value))
+                return cardStatusValue;
+        }
+        return null;
+    }
+
+    public static String listLabelToString(ListLabel value) {
+        return value == null ? null : value.name();
+    }
 
 
 }
