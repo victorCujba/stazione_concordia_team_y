@@ -1,8 +1,6 @@
 package it.euris.stazioneconcordia.service.impl;
 
 import it.euris.stazioneconcordia.data.enums.ListLabel;
-import it.euris.stazioneconcordia.data.model.Card;
-import it.euris.stazioneconcordia.data.model.CardState;
 import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;

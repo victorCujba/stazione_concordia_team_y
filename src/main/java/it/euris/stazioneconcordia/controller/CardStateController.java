@@ -8,7 +8,6 @@ import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.service.CardService;
 import it.euris.stazioneconcordia.service.CardStateService;
 import it.euris.stazioneconcordia.service.ListsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -18,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/cards-state")
 public class CardStateController {
-    @Autowired
+
     CardService cardService;
 
     ListsService listsService;

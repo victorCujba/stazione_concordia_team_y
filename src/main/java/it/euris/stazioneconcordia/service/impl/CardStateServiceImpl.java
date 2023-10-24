@@ -1,18 +1,13 @@
 package it.euris.stazioneconcordia.service.impl;
 
-import it.euris.stazioneconcordia.data.dto.CardStateDTO;
-import it.euris.stazioneconcordia.data.enums.ListLabel;
-import it.euris.stazioneconcordia.data.model.Card;
+
 import it.euris.stazioneconcordia.data.model.CardState;
-import it.euris.stazioneconcordia.repository.CardRepository;
 import it.euris.stazioneconcordia.repository.CardStateRepository;
 import it.euris.stazioneconcordia.service.CardStateService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
