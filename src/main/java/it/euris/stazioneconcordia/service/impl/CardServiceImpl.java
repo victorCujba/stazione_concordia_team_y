@@ -1,14 +1,24 @@
 package it.euris.stazioneconcordia.service.impl;
 
+import com.google.gson.Gson;
+import it.euris.stazioneconcordia.data.dto.CardDTO;
+import it.euris.stazioneconcordia.data.dto.ListsDTO;
 import it.euris.stazioneconcordia.data.enums.Priority;
+import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.model.Card;
+import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CardRepository;
 import it.euris.stazioneconcordia.service.CardService;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -84,4 +94,29 @@ public class CardServiceImpl implements CardService {
     public Card findById(String idCard) {
         return cardRepository.findById(idCard).orElse(Card.builder().build());
     }
+
+    @Override
+    @SneakyThrows
+    public CardDTO[] getCardsFromTrelloList(String idList, String key, String token) {
+        String url = "https://api.trello.com/1/lists/" + idList + "/cards?key=" + key + "&token=" + token;
+        URI targetURI = new URI(url);
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetURI)
+                .GET()
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        Gson gson = new Gson();
+        CardDTO[] cardDTOs = gson.fromJson(response.body(), CardDTO[].class);
+        for (CardDTO cardDTO : cardDTOs) {
+            String date = cardDTO.getDateLastActivity().substring(0, 19);
+            cardDTO.setDateLastActivity(date);
+            Card card = cardDTO.toModel();
+            insert(card);
+        }
+        return cardDTOs;
+    }
+
+
 }
+

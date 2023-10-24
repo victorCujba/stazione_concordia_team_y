@@ -1,6 +1,8 @@
 package it.euris.stazioneconcordia.service;
 
 
+import it.euris.stazioneconcordia.data.dto.ListsDTO;
+import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.model.Lists;
 
@@ -20,4 +22,6 @@ public interface ListsService {
     Lists findById(String idLists);
 
     Lists findByLabel(ListLabel toListLabel);
+
+    ListsDTO[] getListFromTrelloBoard(String idBoard, String key, String token);
 }
