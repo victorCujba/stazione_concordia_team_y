@@ -20,12 +20,11 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 public class CardState implements Model {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "card_id")
+    @JoinColumn(name = "id_card")
     private Card card;
 
     @Column(name = "from_list")

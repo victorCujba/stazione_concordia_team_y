@@ -2,7 +2,6 @@ package it.euris.stazioneconcordia.data.model;
 
 import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
-import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.enums.Priority;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +9,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
@@ -26,7 +24,6 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 @Where(clause = "closed = false")
 public class Card implements Model {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private String id;
 
@@ -53,16 +50,16 @@ public class Card implements Model {
     @Builder.Default
     private Boolean closed = false;
 
-    @Column(name = "list_label")
-    @Enumerated(EnumType.STRING)
-    private ListLabel listLabel;
+// TODO magari gestire agiunta dei commenti ?
+//    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
+//    @Builder.Default
+//    private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
-    @MapsId("id_list")
     @JoinColumn(name = "id_list")
     private Lists lists;
 
-    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
     private List<CardState> stateHistory;
 
     @Override

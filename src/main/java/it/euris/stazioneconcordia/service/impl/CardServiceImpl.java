@@ -60,17 +60,17 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Card insert(Card card) {
-        if (card.getId() != null) {
-            throw new IdMustBeNullException();
-        }
+//        if (card.getId() != null) {
+//            throw new IdMustBeNullException();
+//        }
         return cardRepository.save(card);
     }
 
     @Override
     public Card update(Card card) {
-        if (card.getId() == null) {
-            throw new IdMustNotBeNullException();
-        }
+//        if (card.getId() == null) {
+//            throw new IdMustNotBeNullException();
+//        }
         return cardRepository.save(card);
     }
 

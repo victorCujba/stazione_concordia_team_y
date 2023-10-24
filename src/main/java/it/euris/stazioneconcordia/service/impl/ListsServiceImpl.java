@@ -1,7 +1,6 @@
 package it.euris.stazioneconcordia.service.impl;
 
-import it.euris.stazioneconcordia.data.model.Card;
-import it.euris.stazioneconcordia.data.model.CardState;
+import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -33,17 +33,17 @@ public class ListsServiceImpl implements ListsService {
 
     @Override
     public Lists insert(Lists lists) {
-        if (lists.getId() != null) {
-            throw new IdMustBeNullException();
-        }
+//        if (lists.getId() != null) {
+//            throw new IdMustBeNullException();
+//        }
         return listsRepository.save(lists);
     }
 
     @Override
     public Lists update(Lists lists) {
-        if (lists.getId() == null) {
-            throw new IdMustNotBeNullException();
-        }
+//        if (lists.getId() == null) {
+//            throw new IdMustNotBeNullException();
+//        }
         return listsRepository.save(lists);
     }
 
@@ -58,6 +58,14 @@ public class ListsServiceImpl implements ListsService {
         return listsRepository.findById(idLists).orElse(Lists.builder().build());
     }
 
+    @Override
+    public Lists findByLabel(ListLabel toListLabel) {
+        return listsRepository.findAll()
+                .stream()
+                .filter(lists -> lists.getLabel() == toListLabel)
+                .findFirst()
+                .orElse(null);
+    }
 
 
 }

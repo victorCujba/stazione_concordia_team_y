@@ -1,8 +1,7 @@
 package it.euris.stazioneconcordia.service;
 
 
-import it.euris.stazioneconcordia.data.model.Card;
-import it.euris.stazioneconcordia.data.model.CardState;
+import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.model.Lists;
 
 import java.util.List;
@@ -20,6 +19,5 @@ public interface ListsService {
 
     Lists findById(String idLists);
 
-
-
+    Lists findByLabel(ListLabel toListLabel);
 }
