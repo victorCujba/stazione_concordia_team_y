@@ -66,7 +66,12 @@ public class TrelloController {
         return user.toDto();
     }
     @GetMapping("/labels")
-    public Labels[] getLabelsFromTrelloList(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
-        return labelsService.getLabelsFromTrelloBoard(idBoard, key, token);
+    public LabelsDTO[] getLabelsFromTrelloList(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
+        Labels[] labels = labelsService.getLabelsFromTrelloBoard(idBoard, key, token);
+        LabelsDTO[] labelsDTOs = new LabelsDTO[labels.length];
+        for (int i = 0; i < labels.length; i++) {
+            labelsDTOs[i]=labels[i].toDto();
+        }
+        return labelsDTOs;
     }
 }

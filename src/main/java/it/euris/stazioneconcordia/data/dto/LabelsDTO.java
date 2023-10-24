@@ -24,7 +24,7 @@ public class LabelsDTO implements Dto {
         return Labels
                 .builder()
                 .id(id)
-                .board(Board.builder().id(id).build())
+                .board(Board.builder().id(idBoard).build())
                 .name(name)
                 .color(color)
                 .uses(uses)

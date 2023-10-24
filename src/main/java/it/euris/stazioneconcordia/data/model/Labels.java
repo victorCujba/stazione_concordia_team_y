@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "key_token")
+@Table(name = "labels")
 public class Labels implements Model {
     @Id
     @Column(name = "id")
@@ -27,7 +27,6 @@ public class Labels implements Model {
     private Long uses;
 
     @ManyToOne
-    @MapsId("id_board")
     @JoinColumn(name = "id_board")
     private Board board;
 

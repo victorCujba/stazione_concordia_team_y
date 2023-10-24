@@ -19,6 +19,7 @@ import java.net.http.HttpResponse;
 @AllArgsConstructor
 @Service
 public class LabelsServiceImpl implements LabelsService {
+
     LabelsRepository labelsRepository;
 
     @Override
@@ -48,6 +49,7 @@ public class LabelsServiceImpl implements LabelsService {
         Gson gson = new Gson();
         LabelsDTO[] labelsDTOS = gson.fromJson(response.body(), LabelsDTO[].class);
         for (LabelsDTO labelsDTO : labelsDTOS) {
+
             Labels labels = labelsDTO.toModel();
             insert(labels);
         }
