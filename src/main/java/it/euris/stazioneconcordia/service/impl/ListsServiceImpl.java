@@ -5,6 +5,7 @@ import it.euris.stazioneconcordia.data.dto.BoardDTO;
 import it.euris.stazioneconcordia.data.dto.ListsDTO;
 import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.model.Board;
+import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
@@ -79,7 +80,7 @@ public class ListsServiceImpl implements ListsService {
 
     @Override
     @SneakyThrows
-    public ListsDTO[] getListFromTrelloBoard(String idBoard, String key, String token) {
+    public Lists[] getListFromTrelloBoard(String idBoard, String key, String token) {
         String url = "https://api.trello.com/1/boards/" + idBoard + "/lists?key=" + key + "&token=" + token;
         URI targetURI = new URI(url);
         HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -94,6 +95,12 @@ public class ListsServiceImpl implements ListsService {
             Lists list = listDTO.toModel();
             insert(list);
         }
-        return listDTOs;
+
+        Lists[] lists = new Lists[listDTOs.length];
+        for (int i = 0; i < listDTOs.length; i++) {
+            lists[i] = listDTOs[i].toModel();
+        }
+
+        return lists;
     }
 }

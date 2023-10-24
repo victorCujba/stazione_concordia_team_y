@@ -57,7 +57,7 @@ public class Card implements Model {
 
     @ManyToOne
     @JoinColumn(name = "id_list")
-    private Lists lists;
+    private Lists list;
 
     @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
     private List<CardState> stateHistory;
@@ -66,7 +66,6 @@ public class Card implements Model {
     public CardDTO toDto() {
         return CardDTO.builder()
                 .id(id)
-                .idList(lists.getId())
                 .name(name)
                 .position(numberToString(position))
                 .priority(priorityToString(priority))
@@ -74,6 +73,7 @@ public class Card implements Model {
                 .closed(booleanToString(closed))
                 .expirationDate(localDateTimeToString(expirationDate))
                 .dateLastActivity(localDateTimeToString(dateLastActivity))
+                .idList(list.getId())
                 .build();
     }
 }

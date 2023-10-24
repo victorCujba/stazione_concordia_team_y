@@ -25,7 +25,6 @@ import java.util.List;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -149,7 +148,7 @@ class CommentControllerTest {
 
         Card testCard = Card.builder()
                 .id("1")
-                .lists(Lists.builder().id("1").build())
+                .list(Lists.builder().id("1").build())
                 .name("test card")
                 .build();
         CardDTO cardDTO = testCard.toDto();

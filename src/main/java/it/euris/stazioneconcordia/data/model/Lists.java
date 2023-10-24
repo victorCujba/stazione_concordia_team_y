@@ -41,11 +41,11 @@ public class Lists implements Model {
     private ListLabel label;
 
     @ManyToOne
-    @MapsId("id_board")
     @JoinColumn(name = "id_board")
     private Board board;
 
-    @OneToMany(mappedBy = "lists", cascade = CascadeType.ALL)
+    @OneToMany
+    @JoinColumn(name = "id_list")
     private List<Card> cards;
 
 
@@ -56,7 +56,7 @@ public class Lists implements Model {
                 .idBoard(board.getId())
                 .name(name)
                 .closed(booleanToString(closed))
-                .idLabel(listLabelToString(label))
+//                .idLabel(listLabelToString(label))
                 .position(numberToString(position))
                 .build();
     }

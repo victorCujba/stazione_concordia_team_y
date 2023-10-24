@@ -39,7 +39,7 @@ public class CardStateController {
     public void updateCardState(@RequestParam String idCard, @RequestParam ListLabel toListLabel) {
 
         Card card = cardService.findById(idCard);
-        Lists fromList = card.getLists();
+        Lists fromList = card.getList();
         ListLabel fromListLabel = fromList.getLabel();
         Lists toList = listsService.findByLabel(toListLabel);
 
@@ -56,7 +56,7 @@ public class CardStateController {
         card.getStateHistory().add(cardState);
         cardStateService.update(cardState);
         card.setDateLastActivity(LocalDateTime.now());
-        card.setLists(toList);
+        card.setList(toList);
         cardService.update(card);
 
 

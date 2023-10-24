@@ -39,7 +39,7 @@ public class CardDTO implements Dto {
                 .expirationDate(stringToLocalDateTime(expirationDate))
                 .dateLastActivity(stringToLocalDateTime(dateLastActivity))
                 .closed(stringToBoolean(closed))
-                .lists(Lists.builder().id(idList).build())
+                .list(Lists.builder().id(idList).build())
                 .build();
     }
 }

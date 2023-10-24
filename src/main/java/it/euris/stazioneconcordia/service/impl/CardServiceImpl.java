@@ -97,24 +97,38 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @SneakyThrows
-    public CardDTO[] getCardsFromTrelloList(String idList, String key, String token) {
+    public Card[] getCardsFromTrelloList(String idList, String key, String token) {
+
         String url = "https://api.trello.com/1/lists/" + idList + "/cards?key=" + key + "&token=" + token;
+
         URI targetURI = new URI(url);
+
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(targetURI)
                 .GET()
                 .build();
+
         HttpClient httpClient = HttpClient.newHttpClient();
+
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
         Gson gson = new Gson();
+
         CardDTO[] cardDTOs = gson.fromJson(response.body(), CardDTO[].class);
+
         for (CardDTO cardDTO : cardDTOs) {
             String date = cardDTO.getDateLastActivity().substring(0, 19);
             cardDTO.setDateLastActivity(date);
             Card card = cardDTO.toModel();
             insert(card);
         }
-        return cardDTOs;
+
+        Card[] cards = new Card[cardDTOs.length];
+        for (int i = 0; i < cardDTOs.length; i++) {
+            cards[i] = cardDTOs[i].toModel();
+        }
+
+        return cards;
     }
 
 

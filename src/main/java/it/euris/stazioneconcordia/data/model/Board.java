@@ -8,6 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
@@ -41,6 +42,10 @@ public class Board implements Model {
     @Column(name = "closed")
     @Builder.Default
     private Boolean closed=false;
+
+    @OneToMany
+    @JoinColumn(name = "id_board")
+    private List<Lists> lists;
 
 
     @Override

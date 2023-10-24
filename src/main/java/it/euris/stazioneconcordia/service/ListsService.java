@@ -23,5 +23,5 @@ public interface ListsService {
 
     Lists findByLabel(ListLabel toListLabel);
 
-    ListsDTO[] getListFromTrelloBoard(String idBoard, String key, String token);
+    Lists[] getListFromTrelloBoard(String idBoard, String key, String token);
 }
