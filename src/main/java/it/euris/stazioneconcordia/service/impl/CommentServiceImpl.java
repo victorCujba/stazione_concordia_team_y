@@ -25,17 +25,17 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment insert(Comment comment) {
-        if (comment.getId() != null) {
-            throw new IdMustBeNullException();
-        }
+//        if (comment.getId() != null) {
+//            throw new IdMustBeNullException();
+//        }
         return commentRepository.save(comment);
     }
 
     @Override
     public Comment update(Comment comment) {
-        if (comment.getId() == null) {
-            throw new IdMustNotBeNullException();
-        }
+//        if (comment.getId() == null) {
+//            throw new IdMustNotBeNullException();
+//        }
         return commentRepository.save(comment);
     }
 

@@ -20,7 +20,6 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.numberToStr
 @Table(name = "user")
 public class User implements Model {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private String id;
 
@@ -38,7 +37,7 @@ public class User implements Model {
 
     @Column(name = "status")
     @Builder.Default
-    private Boolean status=false;
+    private Boolean status = false;
 
     @Override
     public UserDTO toDto() {

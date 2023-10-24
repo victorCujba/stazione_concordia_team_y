@@ -22,7 +22,6 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 @Where(clause = "deleted = false")
 public class Comment implements Model {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private String id;
 

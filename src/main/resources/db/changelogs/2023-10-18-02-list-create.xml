@@ -20,6 +20,7 @@
             <column name="name" type="VARCHAR(255)"/>
             <column name="position" type="BIGINT(20)"/>
             <column name="closed" type="BOOLEAN"/>
+            <column name="label" type= "ENUM('TO_DO','WORKING_ON','FINISHED')"/>
             <column name="id_board" type="VARCHAR(255)"/>
         </createTable>
 

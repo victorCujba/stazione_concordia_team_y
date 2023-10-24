@@ -26,7 +26,6 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 @Where(clause = "closed = false")
 public class Card implements Model {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private String id;
 
@@ -53,16 +52,16 @@ public class Card implements Model {
     @Builder.Default
     private Boolean closed = false;
 
-    @Column(name = "list_label")
-    @Enumerated(EnumType.STRING)
-    private ListLabel listLabel;
+// TODO magari gestire agiunta dei commenti ?
+//    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
+//    @Builder.Default
+//    private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
-    @MapsId("id_list")
     @JoinColumn(name = "id_list")
     private Lists lists;
 
-    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
     private List<CardState> stateHistory;
 
     @Override

@@ -22,18 +22,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User insert(User user) {
-
-        if (user.getId() != null) {
-            throw new IdMustBeNullException();
-        }
+//
+//        if (user.getId() != null) {
+//            throw new IdMustBeNullException();
+//        }
         return userRepository.save(user);
     }
 
     @Override
     public User update(User user) {
-        if (user.getId() == null) {
-            throw new IdMustNotBeNullException();
-        }
+//        if (user.getId() == null) {
+//            throw new IdMustNotBeNullException();
+//        }
         return userRepository.save(user);
     }
 

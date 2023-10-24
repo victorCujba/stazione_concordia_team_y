@@ -28,7 +28,7 @@ public class CardStateDTO implements Dto {
         return CardState
                 .builder()
                 .id(id)
-                .card(Card.builder().id(id).build())
+                .card(Card.builder().id(idCard).build())
                 .fromList(stringToListLabel(fromList))
                 .toList(stringToListLabel(toList))
                 .dateLastUpdate(stringToLocalDateTime(dateLastUpdate))

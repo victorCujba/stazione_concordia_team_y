@@ -23,17 +23,17 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Board insert(Board board) {
-        if (board.getId() != null) {
-            throw new IdMustBeNullException();
-        }
+//        if (board.getId() != null) {
+//            throw new IdMustBeNullException();
+//        }
         return boardRepository.save(board);
     }
 
     @Override
     public Board update(Board board) {
-        if (board.getId() == null) {
-            throw new IdMustNotBeNullException();
-        }
+//        if (board.getId() == null) {
+//            throw new IdMustNotBeNullException();
+//        }
         return boardRepository.save(board);
     }
 

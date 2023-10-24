@@ -17,7 +17,6 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.numberToStr
 public class KeyToken implements Model {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
 
