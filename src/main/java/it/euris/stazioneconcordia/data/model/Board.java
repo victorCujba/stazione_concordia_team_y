@@ -47,6 +47,10 @@ public class Board implements Model {
     @JoinColumn(name = "id_board")
     private List<Lists> lists;
 
+    @OneToMany
+    @JoinColumn(name = "id_board")
+    private List<Labels> labels;
+
 
     @Override
     public BoardDTO toDto() {

@@ -2,13 +2,16 @@ package it.euris.stazioneconcordia.controller;
 
 import it.euris.stazioneconcordia.data.dto.BoardDTO;
 import it.euris.stazioneconcordia.data.dto.CardDTO;
+import it.euris.stazioneconcordia.data.dto.LabelsDTO;
 import it.euris.stazioneconcordia.data.dto.ListsDTO;
 import it.euris.stazioneconcordia.data.dto.UserDTO;
 import it.euris.stazioneconcordia.data.model.Card;
+import it.euris.stazioneconcordia.data.model.Labels;
 import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.data.model.User;
 import it.euris.stazioneconcordia.service.BoardService;
 import it.euris.stazioneconcordia.service.CardService;
+import it.euris.stazioneconcordia.service.LabelsService;
 import it.euris.stazioneconcordia.service.ListsService;
 import it.euris.stazioneconcordia.service.UserService;
 import lombok.AllArgsConstructor;
@@ -27,6 +30,8 @@ public class TrelloController {
     ListsService listsService;
 
     CardService cardService;
+    LabelsService labelsService;
+
 
     UserService userService;
 
@@ -59,5 +64,9 @@ public class TrelloController {
     public UserDTO getUserByUsername(@RequestParam String username, @RequestParam String key, @RequestParam String token) {
         User user = userService.getUserFromTrello(username, key, token);
         return user.toDto();
+    }
+    @GetMapping("/labels")
+    public Labels[] getLabelsFromTrelloList(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
+        return labelsService.getLabelsFromTrelloBoard(idBoard, key, token);
     }
 }
