@@ -16,4 +16,5 @@ public interface UserService {
 
     User findById(String idUser);
 
+    User getUserFromTrello(String username, String key, String token);
 }

@@ -56,7 +56,7 @@ public class Lists implements Model {
                 .idBoard(board.getId())
                 .name(name)
                 .closed(booleanToString(closed))
-//                .idLabel(listLabelToString(label))
+                .idLabel(listLabelToString(label))
                 .position(numberToString(position))
                 .build();
     }

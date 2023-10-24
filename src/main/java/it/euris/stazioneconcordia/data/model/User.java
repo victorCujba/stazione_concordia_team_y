@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
+import java.util.List;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.booleanToString;
 
@@ -37,6 +38,10 @@ public class User implements Model {
     @Column(name = "status")
     @Builder.Default
     private Boolean status = false;
+
+    @OneToMany
+    @JoinColumn(name = "id_user")
+    private List<Comment> comments;
 
     @Override
     public UserDTO toDto() {
