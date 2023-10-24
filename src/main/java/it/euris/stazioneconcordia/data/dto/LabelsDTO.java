@@ -2,38 +2,32 @@ package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.model.Board;
+import it.euris.stazioneconcordia.data.model.Labels;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BoardDTO implements Dto {
-
+public class LabelsDTO implements Dto {
     private String id;
     private String name;
-    private String description;
-    private String url;
-    private String dateLastActivity;
-    private String closed;
-
-
+    private String color;
+    private Long uses;
+    private String idBoard;
 
     @Override
-    public Board toModel() {
-        return Board
+    public Labels toModel() {
+        return Labels
                 .builder()
                 .id(id)
+                .board(Board.builder().id(id).build())
                 .name(name)
-                .description(description)
-                .url(url)
-                .dateLastActivity(stringToLocalDateTime(dateLastActivity))
-                .closed(stringToBoolean(closed))
+                .color(color)
+                .uses(uses)
                 .build();
     }
 }
