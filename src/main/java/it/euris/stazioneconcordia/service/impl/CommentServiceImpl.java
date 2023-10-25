@@ -2,8 +2,6 @@ package it.euris.stazioneconcordia.service.impl;
 
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
-import it.euris.stazioneconcordia.exception.IdMustBeNullException;
-import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CommentRepository;
 import it.euris.stazioneconcordia.service.CommentService;
 import lombok.AllArgsConstructor;

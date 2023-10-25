@@ -18,37 +18,40 @@ import java.util.List;
 public class BoardController {
 
     BoardService boardService;
+
     @GetMapping("/v1")
     public List<BoardDTO> getAllBoards() {
         return boardService.findAll().stream().map(Board::toDto).toList();
     }
+
     @PostMapping("/v1")
     public BoardDTO saveBoard(@RequestBody BoardDTO boardDTO) {
-        try{
-           Board board = boardDTO.toModel();
+        try {
+            Board board = boardDTO.toModel();
             return boardService.insert(board).toDto();
-        }
-        catch(IdMustBeNullException e) {
+        } catch (IdMustBeNullException e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+
     @PutMapping("/v1")
-    public BoardDTO updateBoard(@RequestBody BoardDTO boardDTO){
-        try{
+    public BoardDTO updateBoard(@RequestBody BoardDTO boardDTO) {
+        try {
             Board board = boardDTO.toModel();
             return boardService.update(board).toDto();
-        }
-        catch(IdMustNotBeNullException e) {
+        } catch (IdMustNotBeNullException e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+
     @DeleteMapping("/v1/{id}")
     public Boolean deleteBoard(@PathVariable("id") String idBoard) {
         return boardService.deleteById(idBoard);
 
     }
+
     @GetMapping("/v1/{id}")
     public BoardDTO getBoardById(@PathVariable("id") String idBoard) {
         return boardService.findById(idBoard).toDto();

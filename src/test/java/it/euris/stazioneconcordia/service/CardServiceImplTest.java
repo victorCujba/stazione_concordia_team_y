@@ -1,7 +1,7 @@
 package it.euris.stazioneconcordia.service;
 
-import it.euris.stazioneconcordia.data.enums.Priority;
 import it.euris.stazioneconcordia.data.model.Card;
+import it.euris.stazioneconcordia.data.model.Labels;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CardRepository;
@@ -23,9 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 class CardServiceImplTest {
@@ -37,28 +35,28 @@ class CardServiceImplTest {
     CardServiceImpl cardService;
 
     @Test
-    void shouldReturnCardsWithHighPriority() {
+    void shouldReturnCardsWithLabels() {
         Card card1 = Card
                 .builder()
                 .id("1")
-                .priority(Priority.LOW)
+                .labels(Labels.builder().id("10").build())
                 .build();
         Card card2 = Card
                 .builder()
                 .id("2")
-                .priority(Priority.MEDIUM)
+                .labels(Labels.builder().id("11").build())
                 .build();
         Card card3 = Card
                 .builder()
                 .id("3")
-                .priority(Priority.HIGH)
+                .labels(Labels.builder().id("12").build())
                 .build();
 
         List<Card> cards = List.of(card1, card2, card3);
 
         when(cardRepository.findAll()).thenReturn(cards);
 
-        List<Card> cardsWithPriority = cardService.findByPriority(Priority.HIGH);
+        List<Card> cardsWithPriority = cardService.findByLabels("12");
 
         assertThat(cardsWithPriority)
                 .hasSize(1)
@@ -207,7 +205,7 @@ class CardServiceImplTest {
     }
 
     @Test
-    void shouldGetACardById(){
+    void shouldGetACardById() {
         String id = "1";
 
         Card card = Card

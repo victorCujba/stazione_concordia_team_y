@@ -18,7 +18,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -123,7 +122,7 @@ class BoardControllerTest {
 
         when(boardService.findById(idBoard)).thenReturn(board);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/boards/v1/{id}",idBoard))
+        mockMvc.perform(MockMvcRequestBuilders.get("/boards/v1/{id}", idBoard))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));

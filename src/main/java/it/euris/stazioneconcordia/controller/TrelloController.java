@@ -1,19 +1,11 @@
 package it.euris.stazioneconcordia.controller;
 
-import it.euris.stazioneconcordia.data.dto.BoardDTO;
-import it.euris.stazioneconcordia.data.dto.CardDTO;
-import it.euris.stazioneconcordia.data.dto.LabelsDTO;
-import it.euris.stazioneconcordia.data.dto.ListsDTO;
-import it.euris.stazioneconcordia.data.dto.UserDTO;
+import it.euris.stazioneconcordia.data.dto.*;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Labels;
 import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.data.model.User;
-import it.euris.stazioneconcordia.service.BoardService;
-import it.euris.stazioneconcordia.service.CardService;
-import it.euris.stazioneconcordia.service.LabelsService;
-import it.euris.stazioneconcordia.service.ListsService;
-import it.euris.stazioneconcordia.service.UserService;
+import it.euris.stazioneconcordia.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,12 +57,13 @@ public class TrelloController {
         User user = userService.getUserFromTrello(username, key, token);
         return user.toDto();
     }
+
     @GetMapping("/labels")
     public LabelsDTO[] getLabelsFromTrelloList(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
         Labels[] labels = labelsService.getLabelsFromTrelloBoard(idBoard, key, token);
         LabelsDTO[] labelsDTOs = new LabelsDTO[labels.length];
         for (int i = 0; i < labels.length; i++) {
-            labelsDTOs[i]=labels[i].toDto();
+            labelsDTOs[i] = labels[i].toDto();
         }
         return labelsDTOs;
     }
