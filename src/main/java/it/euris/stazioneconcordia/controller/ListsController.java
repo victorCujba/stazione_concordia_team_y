@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/lists")
 public class ListsController {
 
-    ListsService listsService;
+    private ListsService listsService;
 
     @GetMapping("/v1")
     public List<ListsDTO> findAll() {

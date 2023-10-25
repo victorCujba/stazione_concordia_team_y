@@ -3,7 +3,6 @@ package it.euris.stazioneconcordia.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.model.Lists;
-import it.euris.stazioneconcordia.service.BoardService;
 import it.euris.stazioneconcordia.service.ListsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,7 +126,7 @@ class ListsControllerTest {
 
         when(listsService.findById(idList)).thenReturn(list);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/lists/v1/{id}",idList))
+        mockMvc.perform(MockMvcRequestBuilders.get("/lists/v1/{id}", idList))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));

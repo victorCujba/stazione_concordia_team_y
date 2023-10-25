@@ -9,7 +9,8 @@ import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.booleanToString;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTimeToString;
 
 @Builder
 @Getter
@@ -32,6 +33,7 @@ public class Comment implements Model {
     private String commentBody;
 
     @Column(name = "deleted")
+    @Builder.Default
     private Boolean deleted = false;
 
     @ManyToOne

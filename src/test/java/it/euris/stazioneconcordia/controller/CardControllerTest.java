@@ -1,8 +1,8 @@
 package it.euris.stazioneconcordia.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.euris.stazioneconcordia.data.enums.Priority;
 import it.euris.stazioneconcordia.data.model.Card;
+import it.euris.stazioneconcordia.data.model.Labels;
 import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.service.CardService;
 import org.junit.jupiter.api.Test;
@@ -58,7 +58,8 @@ class CardControllerTest {
                 .andExpect(jsonPath("$[0].name").value(card.getName()))
                 .andExpect(jsonPath("$[0].description").value(card.getDescription()));
     }
- @Test
+
+    @Test
     void shouldGetAllCard() throws Exception {
 
         Card card1 = Card
@@ -75,7 +76,7 @@ class CardControllerTest {
                 .description("test description")
                 .list(Lists.builder().id("1").build())
                 .build();
-        List<Card> cards = List.of(card1,card2);
+        List<Card> cards = List.of(card1, card2);
 
         when(cardService.findAll()).thenReturn(cards);
 
@@ -110,6 +111,7 @@ class CardControllerTest {
                 .andExpect(jsonPath("$.name").value(card.getName()))
                 .andExpect(jsonPath("$.description").value(card.getDescription()));
     }
+
     @Test
     void shouldUpdateACard() throws Exception {
         Card card = Card
@@ -177,7 +179,9 @@ class CardControllerTest {
                 .andExpect(jsonPath("$.description").value(card.getDescription()));
 
 
-    } @Test
+    }
+
+    @Test
     void shouldFindAllCardByExpirationDateInLast5Days() throws Exception {
 
         Card card1 = Card
@@ -212,14 +216,14 @@ class CardControllerTest {
                 .andExpect(jsonPath("$.length()").value(2));
 
 
-
     }
+
     @Test
     void shouldFindACardByMediumPriority() throws Exception {
         Card card1 = Card
                 .builder()
                 .id("1")
-                .priority(Priority.MEDIUM)
+                .labels(Labels.builder().id("13").build())
                 .name("test name")
                 .description("test description")
                 .list(Lists.builder().id("1").build())
@@ -227,7 +231,7 @@ class CardControllerTest {
         Card card2 = Card
                 .builder()
                 .id("2")
-                .priority(Priority.HIGH)
+                .labels(Labels.builder().id("14").build())
                 .name("test name")
                 .description("test description")
                 .list(Lists.builder().id("1").build())
@@ -235,20 +239,19 @@ class CardControllerTest {
         Card card = Card
                 .builder()
                 .id("3")
-                .priority(Priority.LOW)
+                .labels(Labels.builder().id("15").build())
                 .name("test name")
                 .description("test description")
                 .list(Lists.builder().id("1").build())
                 .build();
 
-        when(cardService.findByPriority(Priority.MEDIUM)).thenReturn(List.of(card1));
+        when(cardService.findByLabels("13")).thenReturn(List.of(card1));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/cards/v1/priority/MEDIUM")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+        mockMvc.perform(MockMvcRequestBuilders.get("/cards/v1/labels/13")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(card1.toDto())))
                 .andDo(print())
-                .andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].id").value(card1.getId()));
