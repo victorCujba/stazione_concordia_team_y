@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/boards")
 public class BoardController {
 
-    BoardService boardService;
+    private BoardService boardService;
 
     @GetMapping("/v1")
     public List<BoardDTO> getAllBoards() {

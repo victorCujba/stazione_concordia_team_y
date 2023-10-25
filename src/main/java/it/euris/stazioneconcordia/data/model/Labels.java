@@ -5,6 +5,8 @@ import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Builder
 @Getter
 @Setter
@@ -30,12 +32,12 @@ public class Labels implements Model {
     @JoinColumn(name = "id_board")
     private Board board;
 
+    @OneToMany(mappedBy = "labels", fetch = FetchType.EAGER)
+    private List<Card> cards;
+
     @ManyToOne
     @JoinColumn(name = "id_card")
     private Card card;
-
-//    @OneToMany(mappedBy = "id_card", fetch = FetchType.EAGER)
-//    private List<Card> cards;
 
     @Override
     public LabelsDTO toDto() {

@@ -17,22 +17,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/from-trello")
 public class TrelloController {
 
-    BoardService boardService;
+    private BoardService boardService;
 
-    ListsService listsService;
+    private ListsService listsService;
 
-    CardService cardService;
-    LabelsService labelsService;
+    private CardService cardService;
+
+    private LabelsService labelsService;
+
+    private UserService userService;
 
 
-    UserService userService;
+    @GetMapping("/sync")
+    public void getInfoFromTrello(@RequestParam String idBoard,@RequestParam String username, @RequestParam String key, @RequestParam String token){
+       getBoardFromTrello(idBoard, key, token);
+       getUserByUsername(username, key, token);
+       getLabelsFromTrelloBoard(idBoard, key, token);
+       ListsDTO[] listDTOs = getListsFromTrelloBoard(idBoard, key, token);
+        for (ListsDTO listDTO: listDTOs) {
+            getCardsFromTrelloList(listDTO.getId(), key, token);
+        }
+    }
 
-    @GetMapping("/board")
     public BoardDTO getBoardFromTrello(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
         return boardService.getBoardFromTrello(idBoard, key, token).toDto();
     }
 
-    @GetMapping("/list")
     public ListsDTO[] getListsFromTrelloBoard(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
         Lists[] lists = listsService.getListFromTrelloBoard(idBoard, key, token);
         ListsDTO[] listsDTOs = new ListsDTO[lists.length];
@@ -42,7 +52,6 @@ public class TrelloController {
         return listsDTOs;
     }
 
-    @GetMapping("/cards")
     public CardDTO[] getCardsFromTrelloList(@RequestParam String idList, @RequestParam String key, @RequestParam String token) {
         Card[] cards = cardService.getCardsFromTrelloList(idList, key, token);
         CardDTO[] cardDTOs = new CardDTO[cards.length];
@@ -52,14 +61,13 @@ public class TrelloController {
         return cardDTOs;
     }
 
-    @GetMapping("/members")
     public UserDTO getUserByUsername(@RequestParam String username, @RequestParam String key, @RequestParam String token) {
         User user = userService.getUserFromTrello(username, key, token);
         return user.toDto();
     }
 
-    @GetMapping("/labels")
-    public LabelsDTO[] getLabelsFromTrelloList(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
+
+    public LabelsDTO[] getLabelsFromTrelloBoard(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
         Labels[] labels = labelsService.getLabelsFromTrelloBoard(idBoard, key, token);
         LabelsDTO[] labelsDTOs = new LabelsDTO[labels.length];
         for (int i = 0; i < labels.length; i++) {
