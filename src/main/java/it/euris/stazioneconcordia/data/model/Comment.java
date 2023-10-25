@@ -33,6 +33,7 @@ public class Comment implements Model {
     private String commentBody;
 
     @Column(name = "deleted")
+    @Builder.Default
     private Boolean deleted = false;
 
     @ManyToOne
