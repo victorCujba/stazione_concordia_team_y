@@ -9,7 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToBoolean;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLocalDateTime;
 
 @Data
 @AllArgsConstructor

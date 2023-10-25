@@ -1,8 +1,6 @@
 package it.euris.stazioneconcordia.service;
 
 
-import it.euris.stazioneconcordia.data.dto.ListsDTO;
-import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.model.Lists;
 

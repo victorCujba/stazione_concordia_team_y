@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="2023-10-25-09-card-alter" author="Cristina Acsinte">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="card"/>
+        </preConditions>
+
+        <addColumn tableName="card">
+            <column name="id_labels" type="VARCHAR(255)"/>
+        </addColumn>
+
+
+        <addForeignKeyConstraint baseTableName="card" baseColumnNames="id_labels" constraintName="FK_LABELS_ON_CARD"
+                                 referencedTableName="labels"
+                                 referencedColumnNames="id"/>
+
+
+        <dropColumn tableName="card" columnName="priority"/>
+
+    </changeSet>
+</databaseChangeLog>

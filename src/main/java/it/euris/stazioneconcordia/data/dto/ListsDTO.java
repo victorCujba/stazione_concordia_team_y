@@ -1,7 +1,6 @@
 package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
-import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.model.Lists;
 import lombok.AllArgsConstructor;
