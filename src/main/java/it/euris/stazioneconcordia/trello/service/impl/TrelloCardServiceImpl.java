@@ -5,11 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.dto.CommentDTO;
-import it.euris.stazioneconcordia.data.model.Card;
-import it.euris.stazioneconcordia.data.model.Comment;
 import it.euris.stazioneconcordia.trello.service.TrelloCardService;
-import lombok.AllArgsConstructor;
-import org.springframework.format.number.CurrencyStyleFormatter;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,13 +18,17 @@ import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
 import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.TOKEN_VALUE;
 
 @Service
-@AllArgsConstructor
 public class TrelloCardServiceImpl implements TrelloCardService {
 
 
     private final RestTemplate restTemplate;
 
     private final Gson gson;
+
+    public TrelloCardServiceImpl() {
+        this.restTemplate = new RestTemplate();
+        this.gson = new Gson();
+    }
 
     public List<CardDTO> getCardsByIdBoard(String idBoard) {
 
@@ -105,14 +106,12 @@ public class TrelloCardServiceImpl implements TrelloCardService {
 
 
     public static void main(String[] args) {
-        RestTemplate restTemplate1 = new RestTemplate();
-        Gson gson1 = new Gson();
 
-        TrelloCardServiceImpl trelloCardService = new TrelloCardServiceImpl(restTemplate1, gson1);
-        //       trelloCardService.getCardsByIdBoard(BOARD_ID_VALUE);
-//        trelloCardService.getCardsByIdLists(LIST_O1_ID_VALUE);
-        //trelloCardService.getCardByIdCard(CARD_01_ID_VALUE);
-        trelloCardService.getAllCommentsByIdCard(CARD_01_ID_VALUE);
+        TrelloCardServiceImpl trelloCardService = new TrelloCardServiceImpl();
+        trelloCardService.getCardsByIdBoard(BOARD_ID_VALUE);
+// trelloCardService.getCardsByIdLists(LIST_O1_ID_VALUE);
+//        trelloCardService.getCardByIdCard(CARD_01_ID_VALUE);
+//        trelloCardService.getAllCommentsByIdCard(CARD_01_ID_VALUE);
     }
 
 
