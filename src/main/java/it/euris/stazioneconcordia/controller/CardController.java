@@ -2,7 +2,6 @@ package it.euris.stazioneconcordia.controller;
 
 
 import it.euris.stazioneconcordia.data.dto.CardDTO;
-import it.euris.stazioneconcordia.data.enums.Priority;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
@@ -20,9 +19,9 @@ import java.util.List;
 @RequestMapping("/cards")
 public class CardController {
 
-    CardService cardService;
+    private CardService cardService;
 
-    ListsService listsService;
+    private ListsService listsService;
 
     @GetMapping("/v1")
     public List<CardDTO> findAll() {
@@ -71,9 +70,9 @@ public class CardController {
                 .toList();
     }
 
-    @GetMapping("/v1/priority/{priority}")
-    public List<CardDTO> findByPriority(@PathVariable("priority") Priority priority) {
-        return cardService.findByPriority(priority)
+    @GetMapping("/v1/labels/{id-labels}")
+    public List<CardDTO> findByLabels(@PathVariable("id-labels") String idLabels) {
+        return cardService.findByLabels(idLabels)
                 .stream()
                 .map(Card::toDto)
                 .toList();

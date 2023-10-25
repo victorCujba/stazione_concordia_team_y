@@ -6,7 +6,7 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
 
-    <changeSet id="2023-10-24-08-labels-create" author="Cristina Acsinte">
+    <changeSet id="2023-10-24-09-labels-create" author="Cristina Acsinte">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="labels"/>

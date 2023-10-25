@@ -3,17 +3,13 @@ package it.euris.stazioneconcordia.service.impl;
 import com.google.gson.Gson;
 import it.euris.stazioneconcordia.data.dto.BoardDTO;
 import it.euris.stazioneconcordia.data.model.Board;
-import it.euris.stazioneconcordia.exception.IdMustBeNullException;
-import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.BoardRepository;
 import it.euris.stazioneconcordia.service.BoardService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;

@@ -8,7 +8,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.listLabelToString;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTimeToString;
 
 @Builder
 @Getter

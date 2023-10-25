@@ -108,6 +108,7 @@ class ListsServiceImplTest {
         assertThatThrownBy(() -> listsService.update(list))
                 .isInstanceOf(IdMustNotBeNullException.class);
     }
+
     @Test
     void shouldUpdateAnyLists() {
 
