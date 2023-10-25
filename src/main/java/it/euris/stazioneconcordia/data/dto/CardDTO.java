@@ -24,6 +24,7 @@ public class CardDTO implements Dto {
     private String priority;
     private String description;
     private String closed;
+    private String comment;
     private String expirationDate;
     private String dateLastActivity;
 
@@ -41,5 +42,21 @@ public class CardDTO implements Dto {
                 .closed(stringToBoolean(closed))
                 .list(Lists.builder().id(idList).build())
                 .build();
+    }
+
+    @Override
+    public String toString() {
+        return "CardDTO {" +
+                "id = " + id + '\'' + '\n' +
+                "idList = " + idList + '\'' + '\n' +
+                "name = " + name + '\'' + '\n' +
+                "position = " + priority + '\'' + '\n' +
+                "priority = " + priority + '\'' + '\n' +
+                "description = " + description + '\'' + '\n' +
+                "closed = " + description + '\'' + '\n' +
+                "expirationDate = " + expirationDate + '\'' + '\n' +
+                "dateLastActivity = " + dateLastActivity + '\n' +
+                '}' + '\n';
+
     }
 }

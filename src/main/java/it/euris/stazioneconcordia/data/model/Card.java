@@ -50,10 +50,9 @@ public class Card implements Model {
     @Builder.Default
     private Boolean closed = false;
 
-// TODO magari gestire agiunta dei commenti ?
-//    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
-//    @Builder.Default
-//    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
+    private List<Comment> comments;
 
     @ManyToOne
     @JoinColumn(name = "id_list")

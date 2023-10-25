@@ -37,4 +37,17 @@ public class CommentDTO implements Dto {
                 .user(User.builder().id(idUser).build())
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "CommentDTO {" +
+                "id = " + id + '\'' + '\n' +
+                "date = " + date + '\'' + '\n' +
+                "commentBody = " + commentBody + '\'' + '\n' +
+                "deleted = " + deleted + '\'' + '\n' +
+                "idCard = " + idCard + '\'' + '\n' +
+                "idUser = " + idUser + '\'' + '\n' +
+                '}' + '\n';
+
+    }
 }
