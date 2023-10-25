@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
-    CommentService commentService;
+    private CommentService commentService;
 
     @GetMapping("/v1")
     public List<CommentDTO> getAllComments() {

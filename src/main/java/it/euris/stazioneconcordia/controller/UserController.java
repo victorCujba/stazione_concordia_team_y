@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/v1")
     public List<UserDTO> getAllUsers() {

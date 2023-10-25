@@ -18,11 +18,11 @@ import java.util.List;
 @RequestMapping("/cards-state")
 public class CardStateController {
 
-    CardService cardService;
+    private CardService cardService;
 
-    ListsService listsService;
+    private ListsService listsService;
 
-    CardStateService cardStateService;
+    private CardStateService cardStateService;
 
     public CardStateController(CardService cardService, CardStateService cardStateService, ListsService listsService) {
         this.cardService = cardService;

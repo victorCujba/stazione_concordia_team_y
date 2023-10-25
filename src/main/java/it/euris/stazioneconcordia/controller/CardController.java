@@ -20,9 +20,9 @@ import java.util.List;
 @RequestMapping("/cards")
 public class CardController {
 
-    CardService cardService;
+    private CardService cardService;
 
-    ListsService listsService;
+    private ListsService listsService;
 
     @GetMapping("/v1")
     public List<CardDTO> findAll() {
