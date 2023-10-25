@@ -2,7 +2,6 @@ package it.euris.stazioneconcordia.data.model;
 
 import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
-import it.euris.stazioneconcordia.data.enums.Priority;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -33,10 +32,6 @@ public class Card implements Model {
     @Column(name = "position")
     private Long position;
 
-    @Column(name = "priority")
-    @Enumerated(EnumType.STRING)
-    private Priority priority;
-
     @Column(name = "description")
     private String description;
 
@@ -62,6 +57,7 @@ public class Card implements Model {
 
     @ManyToOne
     @JoinColumn(name = "id_label")
+
     private Labels labels;
 
     @Override
@@ -70,7 +66,7 @@ public class Card implements Model {
                 .id(id)
                 .name(name)
                 .position(numberToString(position))
-                .priority(priorityToString(priority))
+                .idLabels(labels.getId())
                 .description(description)
                 .closed(booleanToString(closed))
                 .expirationDate(localDateTimeToString(expirationDate))

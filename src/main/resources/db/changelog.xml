@@ -15,4 +15,5 @@
     <include file="db/changelogs/2023-10-25-10-card-alter-2.xml"/>
 
 
+
 </databaseChangeLog>

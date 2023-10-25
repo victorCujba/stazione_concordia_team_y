@@ -2,9 +2,7 @@ package it.euris.stazioneconcordia.service.impl;
 
 import com.google.gson.Gson;
 import it.euris.stazioneconcordia.data.dto.LabelsDTO;
-import it.euris.stazioneconcordia.data.dto.ListsDTO;
 import it.euris.stazioneconcordia.data.model.Labels;
-import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.repository.LabelsRepository;
 import it.euris.stazioneconcordia.service.LabelsService;
 import lombok.AllArgsConstructor;

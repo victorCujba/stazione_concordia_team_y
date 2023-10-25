@@ -10,8 +10,8 @@ import org.hibernate.annotations.Where;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.booleanToString;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTimeToString;
 
 @Builder
 @Getter
@@ -30,7 +30,7 @@ public class Board implements Model {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description" )
+    @Column(name = "description")
     private String description;
 
     @Column(name = "url")
@@ -41,7 +41,7 @@ public class Board implements Model {
 
     @Column(name = "closed")
     @Builder.Default
-    private Boolean closed=false;
+    private Boolean closed = false;
 
     @OneToMany
     @JoinColumn(name = "id_board")

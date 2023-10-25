@@ -1,12 +1,8 @@
 package it.euris.stazioneconcordia.service.impl;
 
 import com.google.gson.Gson;
-import it.euris.stazioneconcordia.data.dto.BoardDTO;
 import it.euris.stazioneconcordia.data.dto.UserDTO;
-import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.model.User;
-import it.euris.stazioneconcordia.exception.IdMustBeNullException;
-import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.UserRepository;
 import it.euris.stazioneconcordia.service.UserService;
 import lombok.AllArgsConstructor;

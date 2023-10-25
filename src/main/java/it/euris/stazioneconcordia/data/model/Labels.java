@@ -35,6 +35,10 @@ public class Labels implements Model {
     @OneToMany(mappedBy = "labels", fetch = FetchType.EAGER)
     private List<Card> cards;
 
+    @ManyToOne
+    @JoinColumn(name = "id_card")
+    private Card card;
+
     @Override
     public LabelsDTO toDto() {
         return LabelsDTO
