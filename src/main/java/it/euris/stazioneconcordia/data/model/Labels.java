@@ -32,12 +32,8 @@ public class Labels implements Model {
     @JoinColumn(name = "id_board")
     private Board board;
 
-    @OneToMany(mappedBy = "labels", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "labels", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Card> cards;
-
-    @ManyToOne
-    @JoinColumn(name = "id_card")
-    private Card card;
 
     @Override
     public LabelsDTO toDto() {

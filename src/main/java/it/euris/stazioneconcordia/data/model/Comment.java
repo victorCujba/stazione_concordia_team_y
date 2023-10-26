@@ -1,6 +1,7 @@
 package it.euris.stazioneconcordia.data.model;
 
 import it.euris.stazioneconcordia.data.dto.CommentDTO;
+import it.euris.stazioneconcordia.data.dto.DataDTO;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
@@ -52,11 +53,11 @@ public class Comment implements Model {
         return CommentDTO
                 .builder()
                 .id(id)
-                .idCard(card.getId())
-                .idUser(user.getId())
+                .idMemberCreator(user.getId())
                 .date(localDateTimeToString(date))
-                .commentBody(commentBody)
+                .data(new DataDTO(commentBody))
                 .deleted(booleanToString(deleted))
+//                .card(new CardSupportDTO(id))
                 .build();
     }
 }

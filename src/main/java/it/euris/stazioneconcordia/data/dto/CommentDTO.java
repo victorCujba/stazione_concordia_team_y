@@ -1,5 +1,6 @@
 package it.euris.stazioneconcordia.data.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
@@ -8,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToBoolean;
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLocalDateTime;
@@ -20,10 +23,10 @@ public class CommentDTO implements Dto {
 
     private String id;
     private String date;
-    private String commentBody;
+    private DataDTO data;
     private String deleted;
-    private String idCard;
-    private String idUser;
+//    private CardSupportDTO card;
+    private String idMemberCreator;
 
 
     @Override
@@ -32,10 +35,10 @@ public class CommentDTO implements Dto {
                 .builder()
                 .id(id)
                 .date(stringToLocalDateTime(date))
-                .commentBody(commentBody)
+                .commentBody(data.getText())
                 .deleted(stringToBoolean(deleted))
-                .card(Card.builder().id(idCard).build())
-                .user(User.builder().id(idUser).build())
+//                .card(Card.builder().id(card.getId()).build())
+                .user(User.builder().id(idMemberCreator).build())
                 .build();
     }
 
@@ -44,10 +47,10 @@ public class CommentDTO implements Dto {
         return "CommentDTO {" +
                 "id = " + id + '\'' + '\n' +
                 "date = " + date + '\'' + '\n' +
-                "commentBody = " + commentBody + '\'' + '\n' +
+                "commentBody = " + data.getText() + '\'' + '\n' +
                 "deleted = " + deleted + '\'' + '\n' +
-                "idCard = " + idCard + '\'' + '\n' +
-                "idUser = " + idUser + '\'' + '\n' +
+//                "idCard = " + card + '\'' + '\n' +
+                "idUser = " + idMemberCreator + '\'' + '\n' +
                 '}' + '\n';
 
     }

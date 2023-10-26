@@ -9,6 +9,8 @@ import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
 import it.euris.stazioneconcordia.trello.service.TrelloCardService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.format.number.CurrencyStyleFormatter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,13 +23,18 @@ import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
 import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.TOKEN_VALUE;
 
 @Service
-@AllArgsConstructor
 public class TrelloCardServiceImpl implements TrelloCardService {
-
 
     private final RestTemplate restTemplate;
 
     private final Gson gson;
+
+
+
+    public TrelloCardServiceImpl(){
+        this.restTemplate = new RestTemplate();
+        this.gson = new Gson();
+    }
 
     public List<CardDTO> getCardsByIdBoard(String idBoard) {
 
@@ -98,20 +105,18 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         List<CommentDTO> commentsDTO = gson.fromJson(json, listType);
         for (CommentDTO commentDTO : commentsDTO)
 
-            System.out.println(commentsDTO.toString());
+            System.out.println(commentsDTO);
         return commentsDTO;
 
     }
 
 
     public static void main(String[] args) {
-        RestTemplate restTemplate1 = new RestTemplate();
-        Gson gson1 = new Gson();
 
-        TrelloCardServiceImpl trelloCardService = new TrelloCardServiceImpl(restTemplate1, gson1);
-        //       trelloCardService.getCardsByIdBoard(BOARD_ID_VALUE);
+        TrelloCardServiceImpl trelloCardService = new TrelloCardServiceImpl();
+//        trelloCardService.getCardsByIdBoard(BOARD_ID_VALUE);
 //        trelloCardService.getCardsByIdLists(LIST_O1_ID_VALUE);
-        //trelloCardService.getCardByIdCard(CARD_01_ID_VALUE);
+//        trelloCardService.getCardByIdCard(CARD_01_ID_VALUE);
         trelloCardService.getAllCommentsByIdCard(CARD_01_ID_VALUE);
     }
 

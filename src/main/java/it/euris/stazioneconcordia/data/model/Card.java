@@ -45,19 +45,18 @@ public class Card implements Model {
     @Builder.Default
     private Boolean closed = false;
 
-    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     @ManyToOne
     @JoinColumn(name = "id_list")
     private Lists list;
 
-    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CardState> stateHistory;
 
     @ManyToOne
     @JoinColumn(name = "id_label")
-
     private Labels labels;
 
     @Override
@@ -66,7 +65,7 @@ public class Card implements Model {
                 .id(id)
                 .name(name)
                 .position(numberToString(position))
-                .idLabels(labels.getId())
+//                .idLabels(new LabelSupportDTO[]{new LabelSupportDTO()})
                 .description(description)
                 .closed(booleanToString(closed))
                 .expirationDate(localDateTimeToString(expirationDate))

@@ -20,7 +20,7 @@ public class CardDTO implements Dto {
 
     private String id;
     private String idList;
-    private String idLabels;
+//    private LabelSupportDTO[] idLabels;
     private String name;
     private String position;
     private String description;
@@ -41,23 +41,7 @@ public class CardDTO implements Dto {
                 .dateLastActivity(stringToLocalDateTime(dateLastActivity))
                 .closed(stringToBoolean(closed))
                 .list(Lists.builder().id(idList).build())
-                .labels(Labels.builder().id(id).build())
+//                .labels(Labels.builder().id(idLabels[0].getId()).build())
                 .build();
-    }
-
-    @Override
-    public String toString() {
-        return "CardDTO {" +
-                "id = " + id + '\'' + '\n' +
-                "idList = " + idList + '\'' + '\n' +
-                "name = " + name + '\'' + '\n' +
-                "position = " + priority + '\'' + '\n' +
-                "priority = " + priority + '\'' + '\n' +
-                "description = " + description + '\'' + '\n' +
-                "closed = " + description + '\'' + '\n' +
-                "expirationDate = " + expirationDate + '\'' + '\n' +
-                "dateLastActivity = " + dateLastActivity + '\n' +
-                '}' + '\n';
-
     }
 }

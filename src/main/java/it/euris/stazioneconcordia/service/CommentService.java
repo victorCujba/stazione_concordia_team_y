@@ -20,5 +20,5 @@ public interface CommentService {
 
     Comment getLastComment(Card card);
 
-
+    Comment[] getCommentsFromCard(String idCard, String key, String token);
 }
