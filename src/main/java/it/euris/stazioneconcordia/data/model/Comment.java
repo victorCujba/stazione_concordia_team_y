@@ -1,5 +1,6 @@
 package it.euris.stazioneconcordia.data.model;
 
+import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.dto.CommentDTO;
 import it.euris.stazioneconcordia.data.dto.DataDTO;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
@@ -55,9 +56,9 @@ public class Comment implements Model {
                 .id(id)
                 .idMemberCreator(user.getId())
                 .date(localDateTimeToString(date))
-                .data(new DataDTO(commentBody))
+                .data(DataDTO.builder().text(commentBody).card(CardDTO.builder().id(card.getId()).build()).build())
                 .deleted(booleanToString(deleted))
-//                .card(new CardSupportDTO(id))
+                .data(DataDTO.builder().card(CardDTO.builder().id(card.getId()).build()).build())
                 .build();
     }
 }

@@ -1,6 +1,6 @@
 package it.euris.stazioneconcordia.data.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
@@ -9,8 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToBoolean;
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLocalDateTime;
@@ -25,7 +23,6 @@ public class CommentDTO implements Dto {
     private String date;
     private DataDTO data;
     private String deleted;
-//    private CardSupportDTO card;
     private String idMemberCreator;
 
 
@@ -37,7 +34,7 @@ public class CommentDTO implements Dto {
                 .date(stringToLocalDateTime(date))
                 .commentBody(data.getText())
                 .deleted(stringToBoolean(deleted))
-//                .card(Card.builder().id(card.getId()).build())
+                .card(Card.builder().id(data.getCard().getId()).build())
                 .user(User.builder().id(idMemberCreator).build())
                 .build();
     }
@@ -49,7 +46,7 @@ public class CommentDTO implements Dto {
                 "date = " + date + '\'' + '\n' +
                 "commentBody = " + data.getText() + '\'' + '\n' +
                 "deleted = " + deleted + '\'' + '\n' +
-//                "idCard = " + card + '\'' + '\n' +
+                "idCard = " + data.getCard().getId() + '\'' + '\n' +
                 "idUser = " + idMemberCreator + '\'' + '\n' +
                 '}' + '\n';
 

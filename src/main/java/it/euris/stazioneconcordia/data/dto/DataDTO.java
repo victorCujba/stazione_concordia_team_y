@@ -12,6 +12,8 @@ import lombok.*;
 public class DataDTO implements Dto {
 
     private String text;
+
+    private CardDTO card;
     @Override
     public Model toModel() {
         return null;
