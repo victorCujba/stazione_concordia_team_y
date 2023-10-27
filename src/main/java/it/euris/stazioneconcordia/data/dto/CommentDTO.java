@@ -1,5 +1,6 @@
 package it.euris.stazioneconcordia.data.dto;
 
+import com.google.gson.annotations.SerializedName;
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
@@ -22,7 +23,9 @@ public class CommentDTO implements Dto {
     private String date;
     private String commentBody;
     private String deleted;
+    @SerializedName("data")
     private String idCard;
+    @SerializedName("idMemberCreator")
     private String idUser;
 
 

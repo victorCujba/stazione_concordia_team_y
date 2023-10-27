@@ -8,7 +8,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
@@ -66,12 +68,24 @@ public class Card implements Model {
                 .id(id)
                 .name(name)
                 .position(numberToString(position))
-                .idLabels(labels.getId())
+                .idLabels(Collections.singletonList(labels.getId()))
                 .description(description)
                 .closed(booleanToString(closed))
+                .comment(getCommentStrings())
                 .expirationDate(localDateTimeToString(expirationDate))
                 .dateLastActivity(localDateTimeToString(dateLastActivity))
                 .idList(list.getId())
                 .build();
     }
+
+    public List<String> getCommentStrings() {
+        if (comments != null) {
+            return comments.stream()
+                    .map(Comment::getCommentBody)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
+
 }

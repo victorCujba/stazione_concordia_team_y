@@ -2,7 +2,7 @@ package it.euris.stazioneconcordia.utility;
 
 
 import it.euris.stazioneconcordia.data.enums.ListLabel;
-import it.euris.stazioneconcordia.data.enums.Priority;
+import it.euris.stazioneconcordia.data.enums.TaskPriorityLabel;
 
 import java.time.LocalDateTime;
 
@@ -37,15 +37,15 @@ public class DataConversionUtils {
         return value == null ? null : value.toString();
     }
 
-    public static Priority stringToPriority(String value) {
-        for (Priority priorityValue : Priority.values()) {
+    public static TaskPriorityLabel stringToPriority(String value) {
+        for (TaskPriorityLabel priorityValue : TaskPriorityLabel.values()) {
             if (priorityValue.name().equalsIgnoreCase(value))
                 return priorityValue;
         }
         return null;
     }
 
-    public static String priorityToString(Priority value) {
+    public static String priorityToString(TaskPriorityLabel value) {
         return value == null ? null : value.name();
     }
 

@@ -15,15 +15,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
 @RequestMapping("/cards-state")
 public class CardStateController {
 
-
-    // TODO implement counter more elegant
-    private static long cardStateIdCounter = 0;
 
     CardService cardService;
 
@@ -64,11 +62,11 @@ public class CardStateController {
         ListLabel fromListLabel = fromList.getLabel();
         Lists toList = listsService.findByLabel(toListLabel);
 
-        cardStateIdCounter++;
+        UUID uuid = UUID.randomUUID();
 
         CardState cardState = CardState
                 .builder()
-                .id(String.valueOf(cardStateIdCounter))
+                .id(String.valueOf(uuid))
                 .card(card)
                 .dateLastUpdate(LocalDateTime.now())
                 .fromList(fromListLabel)
