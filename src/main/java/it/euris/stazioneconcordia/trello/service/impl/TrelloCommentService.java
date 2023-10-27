@@ -3,6 +3,7 @@ package it.euris.stazioneconcordia.trello.service.impl;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.euris.stazioneconcordia.data.dto.CommentDTO;
+import it.euris.stazioneconcordia.data.dto.DataDTO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -64,7 +65,7 @@ public class TrelloCommentService {
 
         CommentDTO commentDTO = CommentDTO
                 .builder()
-                .commentBody(text)
+                .data(DataDTO.builder().text(text).build())
                 .build();
 
         String requestBody = gson.toJson(commentDTO);

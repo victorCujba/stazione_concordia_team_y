@@ -6,6 +6,7 @@ import it.euris.stazioneconcordia.data.model.*;
 import it.euris.stazioneconcordia.service.*;
 
 import it.euris.stazioneconcordia.trello.service.impl.TrelloCardServiceImpl;
+import it.euris.stazioneconcordia.trello.service.impl.TrelloCommentService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,8 @@ public class TrelloController {
     private UserService userService;
 
     private CommentService commentService;
+
+    private TrelloCommentService trelloCommentService;
 
 
     @GetMapping("/sync")
@@ -104,7 +107,7 @@ public class TrelloController {
 //        trelloCardService.getCardsByIdBoard(BOARD_ID_VALUE);
 //        trelloCardService.getCardsByIdLists(LIST_O1_ID_VALUE);
 //        trelloCardService.getCardByIdCard(CARD_01_ID_VALUE);
-        List<CommentDTO> commentDTOs = trelloCardService.getAllCommentsByIdCard(idCard);
+        List<CommentDTO> commentDTOs = trelloCommentService.getAllCommentsByIdCard(idCard);
         for (CommentDTO commentDTO : commentDTOs) {
             String date = commentDTO.getDate().substring(0, 19);
             commentDTO.setDate(date);
