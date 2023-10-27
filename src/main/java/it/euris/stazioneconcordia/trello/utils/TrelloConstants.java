@@ -51,4 +51,5 @@ public interface TrelloConstants {
     String URL_API_TRELLO_GET_CARD_BY_ID_CARD = "https://api.trello.com/1/cards/{id}?key={key}&token={token}";
     String URL_API_TRELLO_GET_BADGES_BY_ID_CARD = "https://api.trello.com/1/cards/{id}/badges?key={key}&token={token}";
     String URL_API_TRELLO_GET_COMMENTS_BY_ID_CARD = "https://api.trello.com/1/cards/{idCard}/actions?filter=commentCard&key={key}&token={token}";
+    String URL_API_TRELLO_POST_COMMENT_BY_ID_CARD = "https://api.trello.com/1/cards/{id}/actions/comments?text={text}&key={key}&token={token}";
 }
