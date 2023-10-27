@@ -14,6 +14,11 @@ public class DataDTO implements Dto {
     private String text;
 
     private CardDTO card;
+
+    public DataDTO(String string) {
+        this.text=string;
+    }
+
     @Override
     public Model toModel() {
         return null;

@@ -114,6 +114,10 @@ public class CardServiceImpl implements CardService {
         for (CardDTO cardDTO : cardDTOs) {
             String date = cardDTO.getDateLastActivity().substring(0, 19);
             cardDTO.setDateLastActivity(date);
+            if (cardDTO.getExpirationDate()!=null) {
+                String date2 = cardDTO.getExpirationDate().substring(0, 19);
+                cardDTO.setExpirationDate(date2);
+            }
             Card card = cardDTO.toModel();
             insert(card);
         }

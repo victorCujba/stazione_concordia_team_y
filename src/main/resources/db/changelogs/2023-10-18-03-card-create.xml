@@ -20,7 +20,7 @@
             <column name="name" type="VARCHAR(255)"/>
             <column name="position" type="BIGINT(20)"/>
             <column name="priority" type="ENUM('HIGH','MEDIUM','LOW')"/>
-            <column name="description" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(5000)"/>
             <column name="expiration_date" type="DATETIME()"/>
             <column name="date_last_activity" type="DATETIME()"/>
             <column name="closed" type="BOOLEAN"/>

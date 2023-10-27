@@ -36,32 +36,18 @@ public class CardDTO implements Dto {
 
     @Override
     public Card toModel() {
+        if(idLabels.isEmpty()){idLabels.add(0,"0");}
         return Card
                 .builder()
                 .id(id)
                 .name(name)
                 .position(stringToLong(position))
                 .description(description)
-                .expirationDate(stringToLocalDateTime(expirationDate.substring(0,19)))
-                .dateLastActivity(stringToLocalDateTime(dateLastActivity.substring(0,19)))
+                .expirationDate(stringToLocalDateTime(expirationDate))
+                .dateLastActivity(stringToLocalDateTime(dateLastActivity))
                 .closed(stringToBoolean(closed))
                 .list(Lists.builder().id(idList).build())
-                .labels(Labels.builder().id(id).build())
+                .labels(Labels.builder().id(idLabels.get(0)).build())
                 .build();
     }
-
-        @Override
-        public String toString() {
-            return "CardDTO {" +
-                    "id = " + id + '\'' + '\n' +
-                    "idList = " + idList + '\'' + '\n' +
-                    "name = " + name + '\'' + '\n' +
-                    "description = " + description + '\'' + '\n' +
-                    "closed = " + closed + '\'' + '\n' +
-                    "expirationDate = " + expirationDate + '\'' + '\n' +
-                    "dateLastActivity = " + dateLastActivity + '\n' +
-                    '}' + '\n';
-
-        }
-
-    }
+}

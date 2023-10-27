@@ -67,7 +67,7 @@ public class Card implements Model {
                 .id(id)
                 .name(name)
                 .position(numberToString(position))
-                .idLabels(Collections.singletonList(labels.getId()))
+                .idLabels(List.of(labels.getId()))
                 .description(description)
                 .closed(booleanToString(closed))
                 .expirationDate(localDateTimeToString(expirationDate))

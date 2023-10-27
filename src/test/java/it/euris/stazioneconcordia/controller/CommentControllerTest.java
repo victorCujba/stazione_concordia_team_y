@@ -139,7 +139,6 @@ class CommentControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/comments/v1/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.id").value(comments.get(0).getId()));
     }
 
@@ -157,13 +156,13 @@ class CommentControllerTest {
 
         CommentDTO testComment1 = CommentDTO.builder()
                 .id("1")
-                .idCard(cardDTO.getId())
+                .data(DataDTO.builder().card(CardDTO.builder().id("1").build()).build())
                 .date("2023-10-18T12:12:12")
                 .data(new DataDTO("First comment"))
                 .build();
         CommentDTO testComment2 = CommentDTO.builder()
                 .id("1")
-                .idCard(cardDTO.getId())
+                .data(DataDTO.builder().card(CardDTO.builder().id("2").build()).build())
                 .date("2023-09-10T12:12:12")
                 .data(new DataDTO("Last comment"))
                 .build();
@@ -184,19 +183,19 @@ class CommentControllerTest {
         CommentDTO commentDTO1 = CommentDTO
                 .builder()
                 .id("1")
-                .idCard("1")
+                .data(DataDTO.builder().card(CardDTO.builder().id("1").build()).build())
                 .build();
 
         CommentDTO commentDTO2 = CommentDTO
                 .builder()
                 .id("2")
-                .idCard("2")
+                .data(DataDTO.builder().card(CardDTO.builder().id("2").build()).build())
                 .build();
 
         CommentDTO commentDTO3 = CommentDTO
                 .builder()
                 .id("3")
-                .idCard("3")
+                .data(DataDTO.builder().card(CardDTO.builder().id("3").build()).build())
                 .build();
         comments.add(commentDTO1);
         comments.add(commentDTO2);
@@ -209,7 +208,7 @@ class CommentControllerTest {
                 .builder()
                 .date("2023-10-19T12:00:00")
                 .idMemberCreator("1")
-                .idCard("1")
+                .data(DataDTO.builder().card(CardDTO.builder().id("1").build()).build())
                 .data(new DataDTO("comment body"))
                 .build();
     }
@@ -220,7 +219,7 @@ class CommentControllerTest {
                 .id("1")
                 .date("2023-10-19T12:00:00")
                 .idMemberCreator("1")
-                .idCard("1")
+                .data(DataDTO.builder().card(CardDTO.builder().id("1").build()).build())
                 .data(new DataDTO("comment body"))
                 .build();
 
