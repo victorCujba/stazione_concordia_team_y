@@ -40,9 +40,9 @@ public class TrelloController {
 
 
     @GetMapping("/sync")
-    public void getInfoFromTrello(@RequestParam String idBoard, @RequestParam String username, @RequestParam String key, @RequestParam String token) {
+    public void getInfoFromTrello(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
         getBoardFromTrello(idBoard, key, token);
-        getUserByUsername(username, key, token);
+        getAllUsersFromBoard(idBoard, key, token);
         getLabelsFromTrelloBoard(idBoard, key, token);
         ListsDTO[] listDTOs = getListsFromTrelloBoard(idBoard, key, token);
         for (ListsDTO listDTO : listDTOs) {
@@ -88,6 +88,15 @@ public class TrelloController {
             labelsDTOs[i] = labels[i].toDto();
         }
         return labelsDTOs;
+    }
+
+    public UserDTO[] getAllUsersFromBoard(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token){
+        User[] users = userService.getUserFromTrelloBoard(idBoard,key,token);
+        UserDTO[] userDTOs = new UserDTO[users.length];
+        for (int i=0; i< users.length; i++){
+            userDTOs[i]=users[i].toDto();
+        }
+        return userDTOs;
     }
 
     @GetMapping("/comments")

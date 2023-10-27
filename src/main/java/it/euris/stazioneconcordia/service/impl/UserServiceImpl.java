@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.service.impl;
 
 import com.google.gson.Gson;
 import it.euris.stazioneconcordia.data.dto.UserDTO;
+import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.data.model.User;
 import it.euris.stazioneconcordia.repository.UserRepository;
 import it.euris.stazioneconcordia.service.UserService;
@@ -70,5 +71,30 @@ public class UserServiceImpl implements UserService {
         UserDTO userDTO = gson.fromJson(response.body(), UserDTO.class);
         User user = userDTO.toModel();
         return insert(user);
+    }
+
+    @Override
+    @SneakyThrows
+    public User[] getUserFromTrelloBoard(String idBoard, String key, String token) {
+        String url = "https://api.trello.com/1/boards/" + idBoard + "/members?key=" + key + "&token=" + token;
+        URI targetURI = new URI(url);
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetURI)
+                .GET()
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        Gson gson = new Gson();
+        UserDTO[] userDTOs = gson.fromJson(response.body(), UserDTO[].class);
+        for (UserDTO userDTO : userDTOs) {
+            User user = userDTO.toModel();
+            insert(user);
+        }
+        User[] users = new User[userDTOs.length];
+        for (int i = 0; i < userDTOs.length; i++) {
+            users[i] = userDTOs[i].toModel();
+        }
+
+        return users;
     }
 }
