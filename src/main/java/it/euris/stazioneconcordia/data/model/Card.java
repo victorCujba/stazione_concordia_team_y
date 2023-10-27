@@ -8,9 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
@@ -47,19 +45,18 @@ public class Card implements Model {
     @Builder.Default
     private Boolean closed = false;
 
-    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     @ManyToOne
     @JoinColumn(name = "id_list")
     private Lists list;
 
-    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CardState> stateHistory;
 
     @ManyToOne
     @JoinColumn(name = "id_label")
-
     private Labels labels;
 
     @Override
@@ -68,24 +65,12 @@ public class Card implements Model {
                 .id(id)
                 .name(name)
                 .position(numberToString(position))
-                .idLabels(Collections.singletonList(labels.getId()))
+//                .idLabels(new LabelSupportDTO[]{new LabelSupportDTO()})
                 .description(description)
                 .closed(booleanToString(closed))
-                .comment(getCommentStrings())
                 .expirationDate(localDateTimeToString(expirationDate))
                 .dateLastActivity(localDateTimeToString(dateLastActivity))
                 .idList(list.getId())
                 .build();
     }
-
-    public List<String> getCommentStrings() {
-        if (comments != null) {
-            return comments.stream()
-                    .map(Comment::getCommentBody)
-                    .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
-    }
-
-
 }

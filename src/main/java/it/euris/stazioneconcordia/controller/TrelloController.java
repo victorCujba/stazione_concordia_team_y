@@ -1,16 +1,22 @@
 package it.euris.stazioneconcordia.controller;
 
+import com.google.gson.Gson;
 import it.euris.stazioneconcordia.data.dto.*;
-import it.euris.stazioneconcordia.data.model.Card;
-import it.euris.stazioneconcordia.data.model.Labels;
-import it.euris.stazioneconcordia.data.model.Lists;
-import it.euris.stazioneconcordia.data.model.User;
+import it.euris.stazioneconcordia.data.model.*;
 import it.euris.stazioneconcordia.service.*;
+
+import it.euris.stazioneconcordia.trello.service.impl.TrelloCardServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+
+import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.CARD_01_ID_VALUE;
+
 
 @AllArgsConstructor
 @RestController
@@ -27,15 +33,20 @@ public class TrelloController {
 
     private UserService userService;
 
+    private CommentService commentService;
+
 
     @GetMapping("/sync")
-    public void getInfoFromTrello(@RequestParam String idBoard,@RequestParam String username, @RequestParam String key, @RequestParam String token){
-       getBoardFromTrello(idBoard, key, token);
-       getUserByUsername(username, key, token);
-       getLabelsFromTrelloBoard(idBoard, key, token);
-       ListsDTO[] listDTOs = getListsFromTrelloBoard(idBoard, key, token);
-        for (ListsDTO listDTO: listDTOs) {
-            getCardsFromTrelloList(listDTO.getId(), key, token);
+    public void getInfoFromTrello(@RequestParam String idBoard, @RequestParam String username, @RequestParam String key, @RequestParam String token) {
+        getBoardFromTrello(idBoard, key, token);
+        getUserByUsername(username, key, token);
+        getLabelsFromTrelloBoard(idBoard, key, token);
+        ListsDTO[] listDTOs = getListsFromTrelloBoard(idBoard, key, token);
+        for (ListsDTO listDTO : listDTOs) {
+            CardDTO[] cardDTOs = getCardsFromTrelloList(listDTO.getId(), key, token);
+            for (CardDTO cardDTO : cardDTOs) {
+                getComment(cardDTO.getId());
+            }
         }
     }
 
@@ -74,5 +85,33 @@ public class TrelloController {
             labelsDTOs[i] = labels[i].toDto();
         }
         return labelsDTOs;
+    }
+
+    @GetMapping("/comments")
+    public CommentDTO[] getCommentsFromCard(@RequestParam String idCard, @RequestParam String key, @RequestParam String token) {
+        Comment[] comments = commentService.getCommentsFromCard(idCard, key, token);
+        CommentDTO[] commentDTOs = new CommentDTO[comments.length];
+        for (int i = 0; i < comments.length; i++) {
+            commentDTOs[i] = comments[i].toDto();
+        }
+        return commentDTOs;
+    }
+
+    @GetMapping("/comment")
+    public List<CommentDTO> getComment(@RequestParam String idCard) {
+
+        TrelloCardServiceImpl trelloCardService = new TrelloCardServiceImpl();
+//        trelloCardService.getCardsByIdBoard(BOARD_ID_VALUE);
+//        trelloCardService.getCardsByIdLists(LIST_O1_ID_VALUE);
+//        trelloCardService.getCardByIdCard(CARD_01_ID_VALUE);
+        List<CommentDTO> commentDTOs = trelloCardService.getAllCommentsByIdCard(idCard);
+        for (CommentDTO commentDTO : commentDTOs) {
+            String date = commentDTO.getDate().substring(0, 19);
+            commentDTO.setDate(date);
+            Comment comment = commentDTO.toModel();
+            commentService.insert(comment);
+        }
+
+        return commentDTOs;
     }
 }

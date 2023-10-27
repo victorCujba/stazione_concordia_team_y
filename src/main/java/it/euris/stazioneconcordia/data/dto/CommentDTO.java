@@ -21,12 +21,9 @@ public class CommentDTO implements Dto {
 
     private String id;
     private String date;
-    private String commentBody;
+    private DataDTO data;
     private String deleted;
-    @SerializedName("data")
-    private String idCard;
-    @SerializedName("idMemberCreator")
-    private String idUser;
+    private String idMemberCreator;
 
 
     @Override
@@ -35,10 +32,10 @@ public class CommentDTO implements Dto {
                 .builder()
                 .id(id)
                 .date(stringToLocalDateTime(date))
-                .commentBody(commentBody)
+                .commentBody(data.getText())
                 .deleted(stringToBoolean(deleted))
-                .card(Card.builder().id(idCard).build())
-                .user(User.builder().id(idUser).build())
+                .card(Card.builder().id(data.getCard().getId()).build())
+                .user(User.builder().id(idMemberCreator).build())
                 .build();
     }
 
@@ -47,10 +44,10 @@ public class CommentDTO implements Dto {
         return "CommentDTO {" +
                 "id = " + id + '\'' + '\n' +
                 "date = " + date + '\'' + '\n' +
-                "commentBody = " + commentBody + '\'' + '\n' +
+                "commentBody = " + data.getText() + '\'' + '\n' +
                 "deleted = " + deleted + '\'' + '\n' +
-                "idCard = " + idCard + '\'' + '\n' +
-                "idUser = " + idUser + '\'' + '\n' +
+                "idCard = " + data.getCard().getId() + '\'' + '\n' +
+                "idUser = " + idMemberCreator + '\'' + '\n' +
                 '}' + '\n';
 
     }

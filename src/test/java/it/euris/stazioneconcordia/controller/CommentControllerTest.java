@@ -3,6 +3,7 @@ package it.euris.stazioneconcordia.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.dto.CommentDTO;
+import it.euris.stazioneconcordia.data.dto.DataDTO;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
 import it.euris.stazioneconcordia.data.model.Lists;
@@ -158,13 +159,13 @@ class CommentControllerTest {
                 .id("1")
                 .idCard(cardDTO.getId())
                 .date("2023-10-18T12:12:12")
-                .commentBody("First comment")
+                .data(new DataDTO("First comment"))
                 .build();
         CommentDTO testComment2 = CommentDTO.builder()
                 .id("1")
                 .idCard(cardDTO.getId())
                 .date("2023-09-10T12:12:12")
-                .commentBody("Last comment")
+                .data(new DataDTO("Last comment"))
                 .build();
         List<CommentDTO> commentsDto = List.of(testComment1, testComment2);
         List<Comment> comments = commentsDto.stream().map(CommentDTO::toModel).toList();
@@ -207,9 +208,9 @@ class CommentControllerTest {
         return CommentDTO
                 .builder()
                 .date("2023-10-19T12:00:00")
-                .idUser("1")
+                .idMemberCreator("1")
                 .idCard("1")
-                .commentBody("comment body")
+                .data(new DataDTO("comment body"))
                 .build();
     }
 
@@ -218,9 +219,9 @@ class CommentControllerTest {
                 .builder()
                 .id("1")
                 .date("2023-10-19T12:00:00")
-                .idUser("1")
+                .idMemberCreator("1")
                 .idCard("1")
-                .commentBody("comment body")
+                .data(new DataDTO("comment body"))
                 .build();
 
     }
