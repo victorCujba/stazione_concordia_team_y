@@ -18,5 +18,5 @@ public interface UserService {
 
     User getUserFromTrello(String username, String key, String token);
 
-    User[] getUserFromTrelloBoard(String idBoard, String key, String token);
+    User[] getUserFromTrelloBoard(Long idBoard, String key, String token);
 }

@@ -15,11 +15,11 @@ public interface ListsService {
 
     Lists update(Lists lists);
 
-    Boolean deleteById(String idLists);
+    Boolean deleteById(Long idLists);
 
-    Lists findById(String idLists);
+    Lists findById(Long idLists);
 
     Lists findByLabel(ListLabel toListLabel);
 
-    Lists[] getListFromTrelloBoard(String idBoard, String key, String token);
+    Lists[] getListFromTrelloBoard(Long idBoard, String key, String token);
 }

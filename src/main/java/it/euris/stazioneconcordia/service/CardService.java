@@ -8,7 +8,7 @@ public interface CardService {
 
     List<Card> findAll();
 
-    List<Card> findByLabels(String idLabels);
+    List<Card> findByLabels(Long idLabels);
 
     List<Card> findAllCardsWhitExpirationDateInLast5Days();
 
@@ -16,9 +16,9 @@ public interface CardService {
 
     Card update(Card card);
 
-    Boolean deleteById(String idCard);
+    Boolean deleteById(Long idCard);
 
-    Card findById(String idCard);
+    Card findById(Long idCard);
 
-    Card[] getCardsFromTrelloList(String idList, String key, String token);
+    Card[] getCardsFromTrelloList(Long idList, String key, String token);
 }

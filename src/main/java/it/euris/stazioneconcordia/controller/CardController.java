@@ -53,12 +53,12 @@ public class CardController {
     }
 
     @DeleteMapping("/v1/{id}")
-    public Boolean deleteById(@PathVariable("id") String idCard) {
+    public Boolean deleteById(@PathVariable("id") Long idCard) {
         return cardService.deleteById(idCard);
     }
 
     @GetMapping("/v1/{id}")
-    public CardDTO findById(@PathVariable("id") String idCard) {
+    public CardDTO findById(@PathVariable("id") Long idCard) {
         return cardService.findById(idCard).toDto();
     }
 
@@ -71,7 +71,7 @@ public class CardController {
     }
 
     @GetMapping("/v1/labels/{id-labels}")
-    public List<CardDTO> findByLabels(@PathVariable("id-labels") String idLabels) {
+    public List<CardDTO> findByLabels(@PathVariable("id-labels") Long idLabels) {
         return cardService.findByLabels(idLabels)
                 .stream()
                 .map(Card::toDto)

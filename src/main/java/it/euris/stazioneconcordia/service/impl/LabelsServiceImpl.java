@@ -29,13 +29,13 @@ public class LabelsServiceImpl implements LabelsService {
     }
 
     @Override
-    public Labels findById(String idLabels) {
+    public Labels findById(Long idLabels) {
         return labelsRepository.findById(idLabels).orElse(Labels.builder().build());
     }
 
     @SneakyThrows
     @Override
-    public Labels[] getLabelsFromTrelloBoard(String idBoard, String key, String token) {
+    public Labels[] getLabelsFromTrelloBoard(Long idBoard, String key, String token) {
         String url = "https://api.trello.com/1/boards/" + idBoard + "/labels?key=" + key + "&token=" + token;
         URI targetURI = new URI(url);
         HttpRequest httpRequest = HttpRequest.newBuilder()

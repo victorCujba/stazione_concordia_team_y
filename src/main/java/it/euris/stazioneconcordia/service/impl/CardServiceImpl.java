@@ -3,6 +3,8 @@ package it.euris.stazioneconcordia.service.impl;
 import com.google.gson.Gson;
 import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.model.Card;
+import it.euris.stazioneconcordia.exception.IdMustBeNullException;
+import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CardRepository;
 import it.euris.stazioneconcordia.service.CardService;
 import lombok.AllArgsConstructor;
@@ -31,7 +33,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<Card> findByLabels(String idLabels) {
+    public List<Card> findByLabels(Long idLabels) {
 
         List<Card> cards = cardRepository.findAll();
         List<Card> cardsWithPriority = cards.stream()
@@ -65,34 +67,34 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Card insert(Card card) {
-//        if (card.getId() != null) {
-//            throw new IdMustBeNullException();
-//        }
+        if (card.getId() != null) {
+            throw new IdMustBeNullException();
+        }
         return cardRepository.save(card);
     }
 
     @Override
     public Card update(Card card) {
-//        if (card.getId() == null) {
-//            throw new IdMustNotBeNullException();
-//        }
+        if (card.getId() == null) {
+            throw new IdMustNotBeNullException();
+        }
         return cardRepository.save(card);
     }
 
     @Override
-    public Boolean deleteById(String idCard) {
+    public Boolean deleteById(Long idCard) {
         cardRepository.deleteById(idCard);
         return cardRepository.findById(idCard).isEmpty();
     }
 
     @Override
-    public Card findById(String idCard) {
+    public Card findById(Long idCard) {
         return cardRepository.findById(idCard).orElse(Card.builder().build());
     }
 
     @Override
     @SneakyThrows
-    public Card[] getCardsFromTrelloList(String idList, String key, String token) {
+    public Card[] getCardsFromTrelloList(Long idList, String key, String token) {
 
         String url = "https://api.trello.com/1/lists/" + idList + "/cards?key=" + key + "&token=" + token;
 

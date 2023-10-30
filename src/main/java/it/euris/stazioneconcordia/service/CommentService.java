@@ -14,11 +14,11 @@ public interface CommentService {
 
     Comment update(Comment comment);
 
-    Boolean deleteById(String idComment);
+    Boolean deleteById(Long idComment);
 
-    Comment findById(String idComment);
+    Comment findById(Long idComment);
 
     Comment getLastComment(Card card);
 
-    Comment[] getCommentsFromCard(String idCard, String key, String token);
+    Comment[] getCommentsFromCard(Long idCard, String key, String token);
 }
