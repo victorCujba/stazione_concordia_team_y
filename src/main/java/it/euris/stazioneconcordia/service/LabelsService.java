@@ -7,7 +7,7 @@ public interface LabelsService {
 
     Labels findById(Long idLabels);
 
-    Labels[] getLabelsFromTrelloBoard(Long idBoard, String key, String token);
+    Labels[] getLabelsFromTrelloBoard(String idBoard, String key, String token);
 }
 
 

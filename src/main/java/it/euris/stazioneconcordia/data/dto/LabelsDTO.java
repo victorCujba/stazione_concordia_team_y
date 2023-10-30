@@ -27,9 +27,8 @@ public class LabelsDTO implements Dto {
     public Labels toModel() {
         return Labels
                 .builder()
-                .id(stringToLong(id))
                 .idTrello(idTrello)
-                .board(Board.builder().idTrello(idTrelloBoard).build())
+                .board(Board.builder().id(1L).idTrello(idTrelloBoard).build())
                 .name(name)
                 .color(color)
                 .uses(uses)
@@ -40,7 +39,7 @@ public class LabelsDTO implements Dto {
     public LabelsTrelloDto toTrelloDto() {
         return LabelsTrelloDto
                 .builder()
-                .id(id)
+                .id(idTrello)
                 .name(name)
                 .color(color)
                 .uses(uses)

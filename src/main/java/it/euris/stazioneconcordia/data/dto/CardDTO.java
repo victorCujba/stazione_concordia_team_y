@@ -26,7 +26,7 @@ public class CardDTO implements Dto {
     private String id;
     private String idTrello;
     private String idList;
-    private String idLabels;
+    private List<String> idLabels;
     private String name;
     private String position;
     private String description;
@@ -36,6 +36,9 @@ public class CardDTO implements Dto {
 
     @Override
     public Card toModel() {
+        if (idLabels.size()==0){
+            idLabels.add(0,"0");
+        }
         return Card
                 .builder()
                 .id(stringToLong(id))
@@ -46,8 +49,8 @@ public class CardDTO implements Dto {
                 .expirationDate(stringToLocalDateTime(expirationDate))
                 .dateLastActivity(stringToLocalDateTime(dateLastActivity))
                 .closed(stringToBoolean(closed))
-                .list(Lists.builder().id(stringToLong(idList)).build())
-                .labels(Labels.builder().id(stringToLong(idLabels)).build())
+                .list(Lists.builder().idTrello(idList).build())
+                .labels(Labels.builder().idTrello(idLabels.get(0)).build())
                 .build();
     }
 

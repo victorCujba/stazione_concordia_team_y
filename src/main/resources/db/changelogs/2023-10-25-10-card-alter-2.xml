@@ -12,7 +12,7 @@
         </preConditions>
 
         <addColumn tableName="card">
-            <column name="id_label" type="VARCHAR(255)"/>
+            <column name="id_label" type="BIGINT(20)"/>
         </addColumn>
 
         <addForeignKeyConstraint baseTableName="card" baseColumnNames="id_label" constraintName="FK_LABEL_ON_CARD" referencedTableName="labels"

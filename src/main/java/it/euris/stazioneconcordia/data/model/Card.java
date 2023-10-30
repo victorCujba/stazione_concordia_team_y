@@ -72,7 +72,7 @@ public class Card implements Model {
                 .idTrello(idTrello)
                 .name(name)
                 .position(numberToString(position))
-                .idLabels(numberToString(labels.getId()))
+                .idLabels(List.of(numberToString(labels.getId())))
                 .description(description)
                 .closed(booleanToString(closed))
                 .expirationDate(localDateTimeToString(expirationDate))

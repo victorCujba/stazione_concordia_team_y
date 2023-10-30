@@ -22,7 +22,7 @@ public class ListsTrelloDto implements TrelloDto {
     public ListsDTO trellotoDto() {
         return ListsDTO
                 .builder()
-                .id(id)
+                .idTrello(id)
                 .name(name)
                 .closed(closed)
                 .idTrelloBoard(idBoard)

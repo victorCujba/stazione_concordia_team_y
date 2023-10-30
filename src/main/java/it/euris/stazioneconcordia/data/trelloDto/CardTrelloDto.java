@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Collections;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +19,7 @@ public class CardTrelloDto implements TrelloDto {
 
     private String id;
     private String idList;
-    private String idLabels;
+    private List<String> idLabels;
     private String name;
     private String pos;
     private String closed;

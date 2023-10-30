@@ -3,6 +3,7 @@ package it.euris.stazioneconcordia.service.impl;
 import com.google.gson.Gson;
 import it.euris.stazioneconcordia.data.dto.UserDTO;
 import it.euris.stazioneconcordia.data.model.User;
+import it.euris.stazioneconcordia.data.trelloDto.UserTrelloDto;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.UserRepository;
@@ -30,17 +31,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public User insert(User user) {
 
-        if (user.getId() != null) {
-            throw new IdMustBeNullException();
-        }
+//        if (user.getId() != null) {
+//            throw new IdMustBeNullException();
+//        }
         return userRepository.save(user);
     }
 
     @Override
     public User update(User user) {
-        if (user.getId() == null) {
-            throw new IdMustNotBeNullException();
-        }
+//        if (user.getId() == null) {
+//            throw new IdMustNotBeNullException();
+//        }
         return userRepository.save(user);
     }
 
@@ -69,14 +70,15 @@ public class UserServiceImpl implements UserService {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         Gson gson = new Gson();
-        UserDTO userDTO = gson.fromJson(response.body(), UserDTO.class);
+        UserTrelloDto userTrelloDTO = gson.fromJson(response.body(), UserTrelloDto.class);
+        UserDTO userDTO = userTrelloDTO.trellotoDto();
         User user = userDTO.toModel();
         return insert(user);
     }
 
     @Override
     @SneakyThrows
-    public User[] getUserFromTrelloBoard(Long idBoard, String key, String token) {
+    public User[] getUserFromTrelloBoard(String idBoard, String key, String token) {
         String url = "https://api.trello.com/1/boards/" + idBoard + "/members?key=" + key + "&token=" + token;
         URI targetURI = new URI(url);
         HttpRequest httpRequest = HttpRequest.newBuilder()

@@ -20,5 +20,5 @@ public interface CardService {
 
     Card findById(Long idCard);
 
-    Card[] getCardsFromTrelloList(Long idList, String key, String token);
+    Card[] getCardsFromTrelloList(String idTrelloList, String key, String token);
 }

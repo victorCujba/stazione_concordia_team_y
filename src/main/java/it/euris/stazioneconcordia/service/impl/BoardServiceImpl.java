@@ -3,6 +3,7 @@ package it.euris.stazioneconcordia.service.impl;
 import com.google.gson.Gson;
 import it.euris.stazioneconcordia.data.dto.BoardDTO;
 import it.euris.stazioneconcordia.data.model.Board;
+import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.BoardRepository;
@@ -57,7 +58,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @SneakyThrows
-    public Board getBoardFromTrello(Long idBoard, String key, String token) {
+    public Board getBoardFromTrello(String idBoard, String key, String token) {
         String url = "https://api.trello.com/1/boards/" + idBoard + "?key=" + key + "&token=" + token;
         URI targetURI = new URI(url);
         HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -67,7 +68,8 @@ public class BoardServiceImpl implements BoardService {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         Gson gson = new Gson();
-        BoardDTO boardDTO = gson.fromJson(response.body(), BoardDTO.class);
+        BoardTrelloDTO boardTrelloDTO = gson.fromJson(response.body(), BoardTrelloDTO.class);
+        BoardDTO boardDTO = boardTrelloDTO.trellotoDto();
         Board board = boardDTO.toModel();
         return insert(board);
     }

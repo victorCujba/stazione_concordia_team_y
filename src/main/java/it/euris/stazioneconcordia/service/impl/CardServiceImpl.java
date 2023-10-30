@@ -3,6 +3,7 @@ package it.euris.stazioneconcordia.service.impl;
 import com.google.gson.Gson;
 import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.model.Card;
+import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CardRepository;
@@ -94,9 +95,9 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @SneakyThrows
-    public Card[] getCardsFromTrelloList(Long idList, String key, String token) {
+    public Card[] getCardsFromTrelloList(String idTrelloList, String key, String token) {
 
-        String url = "https://api.trello.com/1/lists/" + idList + "/cards?key=" + key + "&token=" + token;
+        String url = "https://api.trello.com/1/lists/" + idTrelloList + "/cards?key=" + key + "&token=" + token;
 
         URI targetURI = new URI(url);
 
@@ -111,22 +112,22 @@ public class CardServiceImpl implements CardService {
 
         Gson gson = new Gson();
 
-        CardDTO[] cardDTOs = gson.fromJson(response.body(), CardDTO[].class);
+        CardTrelloDto[] cardTrelloDtos = gson.fromJson(response.body(), CardTrelloDto[].class);
 
-        for (CardDTO cardDTO : cardDTOs) {
-            String date = cardDTO.getDateLastActivity().substring(0, 19);
-            cardDTO.setDateLastActivity(date);
-            if (cardDTO.getExpirationDate()!=null) {
-                String date2 = cardDTO.getExpirationDate().substring(0, 19);
-                cardDTO.setExpirationDate(date2);
+        for (CardTrelloDto cardTrelloDto : cardTrelloDtos) {
+            String date = cardTrelloDto.getDateLastActivity().substring(0, 19);
+            cardTrelloDto.setDateLastActivity(date);
+            if (cardTrelloDto.getDue()!=null) {
+                String date2 = cardTrelloDto.getDue().substring(0, 19);
+                cardTrelloDto.setDue(date2);
             }
-            Card card = cardDTO.toModel();
+            Card card = cardTrelloDto.trellotoDto().toModel();
             insert(card);
         }
 
-        Card[] cards = new Card[cardDTOs.length];
-        for (int i = 0; i < cardDTOs.length; i++) {
-            cards[i] = cardDTOs[i].toModel();
+        Card[] cards = new Card[cardTrelloDtos.length];
+        for (int i = 0; i < cardTrelloDtos.length; i++) {
+            cards[i] = cardTrelloDtos[i].trellotoDto().toModel();
         }
 
         return cards;

@@ -14,7 +14,7 @@
         </preConditions>
         <comment>Labels table create</comment>
         <createTable tableName="labels">
-            <column name="id" type="VARCHAR(255)">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="id_trello" type="VARCHAR(255)"/>
