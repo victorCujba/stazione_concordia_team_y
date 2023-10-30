@@ -17,6 +17,7 @@
             <column name="id" type="VARCHAR(255)">
                 <constraints primaryKey="true"/>
             </column>
+            <column name="id_trello" type="VARCHAR(255)"/>
             <column name="id_board" type="BIGINT(20)"/>
             <column name="name" type="VARCHAR(255)"/>
             <column name="color" type="VARCHAR(255)"/>

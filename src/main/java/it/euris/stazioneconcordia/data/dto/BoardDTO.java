@@ -9,8 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToBoolean;
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLocalDateTime;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 @Data
 @AllArgsConstructor
@@ -30,7 +29,7 @@ public class BoardDTO implements Dto {
     public Board toModel() {
         return Board
                 .builder()
-                .id(id)
+                .id(stringToLong(id))
                 .name(name)
                 .description(description)
                 .url(url)

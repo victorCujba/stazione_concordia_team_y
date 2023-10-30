@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLong;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,8 +26,8 @@ public class LabelsDTO implements Dto {
     public Labels toModel() {
         return Labels
                 .builder()
-                .id(id)
-                .board(Board.builder().id(idBoard).build())
+                .idTrello(id)
+                .board(Board.builder().id(stringToLong(idBoard)).build())
                 .name(name)
                 .color(color)
                 .uses(uses)

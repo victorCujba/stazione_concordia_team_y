@@ -12,8 +12,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToBoolean;
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLocalDateTime;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 @Data
 @AllArgsConstructor
@@ -33,11 +32,11 @@ public class CommentDTO implements Dto {
     public Comment toModel() {
         return Comment
                 .builder()
-                .id(id)
+                .id(stringToLong(id))
                 .date(stringToLocalDateTime(date))
                 .commentBody(data.getText())
                 .deleted(stringToBoolean(deleted))
-                .card(Card.builder().id(data.getCard().getId()).build())
+                .card(Card.builder().idTrello(data.getCard().getId()).build())
                 .user(User.builder().id(idUser).build())
                 .build();
     }

@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
+import it.euris.stazioneconcordia.data.dto.archetype.TrelloDto;
 import lombok.*;
 
 @Getter
@@ -21,6 +22,11 @@ public class DataDTO implements Dto {
 
     @Override
     public Model toModel() {
+        return null;
+    }
+
+    @Override
+    public TrelloDto toTrelloDto() {
         return null;
     }
 }

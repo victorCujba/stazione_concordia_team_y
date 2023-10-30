@@ -41,15 +41,15 @@ public class CardDTO implements Dto {
         }
         return Card
                 .builder()
-                .id(id)
+                .id(stringToLong(id))
                 .name(name)
                 .position(stringToLong(position))
                 .description(description)
                 .expirationDate(stringToLocalDateTime(expirationDate))
                 .dateLastActivity(stringToLocalDateTime(dateLastActivity))
                 .closed(stringToBoolean(closed))
-                .list(Lists.builder().id(idList).build())
-                .labels(Labels.builder().id(idLabels.get(0)).build())
+                .list(Lists.builder().id(stringToLong(idList)).build())
+                .labels(Labels.builder().id(stringToLong(idLabels.get(0))).build())
                 .build();
     }
 

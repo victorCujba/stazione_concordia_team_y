@@ -1,6 +1,7 @@
 package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
+import it.euris.stazioneconcordia.data.dto.archetype.TrelloDto;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.CardState;
 import lombok.AllArgsConstructor;
@@ -8,8 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToListLabel;
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLocalDateTime;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 @Data
 @Builder
@@ -28,10 +28,15 @@ public class CardStateDTO implements Dto {
         return CardState
                 .builder()
                 .id(id)
-                .card(Card.builder().id(idCard).build())
+                .card(Card.builder().id(stringToLong(idCard)).build())
                 .fromList(stringToListLabel(fromList))
                 .toList(stringToListLabel(toList))
                 .dateLastUpdate(stringToLocalDateTime(dateLastUpdate))
                 .build();
+    }
+
+    @Override
+    public TrelloDto toTrelloDto() {
+        return null;
     }
 }

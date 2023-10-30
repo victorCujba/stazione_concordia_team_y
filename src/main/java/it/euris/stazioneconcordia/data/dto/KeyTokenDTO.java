@@ -1,6 +1,7 @@
 package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
+import it.euris.stazioneconcordia.data.dto.archetype.TrelloDto;
 import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.model.KeyToken;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,12 @@ public class KeyTokenDTO implements Dto {
                 .id(stringToLong(id))
                 .key(key)
                 .token(token)
-                .board(Board.builder().id(idBoard).build())
+                .board(Board.builder().id(stringToLong(idBoard)).build())
                 .build();
+    }
+
+    @Override
+    public TrelloDto toTrelloDto() {
+        return null;
     }
 }
