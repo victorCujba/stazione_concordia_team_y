@@ -37,10 +37,10 @@ class ListsControllerTest {
 
         Lists list = Lists
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Test name")
                 .position(1L)
-                .board(Board.builder().id("1").build())
+                .board(Board.builder().id(1L).build())
                 .build();
 
         List<Lists> lists = List.of(list);
@@ -50,7 +50,7 @@ class ListsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/lists/v1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].name").value("Test name"))
@@ -63,47 +63,47 @@ class ListsControllerTest {
 
         Lists list = Lists
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Test name")
                 .position(1L)
-                .board(Board.builder().id("1").build())
+                .board(Board.builder().id(1L).build())
                 .build();
 
         when(listsService.insert(any())).thenReturn(list);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/lists/v1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(list.toDto())))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
     public void shouldUpdateAList() throws Exception {
         Lists list = Lists
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Test name")
                 .position(1L)
-                .board(Board.builder().id("1").build())
+                .board(Board.builder().id(1L).build())
                 .build();
 
         when(listsService.update(any())).thenReturn(list);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/lists/v1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(list.toDto())))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
     public void shouldDeleteAListById() throws Exception {
-        String idList = "1";
+        Long idList = 1L;
 
         when(listsService.deleteById(idList)).thenReturn(true);
 
@@ -114,14 +114,14 @@ class ListsControllerTest {
 
     @Test
     public void shouldGetListById() throws Exception {
-        String idList = "1";
+        Long idList = 1L;
 
         Lists list = Lists
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Test name")
                 .position(1L)
-                .board(Board.builder().id("1").build())
+                .board(Board.builder().id(1L).build())
                 .build();
 
         when(listsService.findById(idList)).thenReturn(list);
@@ -129,6 +129,6 @@ class ListsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/lists/v1/{id}", idList))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 }
