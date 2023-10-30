@@ -14,7 +14,7 @@
         </preConditions>
         <comment>Card Status table create</comment>
         <createTable tableName="card_state">
-            <column name="id" type="VARCHAR(255)">
+            <column name="id" type="BIGINT(20)">
                 <constraints primaryKey="true"/>
             </column>
             <column name="id_card" type="BIGINT(20)"/>
