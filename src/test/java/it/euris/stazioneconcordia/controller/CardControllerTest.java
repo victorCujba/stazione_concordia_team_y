@@ -44,6 +44,7 @@ class CardControllerTest {
                 .name("test name")
                 .description("test description")
                 .list(Lists.builder().id(1L).build())
+                .labels(Labels.builder().id(1L).build())
                 .build();
         List<Card> cards = List.of(card);
 
@@ -52,7 +53,7 @@ class CardControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/cards/v1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].name").value(card.getName()))
@@ -68,6 +69,7 @@ class CardControllerTest {
                 .name("test name1")
                 .description("test description")
                 .list(Lists.builder().id(1L).build())
+                .labels(Labels.builder().id(1L).build())
                 .build();
         Card card2 = Card
                 .builder()
@@ -75,6 +77,7 @@ class CardControllerTest {
                 .name("test name2")
                 .description("test description")
                 .list(Lists.builder().id(2L).build())
+                .labels(Labels.builder().id(1L).build())
                 .build();
         List<Card> cards = List.of(card1, card2);
 
@@ -83,7 +86,7 @@ class CardControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/cards/v1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(2));
     }
@@ -96,18 +99,19 @@ class CardControllerTest {
                 .name("test name")
                 .description("test description")
                 .list(Lists.builder().id(1L).build())
+                .labels(Labels.builder().id(1L).build())
                 .build();
 
         when(cardService.insert(any())).thenReturn(card);
 
 
         mockMvc.perform(post("/cards/v1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(card.toDto())))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.name").value(card.getName()))
                 .andExpect(jsonPath("$.description").value(card.getDescription()));
     }
@@ -120,18 +124,19 @@ class CardControllerTest {
                 .name("test name")
                 .description("test description")
                 .list(Lists.builder().id(1L).build())
+                .labels(Labels.builder().id(1L).build())
                 .build();
 
         when(cardService.update(any())).thenReturn(card);
 
 
         mockMvc.perform(put("/cards/v1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(card.toDto())))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.name").value(card.getName()))
                 .andExpect(jsonPath("$.description").value(card.getDescription()));
     }
@@ -165,16 +170,17 @@ class CardControllerTest {
                 .name("test name")
                 .description("test description")
                 .list(Lists.builder().id(1L).build())
+                .labels(Labels.builder().id(1L).build())
                 .build();
         Long id = 11L;
         when(cardService.findById(id)).thenReturn(card);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/cards/v1/11")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(card.toDto())))
                 .andDo(print())
-                .andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.name").value(card.getName()))
                 .andExpect(jsonPath("$.description").value(card.getDescription()));
 
@@ -188,18 +194,21 @@ class CardControllerTest {
                 .builder()
                 .id(1L)
                 .list(Lists.builder().id(1L).build())
+                .labels(Labels.builder().id(1L).build())
                 .expirationDate(LocalDateTime.now().minusDays(4L))
                 .build();
         Card card2 = Card
                 .builder()
                 .id(2L)
                 .list(Lists.builder().id(2L).build())
+                .labels(Labels.builder().id(1L).build())
                 .expirationDate(LocalDateTime.now().minusDays(8L))
                 .build();
         Card card3 = Card
                 .builder()
                 .id(3L)
                 .list(Lists.builder().id(3L).build())
+                .labels(Labels.builder().id(1L).build())
                 .expirationDate(LocalDateTime.now().minusDays(2L))
                 .build();
         List<Card> cards = List.of(card1, card3);
@@ -207,11 +216,11 @@ class CardControllerTest {
         when(cardService.findAllCardsWhitExpirationDateInLast5Days()).thenReturn(cards);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/cards/v1/expiration-date")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(Optional.of(cards))))
                 .andDo(print())
-                .andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(2));
 

@@ -35,15 +35,15 @@ class BoardServiceTest {
     void shouldReturnABoard() {
         Board board1 = Board
                 .builder()
-                .id("1")
+                .id(1L)
                 .build();
         Board board2 = Board
                 .builder()
-                .id("2")
+                .id(2L)
                 .build();
         Board board3 = Board
                 .builder()
-                .id("3")
+                .id(3L)
                 .build();
 
         List<Board> boards = List.of(board1, board2, board3);
@@ -77,7 +77,7 @@ class BoardServiceTest {
     void shouldNotInsertAboardWithIdNotNull() {
         Board board1 = Board
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Board with id")
                 .build();
 
@@ -94,7 +94,7 @@ class BoardServiceTest {
     void shouldUpdateABoardWhenBoardIdIsNotNull() {
         Board board1 = Board
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Board with id")
                 .build();
 
@@ -123,13 +123,13 @@ class BoardServiceTest {
 
     @Test
     void shouldDeleteABordById() {
-        String id = "1";
+        Long id = 1L;
 
         doNothing().when(boardRepository).deleteById(id);
         when(boardRepository.findById(id)).thenReturn(Optional.empty());
 
         assertTrue(boardService.deleteById(id));
-        Mockito.verify(boardRepository, times(1)).deleteById("1");
+        Mockito.verify(boardRepository, times(1)).deleteById(1L);
 
 
     }
@@ -137,7 +137,7 @@ class BoardServiceTest {
 
     @Test
     public void shouldReturnBoardByIdWhenBoardExists() {
-        String idBoard = "1";
+        Long idBoard = 1L;
         Board existingBoard = Board.builder().id(idBoard).build();
 
         when(boardRepository.findById(idBoard)).thenReturn(Optional.of(existingBoard));
@@ -148,7 +148,7 @@ class BoardServiceTest {
 
     @Test
     public void shouldReturnNewBoardWhenBoarNotExists() {
-        String idBoard = "1";
+        Long idBoard = 1L;
         Mockito.when(boardRepository.findById(idBoard)).thenReturn(Optional.empty());
         Board foundBoard = boardService.findById(idBoard);
 
