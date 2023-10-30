@@ -12,9 +12,9 @@ public interface BoardService {
 
     Board update(Board board);
 
-    Boolean deleteById(String idBoard);
+    Boolean deleteById(Long idBoard);
 
-    Board findById(String idBoard);
+    Board findById(Long idBoard);
 
-    Board getBoardFromTrello(String idBoard, String key, String token);
+    Board getBoardFromTrello(Long idBoard, String key, String token);
 }

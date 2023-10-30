@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import it.euris.stazioneconcordia.data.dto.CommentDTO;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
+import it.euris.stazioneconcordia.exception.IdMustBeNullException;
+import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CommentRepository;
 import it.euris.stazioneconcordia.service.CommentService;
 import lombok.AllArgsConstructor;
@@ -30,28 +32,28 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment insert(Comment comment) {
-//        if (comment.getId() != null) {
-//            throw new IdMustBeNullException();
-//        }
+        if (comment.getId() != null) {
+            throw new IdMustBeNullException();
+        }
         return commentRepository.save(comment);
     }
 
     @Override
     public Comment update(Comment comment) {
-//        if (comment.getId() == null) {
-//            throw new IdMustNotBeNullException();
-//        }
+        if (comment.getId() == null) {
+            throw new IdMustNotBeNullException();
+        }
         return commentRepository.save(comment);
     }
 
     @Override
-    public Boolean deleteById(String idComment) {
+    public Boolean deleteById(Long idComment) {
         commentRepository.deleteById(idComment);
         return commentRepository.findById(idComment).isEmpty();
     }
 
     @Override
-    public Comment findById(String idComment) {
+    public Comment findById(Long idComment) {
         return commentRepository.findById(idComment).orElse(Comment.builder().build());
     }
 
@@ -75,7 +77,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @SneakyThrows
-    public Comment[] getCommentsFromCard(String idCard, String key, String token) {
+    public Comment[] getCommentsFromCard(Long idCard, String key, String token) {
         String url = "https://api.trello.com/1/cards/" + idCard + "/actions?key=" + key + "&token=" + token;
 
         URI targetURI = new URI(url);

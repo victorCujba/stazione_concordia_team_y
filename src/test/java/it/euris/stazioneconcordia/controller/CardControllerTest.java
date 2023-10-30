@@ -40,10 +40,10 @@ class CardControllerTest {
 
         Card card = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("test name")
                 .description("test description")
-                .list(Lists.builder().id("1").build())
+                .list(Lists.builder().id(1L).build())
                 .build();
         List<Card> cards = List.of(card);
 
@@ -64,17 +64,17 @@ class CardControllerTest {
 
         Card card1 = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("test name1")
                 .description("test description")
-                .list(Lists.builder().id("1").build())
+                .list(Lists.builder().id(1L).build())
                 .build();
         Card card2 = Card
                 .builder()
-                .id("2")
+                .id(2L)
                 .name("test name2")
                 .description("test description")
-                .list(Lists.builder().id("1").build())
+                .list(Lists.builder().id(2L).build())
                 .build();
         List<Card> cards = List.of(card1, card2);
 
@@ -92,10 +92,10 @@ class CardControllerTest {
     void shouldInsertACard() throws Exception {
         Card card = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("test name")
                 .description("test description")
-                .list(Lists.builder().id("1").build())
+                .list(Lists.builder().id(1L).build())
                 .build();
 
         when(cardService.insert(any())).thenReturn(card);
@@ -116,10 +116,10 @@ class CardControllerTest {
     void shouldUpdateACard() throws Exception {
         Card card = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("test name")
                 .description("test description")
-                .list(Lists.builder().id("1").build())
+                .list(Lists.builder().id(1L).build())
                 .build();
 
         when(cardService.update(any())).thenReturn(card);
@@ -140,10 +140,10 @@ class CardControllerTest {
     void shouldDeleteACardById() throws Exception {
         Card card = Card
                 .builder()
-                .id("11")
+                .id(11L)
                 .name("test name")
                 .description("test description")
-                .list(Lists.builder().id("1").build())
+                .list(Lists.builder().id(1L).build())
                 .build();
 
 
@@ -161,12 +161,12 @@ class CardControllerTest {
     void shouldFindACardById() throws Exception {
         Card card = Card
                 .builder()
-                .id("11")
+                .id(11L)
                 .name("test name")
                 .description("test description")
-                .list(Lists.builder().id("1").build())
+                .list(Lists.builder().id(1L).build())
                 .build();
-        String id = "11";
+        Long id = 11L;
         when(cardService.findById(id)).thenReturn(card);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/cards/v1/11")
@@ -186,20 +186,20 @@ class CardControllerTest {
 
         Card card1 = Card
                 .builder()
-                .id("1")
-                .list(Lists.builder().id("1").build())
+                .id(1L)
+                .list(Lists.builder().id(1L).build())
                 .expirationDate(LocalDateTime.now().minusDays(4L))
                 .build();
         Card card2 = Card
                 .builder()
-                .id("2")
-                .list(Lists.builder().id("1").build())
+                .id(2L)
+                .list(Lists.builder().id(2L).build())
                 .expirationDate(LocalDateTime.now().minusDays(8L))
                 .build();
         Card card3 = Card
                 .builder()
-                .id("3")
-                .list(Lists.builder().id("1").build())
+                .id(3L)
+                .list(Lists.builder().id(3L).build())
                 .expirationDate(LocalDateTime.now().minusDays(2L))
                 .build();
         List<Card> cards = List.of(card1, card3);
@@ -222,30 +222,30 @@ class CardControllerTest {
     void shouldFindACardByMediumPriority() throws Exception {
         Card card1 = Card
                 .builder()
-                .id("1")
-                .labels(Labels.builder().id("13").build())
+                .id(1L)
+                .labels(Labels.builder().id(13L).build())
                 .name("test name")
                 .description("test description")
-                .list(Lists.builder().id("1").build())
+                .list(Lists.builder().id(1L).build())
                 .build();
         Card card2 = Card
                 .builder()
-                .id("2")
-                .labels(Labels.builder().id("14").build())
+                .id(2L)
+                .labels(Labels.builder().id(14L).build())
                 .name("test name")
                 .description("test description")
-                .list(Lists.builder().id("1").build())
+                .list(Lists.builder().id(1L).build())
                 .build();
         Card card = Card
                 .builder()
-                .id("3")
-                .labels(Labels.builder().id("15").build())
+                .id(3L)
+                .labels(Labels.builder().id(15L).build())
                 .name("test name")
                 .description("test description")
-                .list(Lists.builder().id("1").build())
+                .list(Lists.builder().id(1L).build())
                 .build();
 
-        when(cardService.findByLabels("13")).thenReturn(List.of(card1));
+        when(cardService.findByLabels(13L)).thenReturn(List.of(card1));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/cards/v1/labels/13")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)

@@ -5,9 +5,9 @@ import it.euris.stazioneconcordia.data.model.Labels;
 public interface LabelsService {
     Labels insert(Labels labels);
 
-    Labels findById(String idLabels);
+    Labels findById(Long idLabels);
 
-    Labels[] getLabelsFromTrelloBoard(String idBoard, String key, String token);
+    Labels[] getLabelsFromTrelloBoard(Long idBoard, String key, String token);
 }
 
 

@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import it.euris.stazioneconcordia.data.dto.ListsDTO;
 import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.model.Lists;
+import it.euris.stazioneconcordia.exception.IdMustBeNullException;
+import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CardRepository;
 import it.euris.stazioneconcordia.repository.CardStateRepository;
 import it.euris.stazioneconcordia.repository.ListsRepository;
@@ -35,28 +37,28 @@ public class ListsServiceImpl implements ListsService {
 
     @Override
     public Lists insert(Lists lists) {
-//        if (lists.getId() != null) {
-//            throw new IdMustBeNullException();
-//        }
+        if (lists.getId() != null) {
+            throw new IdMustBeNullException();
+        }
         return listsRepository.save(lists);
     }
 
     @Override
     public Lists update(Lists lists) {
-//        if (lists.getId() == null) {
-//            throw new IdMustNotBeNullException();
-//        }
+        if (lists.getId() == null) {
+            throw new IdMustNotBeNullException();
+        }
         return listsRepository.save(lists);
     }
 
     @Override
-    public Boolean deleteById(String idLists) {
+    public Boolean deleteById(Long idLists) {
         listsRepository.deleteById(idLists);
         return listsRepository.findById(idLists).isEmpty();
     }
 
     @Override
-    public Lists findById(String idLists) {
+    public Lists findById(Long idLists) {
         return listsRepository.findById(idLists).orElse(Lists.builder().build());
     }
 
@@ -71,7 +73,7 @@ public class ListsServiceImpl implements ListsService {
 
     @Override
     @SneakyThrows
-    public Lists[] getListFromTrelloBoard(String idBoard, String key, String token) {
+    public Lists[] getListFromTrelloBoard(Long idBoard, String key, String token) {
         String url = "https://api.trello.com/1/boards/" + idBoard + "/lists?key=" + key + "&token=" + token;
         URI targetURI = new URI(url);
         HttpRequest httpRequest = HttpRequest.newBuilder()

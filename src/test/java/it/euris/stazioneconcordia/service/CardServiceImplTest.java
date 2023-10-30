@@ -38,25 +38,25 @@ class CardServiceImplTest {
     void shouldReturnCardsWithLabels() {
         Card card1 = Card
                 .builder()
-                .id("1")
-                .labels(Labels.builder().id("10").build())
+                .id(1L)
+                .labels(Labels.builder().id(10L).build())
                 .build();
         Card card2 = Card
                 .builder()
-                .id("2")
-                .labels(Labels.builder().id("11").build())
+                .id(2L)
+                .labels(Labels.builder().id(11L).build())
                 .build();
         Card card3 = Card
                 .builder()
-                .id("3")
-                .labels(Labels.builder().id("12").build())
+                .id(3L)
+                .labels(Labels.builder().id(12L).build())
                 .build();
 
         List<Card> cards = List.of(card1, card2, card3);
 
         when(cardRepository.findAll()).thenReturn(cards);
 
-        List<Card> cardsWithPriority = cardService.findByLabels("12");
+        List<Card> cardsWithPriority = cardService.findByLabels(12L);
 
         assertThat(cardsWithPriority)
                 .hasSize(1)
@@ -70,17 +70,17 @@ class CardServiceImplTest {
     void shouldReturnCardsWithExpirationDateInLast5Days() {
         Card card1 = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .expirationDate(LocalDateTime.now().minusDays(4L))
                 .build();
         Card card2 = Card
                 .builder()
-                .id("2")
+                .id(2L)
                 .expirationDate(LocalDateTime.now().minusDays(8L))
                 .build();
         Card card3 = Card
                 .builder()
-                .id("3")
+                .id(3L)
                 .expirationDate(LocalDateTime.now().minusDays(2L))
                 .build();
 
@@ -103,7 +103,7 @@ class CardServiceImplTest {
 
         Card card = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Test name")
                 .description("Test desc")
                 .build();
@@ -147,7 +147,7 @@ class CardServiceImplTest {
 
         Card card = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Test name")
                 .description("Test desc")
                 .build();
@@ -165,7 +165,7 @@ class CardServiceImplTest {
 
         Card card = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Test name")
                 .description("Test desc")
                 .build();
@@ -196,9 +196,9 @@ class CardServiceImplTest {
 
     @Test
     void shouldDeleteACard() {
-        String id = "12";
+        Long id = 12L;
 
-        doNothing().when(cardRepository).deleteById(anyString());
+        doNothing().when(cardRepository).deleteById(anyLong());
         when(cardRepository.findById(id)).thenReturn(Optional.empty());
         assertTrue(cardService.deleteById(id));
         Mockito.verify(cardRepository, times(1)).deleteById(id);
@@ -206,11 +206,11 @@ class CardServiceImplTest {
 
     @Test
     void shouldGetACardById() {
-        String id = "1";
+        Long id = 1L;
 
         Card card = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Test name")
                 .description("Test description")
                 .build();

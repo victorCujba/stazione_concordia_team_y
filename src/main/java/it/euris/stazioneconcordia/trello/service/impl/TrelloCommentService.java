@@ -28,7 +28,7 @@ public class TrelloCommentService {
         this.gson = new Gson();
     }
 
-    public List<CommentDTO> getAllCommentsByIdCard(String idCard) {
+    public List<CommentDTO> getAllCommentsByIdCard(Long idCard) {
 
         String url = buildUrlForGetAllCommentsByIdCardRequest(idCard);
         String json = restTemplate.getForObject(url, String.class);
@@ -39,7 +39,7 @@ public class TrelloCommentService {
         return commentsDTO;
     }
 
-    public CommentDTO getLastCommentFromCard(String idCard) {
+    public CommentDTO getLastCommentFromCard(Long idCard) {
 
         String url = buildUrlForGetAllCommentsByIdCardRequest(idCard);
         String json = restTemplate.getForObject(url, String.class);
@@ -59,7 +59,7 @@ public class TrelloCommentService {
 
     }
 
-    public void insertNewCommentByCardIdAndText(String idCard, String text) {
+    public void insertNewCommentByCardIdAndText(Long idCard, String text) {
 
         String url = buildUrlFo2PostCommentByIdCard(idCard, text);
 
@@ -80,25 +80,25 @@ public class TrelloCommentService {
 
     }
 
-    private static String buildUrlFo2PostCommentByIdCard(String idCard, String text) {
+    private static String buildUrlFo2PostCommentByIdCard(Long idCard, String text) {
         return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_POST_COMMENT_BY_ID_CARD)
                 .buildAndExpand(idCard, text, KEY_VALUE, TOKEN_VALUE)
                 .toString();
     }
 
 
-    private static String buildUrlForGetAllCommentsByIdCardRequest(String idCard) {
+    private static String buildUrlForGetAllCommentsByIdCardRequest(Long idCard) {
         return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_GET_COMMENTS_BY_ID_CARD)
                 .buildAndExpand(idCard, KEY_VALUE, TOKEN_VALUE)
                 .toString();
     }
 
     public static void main(String[] args) {
-        TrelloCommentService trelloCommentService = new TrelloCommentService();
-        String idCard = "652d5736ec602d3f7cd4c698";
-        String text = "Test comment inserted from Java";
-        // trelloCommentService.insertNewCommentByCardIdAndText(idCard, text);
-        System.out.println(trelloCommentService.getAllCommentsByIdCard(idCard));
+//        TrelloCommentService trelloCommentService = new TrelloCommentService();
+//        String idCard = "652d5736ec602d3f7cd4c698";
+//        String text = "Test comment inserted from Java";
+//        // trelloCommentService.insertNewCommentByCardIdAndText(idCard, text);
+//        System.out.println(trelloCommentService.getAllCommentsByIdCard(idCard));
     }
 
 

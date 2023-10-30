@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.service.impl;
 
 
 import it.euris.stazioneconcordia.data.model.CardState;
+import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.repository.CardStateRepository;
 import it.euris.stazioneconcordia.service.CardStateService;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,9 @@ public class CardStateServiceImpl implements CardStateService {
 
     @Override
     public CardState insert(CardState cardState) {
+        if (cardState.getId() != null) {
+            throw new IdMustBeNullException();
+    }
         return cardStateRepository.save(cardState);
     }
 
@@ -33,13 +37,13 @@ public class CardStateServiceImpl implements CardStateService {
     }
 
     @Override
-    public Boolean deleteById(String idCardState) {
+    public Boolean deleteById(Long idCardState) {
         cardStateRepository.deleteById(idCardState);
         return cardStateRepository.findById(idCardState).isEmpty();
     }
 
     @Override
-    public CardState findById(String idCardState) {
+    public CardState findById(Long idCardState) {
         return cardStateRepository.findById(idCardState).orElse(CardState.builder().build());
     }
 }
