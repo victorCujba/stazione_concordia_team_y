@@ -61,7 +61,7 @@ public class Comment implements Model {
                 .idUser(user.getId())
                 .idCard(numberToString(card.getId()))
                 .date(localDateTimeToString(date))
-                .data(DataDTO.builder().text(commentBody).card(CardDTO.builder().id(numberToString(card.getId())).build()).build())
+                .commentBody(commentBody)
                 .deleted(booleanToString(deleted))
                 .build();
     }

@@ -30,9 +30,9 @@ public class CardTrelloDto implements TrelloDto {
     @Override
     public CardDTO trellotoDto() {
         return CardDTO.builder()
-                .id(id)
+                .idTrello(id)
                 .idList(idList)
-                .idLabels(Collections.singletonList(idLabels))
+                .idLabels(idLabels)
                 .name(name)
                 .closed(closed)
                 .description(desc)

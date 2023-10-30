@@ -25,7 +25,7 @@ public class ListsTrelloDto implements TrelloDto {
                 .id(id)
                 .name(name)
                 .closed(closed)
-                .idBoard(idBoard)
+                .idTrelloBoard(idBoard)
                 .position(position)
                 .build();
     }

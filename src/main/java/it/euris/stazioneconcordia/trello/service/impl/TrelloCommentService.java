@@ -65,7 +65,7 @@ public class TrelloCommentService {
 
         CommentDTO commentDTO = CommentDTO
                 .builder()
-                .data(DataDTO.builder().text(text).build())
+                .commentBody(text)
                 .build();
 
         String requestBody = gson.toJson(commentDTO);
