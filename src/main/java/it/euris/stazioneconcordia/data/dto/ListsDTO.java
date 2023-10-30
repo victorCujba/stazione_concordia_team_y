@@ -18,8 +18,8 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLon
 @Builder
 public class ListsDTO implements Dto {
 
-    private String idDb;
     private String id;
+    private String idTrello;
     private String name;
     private String position;
     private String closed;
@@ -30,6 +30,7 @@ public class ListsDTO implements Dto {
         return Lists
                 .builder()
                 .id(stringToLong(id))
+                .idTrello(idTrello)
                 .name(name)
                 .position(stringToLong(position))
                 .closed(stringToBoolean(closed))

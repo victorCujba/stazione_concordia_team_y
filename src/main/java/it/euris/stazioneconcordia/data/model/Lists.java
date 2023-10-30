@@ -56,7 +56,8 @@ public class Lists implements Model {
     @Override
     public ListsDTO toDto() {
         return ListsDTO.builder()
-                .id(idTrello)
+                .id(numberToString(id))
+                .idTrello(idTrello)
                 .idBoard(numberToString(board.getId()))
                 .name(name)
                 .closed(booleanToString(closed))

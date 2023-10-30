@@ -68,7 +68,8 @@ public class Card implements Model {
     @Override
     public CardDTO toDto() {
         return CardDTO.builder()
-                .id(idTrello)
+                .id(numberToString(id))
+                .idTrello(idTrello)
                 .name(name)
                 .position(numberToString(position))
                 .idLabels(List.of(numberToString(labels.getId())))

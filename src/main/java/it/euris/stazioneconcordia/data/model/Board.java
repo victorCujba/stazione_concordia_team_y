@@ -10,8 +10,7 @@ import org.hibernate.annotations.Where;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.booleanToString;
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTimeToString;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 @Builder
 @Getter
@@ -59,7 +58,8 @@ public class Board implements Model {
     @Override
     public BoardDTO toDto() {
         return BoardDTO.builder()
-                .id(idTrello)
+                .id(numberToString(id))
+                .idTrello(idTrello)
                 .name(name)
                 .description(description)
                 .url(url)

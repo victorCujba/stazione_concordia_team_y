@@ -17,6 +17,7 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLon
 @Builder
 public class LabelsDTO implements Dto {
     private String id;
+    private String idTrello;
     private String name;
     private String color;
     private Long uses;
@@ -26,7 +27,8 @@ public class LabelsDTO implements Dto {
     public Labels toModel() {
         return Labels
                 .builder()
-                .idTrello(id)
+                .id(stringToLong(id))
+                .idTrello(idTrello)
                 .board(Board.builder().id(stringToLong(idBoard)).build())
                 .name(name)
                 .color(color)

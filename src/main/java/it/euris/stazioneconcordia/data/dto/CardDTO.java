@@ -24,6 +24,7 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 public class CardDTO implements Dto {
 
     private String id;
+    private String idTrello;
     private String idList;
     private List<String> idLabels;
     private String name;
@@ -42,6 +43,7 @@ public class CardDTO implements Dto {
         return Card
                 .builder()
                 .id(stringToLong(id))
+                .idTrello(idTrello)
                 .name(name)
                 .position(stringToLong(position))
                 .description(description)

@@ -18,6 +18,7 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 public class BoardDTO implements Dto {
 
     private String id;
+    private String idTrello;
     private String name;
     private String description;
     private String url;
@@ -30,6 +31,7 @@ public class BoardDTO implements Dto {
         return Board
                 .builder()
                 .id(stringToLong(id))
+                .idTrello(idTrello)
                 .name(name)
                 .description(description)
                 .url(url)
