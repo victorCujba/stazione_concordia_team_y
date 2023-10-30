@@ -3,6 +3,7 @@ package it.euris.stazioneconcordia.data.dto;
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.model.Labels;
+import it.euris.stazioneconcordia.data.trelloDto.LabelsTrelloDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +29,18 @@ public class LabelsDTO implements Dto {
                 .name(name)
                 .color(color)
                 .uses(uses)
+                .build();
+    }
+
+    @Override
+    public LabelsTrelloDto toTrelloDto() {
+        return LabelsTrelloDto
+                .builder()
+                .id(id)
+                .name(name)
+                .color(color)
+                .uses(uses)
+                .idBoard(idBoard)
                 .build();
     }
 }
