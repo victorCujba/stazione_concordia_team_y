@@ -23,7 +23,7 @@ public class ListsDTO implements Dto {
     private String name;
     private String position;
     private String closed;
-    private String idBoard;
+    private String idTrelloBoard;
 
     @Override
     public Lists toModel() {
@@ -34,7 +34,7 @@ public class ListsDTO implements Dto {
                 .name(name)
                 .position(stringToLong(position))
                 .closed(stringToBoolean(closed))
-                .board(Board.builder().id(stringToLong(idBoard)).build())
+                .board(Board.builder().idTrello(idTrelloBoard).build())
                 .build();
     }
 
@@ -46,7 +46,7 @@ public class ListsDTO implements Dto {
                 .name(name)
                 .position(position)
                 .closed(closed)
-                .idBoard(idBoard)
+                .idBoard(idTrelloBoard)
                 .build();
     }
 }

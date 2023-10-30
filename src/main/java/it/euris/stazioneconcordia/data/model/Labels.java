@@ -47,7 +47,7 @@ public class Labels implements Model {
                 .builder()
                 .id(numberToString(id))
                 .idTrello(idTrello)
-                .idBoard(numberToString(board.getId()))
+                .idTrelloBoard(board.getIdTrello())
                 .name(name)
                 .color(color)
                 .uses(uses)

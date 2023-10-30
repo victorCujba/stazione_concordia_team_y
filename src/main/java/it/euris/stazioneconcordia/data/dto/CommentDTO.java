@@ -23,7 +23,7 @@ public class CommentDTO implements Dto {
     private String id;
     private String idTrello;
     private String date;
-    private DataDTO data;
+    private String commentBody;
     private String deleted;
     private String idUser;
     private String idCard;
@@ -36,9 +36,9 @@ public class CommentDTO implements Dto {
                 .id(stringToLong(id))
                 .idTrello(idTrello)
                 .date(stringToLocalDateTime(date))
-                .commentBody(data.getText())
+                .commentBody(commentBody)
                 .deleted(stringToBoolean(deleted))
-                .card(Card.builder().idTrello(data.getCard().getId()).build())
+                .card(Card.builder().idTrello(idCard).build())
                 .user(User.builder().id(idUser).build())
                 .build();
     }
@@ -49,21 +49,8 @@ public class CommentDTO implements Dto {
                 .id(id)
                 .idMemberCreator(idUser)
                 .idCard(idCard)
-                .text(data.getText())
+                .text(commentBody)
                 .date(date)
                 .build();
-    }
-
-    @Override
-    public String toString() {
-        return "CommentDTO {" +
-                "id = " + id + '\'' + '\n' +
-                "date = " + date + '\'' + '\n' +
-                "commentBody = " + data.getText() + '\'' + '\n' +
-                "deleted = " + deleted + '\'' + '\n' +
-                "idCard = " + data.getCard().getId() + '\'' + '\n' +
-                "idUser = " + idUser + '\'' + '\n' +
-                '}' + '\n';
-
     }
 }

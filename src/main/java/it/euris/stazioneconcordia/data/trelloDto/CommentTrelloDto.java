@@ -22,7 +22,7 @@ public class CommentTrelloDto implements TrelloDto {
     @Override
     public CommentDTO trellotoDto() {
         return CommentDTO.builder()
-                .id(id)
+                .idTrello(id)
                 .idCard(idCard)
                 .idUser(idMemberCreator)
                 .date(date)

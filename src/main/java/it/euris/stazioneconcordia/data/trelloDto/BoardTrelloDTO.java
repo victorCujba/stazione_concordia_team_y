@@ -16,17 +16,15 @@ public class BoardTrelloDTO implements TrelloDto {
     private String id;
     private String name;
     private String desc;
-    private String closed;
     private String url;
 
     @Override
     public BoardDTO trellotoDto() {
         return BoardDTO.builder()
-                .id(id)
+                .idTrello(id)
                 .name(name)
                 .description(desc)
                 .url(url)
-                .closed(closed)
                 .build();
     }
 }

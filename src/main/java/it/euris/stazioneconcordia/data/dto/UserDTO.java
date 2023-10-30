@@ -45,7 +45,6 @@ public class UserDTO implements Dto {
                 .bio(bio)
                 .avatarUrl(avatarUrl)
                 .email(email)
-                .status(status)
                 .build();
     }
 }

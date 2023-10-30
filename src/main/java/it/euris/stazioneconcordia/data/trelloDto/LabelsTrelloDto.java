@@ -23,11 +23,11 @@ public class LabelsTrelloDto implements TrelloDto {
     public LabelsDTO trellotoDto() {
         return LabelsDTO
                 .builder()
-                .id(id)
+                .idTrello(id)
                 .name(name)
                 .color(color)
                 .uses(uses)
-                .idBoard(idBoard)
+                .idTrelloBoard(idBoard)
                 .build();
     }
 }

@@ -21,7 +21,7 @@ public class LabelsDTO implements Dto {
     private String name;
     private String color;
     private Long uses;
-    private String idBoard;
+    private String idTrelloBoard;
 
     @Override
     public Labels toModel() {
@@ -29,7 +29,7 @@ public class LabelsDTO implements Dto {
                 .builder()
                 .id(stringToLong(id))
                 .idTrello(idTrello)
-                .board(Board.builder().id(stringToLong(idBoard)).build())
+                .board(Board.builder().idTrello(idTrelloBoard).build())
                 .name(name)
                 .color(color)
                 .uses(uses)
@@ -44,7 +44,7 @@ public class LabelsDTO implements Dto {
                 .name(name)
                 .color(color)
                 .uses(uses)
-                .idBoard(idBoard)
+                .idBoard(idTrelloBoard)
                 .build();
     }
 }

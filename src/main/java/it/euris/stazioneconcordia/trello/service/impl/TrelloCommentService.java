@@ -3,7 +3,7 @@ package it.euris.stazioneconcordia.trello.service.impl;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.euris.stazioneconcordia.data.dto.CommentDTO;
-import it.euris.stazioneconcordia.data.dto.DataDTO;
+import it.euris.stazioneconcordia.data.trelloDto.CommentTrelloDto;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -28,29 +28,29 @@ public class TrelloCommentService {
         this.gson = new Gson();
     }
 
-    public List<CommentDTO> getAllCommentsByIdCard(Long idCard) {
+    public List<CommentTrelloDto> getAllCommentsByIdCard(String idCard) {
 
         String url = buildUrlForGetAllCommentsByIdCardRequest(idCard);
         String json = restTemplate.getForObject(url, String.class);
-        Type listType = new TypeToken<List<CommentDTO>>() {
+        Type listType = new TypeToken<List<CommentTrelloDto>>() {
         }.getType();
-        List<CommentDTO> commentsDTO = gson.fromJson(json, listType);
+        List<CommentTrelloDto> commentsTrelloDTO = gson.fromJson(json, listType);
 
-        return commentsDTO;
+        return commentsTrelloDTO;
     }
 
-    public CommentDTO getLastCommentFromCard(Long idCard) {
+    public CommentTrelloDto getLastCommentFromCard(String idCard) {
 
         String url = buildUrlForGetAllCommentsByIdCardRequest(idCard);
         String json = restTemplate.getForObject(url, String.class);
-        Type listType = new TypeToken<List<CommentDTO>>() {
+        Type listType = new TypeToken<List<CommentTrelloDto>>() {
         }.getType();
 
-        List<CommentDTO> commentDTOList = gson.fromJson(json, listType);
-        if (!commentDTOList.isEmpty()) {
-            commentDTOList.sort(Comparator.comparing(CommentDTO::getDate));
-            System.out.println(commentDTOList.get(0));
-            return commentDTOList.get(0);
+        List<CommentTrelloDto> commentTrelloDtos = gson.fromJson(json, listType);
+        if (!commentTrelloDtos.isEmpty()) {
+            commentTrelloDtos.sort(Comparator.comparing(CommentTrelloDto::getDate));
+            System.out.println(commentTrelloDtos.get(0));
+            return commentTrelloDtos.get(0);
         } else {
             //TODO IMPLEMENT NULL EXCEPTION
             return null;
@@ -59,13 +59,13 @@ public class TrelloCommentService {
 
     }
 
-    public void insertNewCommentByCardIdAndText(Long idCard, String text) {
+    public void insertNewCommentByCardIdAndText(String idCard, String text) {
 
         String url = buildUrlFo2PostCommentByIdCard(idCard, text);
 
         CommentDTO commentDTO = CommentDTO
                 .builder()
-                .data(DataDTO.builder().text(text).build())
+                .commentBody(text)
                 .build();
 
         String requestBody = gson.toJson(commentDTO);
@@ -80,14 +80,14 @@ public class TrelloCommentService {
 
     }
 
-    private static String buildUrlFo2PostCommentByIdCard(Long idCard, String text) {
+    private static String buildUrlFo2PostCommentByIdCard(String idCard, String text) {
         return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_POST_COMMENT_BY_ID_CARD)
                 .buildAndExpand(idCard, text, KEY_VALUE, TOKEN_VALUE)
                 .toString();
     }
 
 
-    private static String buildUrlForGetAllCommentsByIdCardRequest(Long idCard) {
+    private static String buildUrlForGetAllCommentsByIdCardRequest(String idCard) {
         return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_GET_COMMENTS_BY_ID_CARD)
                 .buildAndExpand(idCard, KEY_VALUE, TOKEN_VALUE)
                 .toString();

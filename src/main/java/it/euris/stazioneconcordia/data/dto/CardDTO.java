@@ -26,20 +26,16 @@ public class CardDTO implements Dto {
     private String id;
     private String idTrello;
     private String idList;
-    private List<String> idLabels;
+    private String idLabels;
     private String name;
     private String position;
     private String description;
     private String closed;
-    private List<CommentDTO> comment;
     private String expirationDate;
     private String dateLastActivity;
 
     @Override
     public Card toModel() {
-        if (idLabels.isEmpty()) {
-            idLabels.add(0, "0");
-        }
         return Card
                 .builder()
                 .id(stringToLong(id))
@@ -51,15 +47,15 @@ public class CardDTO implements Dto {
                 .dateLastActivity(stringToLocalDateTime(dateLastActivity))
                 .closed(stringToBoolean(closed))
                 .list(Lists.builder().id(stringToLong(idList)).build())
-                .labels(Labels.builder().id(stringToLong(idLabels.get(0))).build())
+                .labels(Labels.builder().id(stringToLong(idLabels)).build())
                 .build();
     }
 
     @Override
     public CardTrelloDto toTrelloDto() {
         return CardTrelloDto.builder()
-                .id(id)
-                .idLabels(idLabels.toString())
+                .id(idTrello)
+                .idLabels(idLabels)
                 .idList(idList)
                 .name(name)
                 .pos(position)

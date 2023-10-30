@@ -46,7 +46,6 @@ public class BoardDTO implements Dto {
                 .id(id)
                 .name(name)
                 .desc(description)
-                .closed(closed)
                 .url(url)
                 .build();
     }
