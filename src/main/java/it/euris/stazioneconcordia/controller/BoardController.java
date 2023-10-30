@@ -47,13 +47,13 @@ public class BoardController {
     }
 
     @DeleteMapping("/v1/{id}")
-    public Boolean deleteBoard(@PathVariable("id") String idBoard) {
+    public Boolean deleteBoard(@PathVariable("id") Long idBoard) {
         return boardService.deleteById(idBoard);
 
     }
 
     @GetMapping("/v1/{id}")
-    public BoardDTO getBoardById(@PathVariable("id") String idBoard) {
+    public BoardDTO getBoardById(@PathVariable("id") Long idBoard) {
         return boardService.findById(idBoard).toDto();
     }
 

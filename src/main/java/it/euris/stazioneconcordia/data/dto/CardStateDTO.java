@@ -27,7 +27,7 @@ public class CardStateDTO implements Dto {
     public CardState toModel() {
         return CardState
                 .builder()
-                .id(id)
+                .id(stringToLong(id))
                 .card(Card.builder().id(stringToLong(idCard)).build())
                 .fromList(stringToListLabel(fromList))
                 .toList(stringToListLabel(toList))
