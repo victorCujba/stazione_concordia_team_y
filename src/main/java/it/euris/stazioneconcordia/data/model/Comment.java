@@ -38,12 +38,12 @@ public class Comment implements Model {
     @Builder.Default
     private Boolean deleted = false;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("id_card")
     @JoinColumn(name = "id_card")
     private Card card;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("id_user")
     @JoinColumn(name = "id_user")
     private User user;
@@ -54,11 +54,11 @@ public class Comment implements Model {
         return CommentDTO
                 .builder()
                 .id(id)
-                .idMemberCreator(user.getId())
+                .idUser(user.getId())
+                .idCard(card.getId())
                 .date(localDateTimeToString(date))
                 .data(DataDTO.builder().text(commentBody).card(CardDTO.builder().id(card.getId()).build()).build())
                 .deleted(booleanToString(deleted))
-                .data(DataDTO.builder().card(CardDTO.builder().id(card.getId()).build()).build())
                 .build();
     }
 }

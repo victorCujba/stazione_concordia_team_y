@@ -207,7 +207,7 @@ class CommentControllerTest {
         return CommentDTO
                 .builder()
                 .date("2023-10-19T12:00:00")
-                .idMemberCreator("1")
+                .idUser("1")
                 .data(DataDTO.builder().card(CardDTO.builder().id("1").build()).build())
                 .data(new DataDTO("comment body"))
                 .build();
@@ -218,7 +218,7 @@ class CommentControllerTest {
                 .builder()
                 .id("1")
                 .date("2023-10-19T12:00:00")
-                .idMemberCreator("1")
+                .idUser("1")
                 .data(DataDTO.builder().card(CardDTO.builder().id("1").build()).build())
                 .data(new DataDTO("comment body"))
                 .build();

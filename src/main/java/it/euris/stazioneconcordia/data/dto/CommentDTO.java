@@ -23,7 +23,9 @@ public class CommentDTO implements Dto {
     private String date;
     private DataDTO data;
     private String deleted;
-    private String idMemberCreator;
+    @SerializedName("idMemberCreator")
+    private String idUser;
+    private String idCard;
 
 
     @Override
@@ -35,7 +37,7 @@ public class CommentDTO implements Dto {
                 .commentBody(data.getText())
                 .deleted(stringToBoolean(deleted))
                 .card(Card.builder().id(data.getCard().getId()).build())
-                .user(User.builder().id(idMemberCreator).build())
+                .user(User.builder().id(idUser).build())
                 .build();
     }
 
@@ -47,7 +49,7 @@ public class CommentDTO implements Dto {
                 "commentBody = " + data.getText() + '\'' + '\n' +
                 "deleted = " + deleted + '\'' + '\n' +
                 "idCard = " + data.getCard().getId() + '\'' + '\n' +
-                "idUser = " + idMemberCreator + '\'' + '\n' +
+                "idUser = " + idUser + '\'' + '\n' +
                 '}' + '\n';
 
     }

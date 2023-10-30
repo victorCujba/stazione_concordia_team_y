@@ -111,8 +111,6 @@ public class TrelloController {
 
     @GetMapping("/comment")
     public List<CommentDTO> getComment(@RequestParam String idCard) {
-
-        TrelloCardServiceImpl trelloCardService = new TrelloCardServiceImpl();
 //        trelloCardService.getCardsByIdBoard(BOARD_ID_VALUE);
 //        trelloCardService.getCardsByIdLists(LIST_O1_ID_VALUE);
 //        trelloCardService.getCardByIdCard(CARD_01_ID_VALUE);

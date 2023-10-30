@@ -38,7 +38,8 @@ public class User implements Model {
     @Builder.Default
     private Boolean status = false;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @MapsId("id_user")
     @JoinColumn(name = "id_user")
     private List<Comment> comments;
 

@@ -25,11 +25,12 @@ public class CardDTO implements Dto {
     private String idList;
     private List<String> idLabels;
     private String name;
+    @SerializedName("pos")
     private String position;
     @SerializedName("desc")
     private String description;
     private String closed;
-    private List<String> comment;
+    private List<CommentDTO> comment;
     @SerializedName("due")
     private String expirationDate;
     private String dateLastActivity;

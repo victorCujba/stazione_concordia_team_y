@@ -98,7 +98,7 @@ public class TrelloCommentService {
         String idCard = "652d5736ec602d3f7cd4c698";
         String text = "Test comment inserted from Java";
         // trelloCommentService.insertNewCommentByCardIdAndText(idCard, text);
-        trelloCommentService.getLastCommentFromCard(idCard);
+        System.out.println(trelloCommentService.getAllCommentsByIdCard(idCard));
     }
 
 
