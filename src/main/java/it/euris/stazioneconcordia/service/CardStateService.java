@@ -14,9 +14,9 @@ public interface CardStateService {
 
     CardState update(CardState cardState);
 
-    Boolean deleteById(String idCardState);
+    Boolean deleteById(Long idCardState);
 
-    CardState findById(String idCardState);
+    CardState findById(Long idCardState);
 }
 
 
