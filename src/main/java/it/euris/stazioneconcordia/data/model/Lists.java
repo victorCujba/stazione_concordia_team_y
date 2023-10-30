@@ -24,11 +24,11 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 public class Lists implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_db")
-    private Long idDb;
-
     @Column(name = "id")
-    private String id;
+    private Long id;
+
+    @Column(name = "id_trello")
+    private String idTrello;
 
     @Column(name = "name")
     private String name;
@@ -56,8 +56,8 @@ public class Lists implements Model {
     @Override
     public ListsDTO toDto() {
         return ListsDTO.builder()
-                .id(id)
-                .idBoard(board.getId())
+                .id(idTrello)
+                .idBoard(numberToString(board.getId()))
                 .name(name)
                 .closed(booleanToString(closed))
                 .position(numberToString(position))

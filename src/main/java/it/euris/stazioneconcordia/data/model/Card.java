@@ -26,11 +26,11 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 public class Card implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_db")
-    private Long idDb;
-
     @Column(name = "id")
-    private String id;
+    private Long id;
+
+    @Column(name = "id_trello")
+    private String idTrello;
 
     @Column(name = "name")
     private String name;
@@ -68,15 +68,15 @@ public class Card implements Model {
     @Override
     public CardDTO toDto() {
         return CardDTO.builder()
-                .id(id)
+                .id(idTrello)
                 .name(name)
                 .position(numberToString(position))
-                .idLabels(List.of(labels.getId()))
+                .idLabels(List.of(numberToString(labels.getId())))
                 .description(description)
                 .closed(booleanToString(closed))
                 .expirationDate(localDateTimeToString(expirationDate))
                 .dateLastActivity(localDateTimeToString(dateLastActivity))
-                .idList(list.getId())
+                .idList(numberToString(list.getId()))
                 .build();
     }
 

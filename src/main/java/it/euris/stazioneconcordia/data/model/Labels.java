@@ -7,6 +7,8 @@ import lombok.*;
 
 import java.util.List;
 
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.numberToString;
+
 @Builder
 @Getter
 @Setter
@@ -17,11 +19,11 @@ import java.util.List;
 public class Labels implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_db")
-    private Long idDb;
-
     @Column(name = "id")
-    private String id;
+    private Long id;
+
+    @Column(name = "id_trello")
+    private String idTrello;
 
     @Column(name = "name")
     private String name;
@@ -43,8 +45,8 @@ public class Labels implements Model {
     public LabelsDTO toDto() {
         return LabelsDTO
                 .builder()
-                .id(id)
-                .idBoard(board.getId())
+                .id(idTrello)
+                .idBoard(numberToString(board.getId()))
                 .name(name)
                 .color(color)
                 .uses(uses)

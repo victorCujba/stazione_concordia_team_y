@@ -25,11 +25,11 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTi
 public class Board implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_db")
-    private Long idDb;
-
     @Column(name = "id")
-    private String id;
+    private Long id;
+
+    @Column(name = "id_trello")
+    private String idTrello;
 
     @Column(name = "name")
     private String name;
@@ -59,7 +59,7 @@ public class Board implements Model {
     @Override
     public BoardDTO toDto() {
         return BoardDTO.builder()
-                .id(id)
+                .id(idTrello)
                 .name(name)
                 .description(description)
                 .url(url)

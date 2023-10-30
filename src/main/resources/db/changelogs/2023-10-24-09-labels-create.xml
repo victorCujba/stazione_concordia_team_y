@@ -25,7 +25,7 @@
 
         <addForeignKeyConstraint baseTableName="labels" baseColumnNames="id_board" constraintName="FK_BOARD_ON_LABELS"
                                  referencedTableName="board"
-                                 referencedColumnNames="id_db"/>
+                                 referencedColumnNames="id"/>
         <rollback>
             <dropTable tableName="labels"/>
         </rollback>

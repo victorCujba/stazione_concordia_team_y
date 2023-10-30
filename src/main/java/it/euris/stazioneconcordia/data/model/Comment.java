@@ -11,8 +11,7 @@ import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.booleanToString;
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTimeToString;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 @Builder
 @Getter
@@ -26,11 +25,11 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTi
 public class Comment implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_db")
-    private Long idDb;
-
     @Column(name = "id")
-    private String id;
+    private Long id;
+
+    @Column(name = "id_trello")
+    private String idTrello;
 
     @Column(name = "date")
     private LocalDateTime date;
@@ -57,11 +56,11 @@ public class Comment implements Model {
     public CommentDTO toDto() {
         return CommentDTO
                 .builder()
-                .id(id)
+                .id(idTrello)
                 .idUser(user.getId())
-                .idCard(card.getId())
+                .idCard(numberToString(card.getId()))
                 .date(localDateTimeToString(date))
-                .data(DataDTO.builder().text(commentBody).card(CardDTO.builder().id(card.getId()).build()).build())
+                .data(DataDTO.builder().text(commentBody).card(CardDTO.builder().id(numberToString(card.getId())).build()).build())
                 .deleted(booleanToString(deleted))
                 .build();
     }

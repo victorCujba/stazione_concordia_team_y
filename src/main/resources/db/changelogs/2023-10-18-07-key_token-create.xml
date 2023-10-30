@@ -24,7 +24,7 @@
         <addForeignKeyConstraint baseTableName="key_token" baseColumnNames="id_board"
                                  constraintName="FK_BOARD_ON_KEY_TOKEN"
                                  referencedTableName="board"
-                                 referencedColumnNames="id_db"/>
+                                 referencedColumnNames="id"/>
 
         <rollback>
             <dropTable tableName="key_token"/>

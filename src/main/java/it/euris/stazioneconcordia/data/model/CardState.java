@@ -8,8 +8,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.listLabelToString;
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTimeToString;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 @Builder
 @Getter
@@ -44,7 +43,7 @@ public class CardState implements Model {
         return CardStateDTO
                 .builder()
                 .id(id)
-                .idCard(card.getId())
+                .idCard(numberToString(card.getId()))
                 .fromList(listLabelToString(fromList))
                 .toList(listLabelToString(toList))
                 .dateLastUpdate(localDateTimeToString(dateLastUpdate))

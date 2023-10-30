@@ -25,7 +25,7 @@
 
         <addForeignKeyConstraint baseTableName="card_state" baseColumnNames="id_card" constraintName="FK_CARD_ON_CARD_STATE"
                                  referencedTableName="card"
-                                 referencedColumnNames="id_db"/>
+                                 referencedColumnNames="id"/>
         <rollback>
             <dropTable tableName="card_state"/>
         </rollback>
