@@ -4,21 +4,17 @@ package it.euris.stazioneconcordia.trello.service.impl;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.euris.stazioneconcordia.data.dto.CardDTO;
+import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
 import it.euris.stazioneconcordia.trello.service.TrelloCardService;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.lang.reflect.Type;
-import java.sql.SQLOutput;
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.List;
 
 import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
-import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.TOKEN_VALUE;
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLocalDateTime;
 
 @Service
 public class TrelloCardServiceImpl implements TrelloCardService {
@@ -33,166 +29,166 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         this.gson = new Gson();
     }
 
-    public List<CardDTO> getCardsByIdBoard(String idBoard) {
+    public List<CardTrelloDto> getCardsByIdBoard(String idBoard) {
 
         String url = buildUrlGetCardsByIdBoardRequest(idBoard);
         String json = getJsonFromRequest(url);
 
-        List<CardDTO> cardDTOs = gson.fromJson(json, listCardsDtoTypeClass());
-        if (cardDTOs == null) {
+        List<CardTrelloDto> cardTrelloDtos = gson.fromJson(json, listCardsDtoTypeClass());
+        if (cardTrelloDtos == null) {
             System.out.println("no cards found");
             return null;
         }
-        return cardDTOs;
+        return cardTrelloDtos;
     }
 
 
-    public List<CardDTO> getCardsByIdLists(String idList) {
+    public List<CardTrelloDto> getCardsByIdLists(String idList) {
 
         String url = buildUrlGetCardsByIdListRequest(idList);
         String json = getJsonFromRequest(url);
 
-        List<CardDTO> cardDTOS = gson.fromJson(json, listCardsDtoTypeClass());
-        if (cardDTOS == null) {
+        List<CardTrelloDto> cardTrelloDtos = gson.fromJson(json, listCardsDtoTypeClass());
+        if (cardTrelloDtos == null) {
             System.out.println("no cards found");
             return null;
         }
-        System.out.println(cardDTOS);
-        return cardDTOS;
+        System.out.println(cardTrelloDtos);
+        return cardTrelloDtos;
     }
 
-    public CardDTO getCardByIdCard(String idCard) {
+    public CardTrelloDto getCardByIdCard(String idCard) {
 
         String url = buildUrlGetCardByIdCardRequest(idCard);
         String json = getJsonFromRequest(url);
 
-        CardDTO cardDTO = gson.fromJson(json, cardDtoTypeClass());
-        if (cardDTO == null) {
+        CardTrelloDto cardTrelloDto = gson.fromJson(json, cardDtoTypeClass());
+        if (cardTrelloDto == null) {
             System.out.println("no cards found");
             return null;
         }
 
-        return cardDTO;
+        return cardTrelloDto;
     }
 
-    public List<CardDTO> getHighPriorityCardsByIdBoard(String idBoard) {
+    public List<CardTrelloDto> getHighPriorityCardsByIdBoard(String idBoard) {
         String url = buildUrlGetCardsByIdBoardRequest(idBoard);
         String json = getJsonFromRequest(url);
         String highPriorityLabel = "652d5736ec602d3f7cd4c6ac";
 
 
-        List<CardDTO> cardDTOS = gson.fromJson(json, listCardsDtoTypeClass());
+        List<CardTrelloDto> cardTrelloDtos = gson.fromJson(json, listCardsDtoTypeClass());
 
-        return getCardFilteredByPriorityLabelId(highPriorityLabel, cardDTOS);
+        return getCardFilteredByPriorityLabelId(highPriorityLabel, cardTrelloDtos);
 
     }
 
-    public List<CardDTO> getHighPriorityCardByIdList(String idList) {
+    public List<CardTrelloDto> getHighPriorityCardByIdList(String idList) {
         String url = buildUrlGetCardsByIdListRequest(idList);
         String json = getJsonFromRequest(url);
         String mediumPriority = "652d5736ec602d3f7cd4c6af";
 
-        List<CardDTO> cardDTOS = gson.fromJson(json, listCardsDtoTypeClass());
+        List<CardTrelloDto> cardTrelloDtos = gson.fromJson(json, listCardsDtoTypeClass());
 
-        return getCardFilteredByPriorityLabelId(mediumPriority, cardDTOS);
+        return getCardFilteredByPriorityLabelId(mediumPriority, cardTrelloDtos);
 
     }
 
-    public List<CardDTO> getMediumPriorityCardsByIdBoard(String idBoard) {
+    public List<CardTrelloDto> getMediumPriorityCardsByIdBoard(String idBoard) {
 
         String url = buildUrlGetCardsByIdBoardRequest(idBoard);
         String json = getJsonFromRequest(url);
         String highPriorityLabel = "652d5736ec602d3f7cd4c6ac";
 
 
-        List<CardDTO> cardDTOS = gson.fromJson(json, listCardsDtoTypeClass());
+        List<CardTrelloDto> cardTrelloDtos = gson.fromJson(json, listCardsDtoTypeClass());
 
-        return getCardFilteredByPriorityLabelId(highPriorityLabel, cardDTOS);
+        return getCardFilteredByPriorityLabelId(highPriorityLabel, cardTrelloDtos);
 
     }
 
-    public List<CardDTO> getMediumPriurityCardsByIdList(String idList) {
+    public List<CardTrelloDto> getMediumPriurityCardsByIdList(String idList) {
         String url = buildUrlGetCardsByIdListRequest(idList);
         String json = getJsonFromRequest(url);
         String mediumPriorityLabel = "652d5736ec602d3f7cd4c6af";
 
-        List<CardDTO> cardDTOS = gson.fromJson(json, listCardsDtoTypeClass());
+        List<CardTrelloDto> cardTrelloDtos = gson.fromJson(json, listCardsDtoTypeClass());
 
-        return getCardFilteredByPriorityLabelId(mediumPriorityLabel, cardDTOS);
+        return getCardFilteredByPriorityLabelId(mediumPriorityLabel, cardTrelloDtos);
     }
 
-    public List<CardDTO> getLowPriorityCardsByIdBoard(String idBoard) {
+    public List<CardTrelloDto> getLowPriorityCardsByIdBoard(String idBoard) {
         String url = buildUrlGetCardsByIdBoardRequest(idBoard);
         String json = getJsonFromRequest(url);
         String lowPriorityLabel = "652d5736ec602d3f7cd4c6b2";
 
-        List<CardDTO> cardDTOS = gson.fromJson(json, listCardsDtoTypeClass());
+        List<CardTrelloDto> cardTrelloDtos = gson.fromJson(json, listCardsDtoTypeClass());
 
-        return getCardFilteredByPriorityLabelId(lowPriorityLabel, cardDTOS);
+        return getCardFilteredByPriorityLabelId(lowPriorityLabel, cardTrelloDtos);
     }
 
-    public List<CardDTO> getLowPriorityCardsByIdList(String idList) {
+    public List<CardTrelloDto> getLowPriorityCardsByIdList(String idList) {
         String url = buildUrlGetCardsByIdListRequest(idList);
         String json = getJsonFromRequest(url);
         String lowPriorityLabel = "652d5736ec602d3f7cd4c6b2";
 
-        List<CardDTO> cardDTOS = gson.fromJson(json, listCardsDtoTypeClass());
+        List<CardTrelloDto> cardTrelloDtos = gson.fromJson(json, listCardsDtoTypeClass());
 
-        return getCardFilteredByPriorityLabelId(lowPriorityLabel, cardDTOS);
+        return getCardFilteredByPriorityLabelId(lowPriorityLabel, cardTrelloDtos);
     }
 
-    public List<CardDTO> getDesiredPriorityCardsByIdBoard(String idBoard) {
+    public List<CardTrelloDto> getDesiredPriorityCardsByIdBoard(String idBoard) {
         String url = buildUrlGetCardsByIdBoardRequest(idBoard);
         String json = getJsonFromRequest(url);
         String desiredPriorityLabel = "652d5736ec602d3f7cd4c6b5";
 
-        List<CardDTO> cardDTOS = gson.fromJson(json, listCardsDtoTypeClass());
+        List<CardTrelloDto> cardTrelloDtos = gson.fromJson(json, listCardsDtoTypeClass());
 
-        return getCardFilteredByPriorityLabelId(desiredPriorityLabel, cardDTOS);
+        return getCardFilteredByPriorityLabelId(desiredPriorityLabel, cardTrelloDtos);
     }
 
-    public List<CardDTO> getDesiredPriorityCardsByIdList(String idList) {
+    public List<CardTrelloDto> getDesiredPriorityCardsByIdList(String idList) {
         String url = buildUrlGetCardsByIdListRequest(idList);
         String json = getJsonFromRequest(url);
         String desiredPriorityLabel = "652d5736ec602d3f7cd4c6b5";
 
-        List<CardDTO> cardDTOS = gson.fromJson(json, listCardsDtoTypeClass());
+        List<CardTrelloDto> cardTrelloDtos = gson.fromJson(json, listCardsDtoTypeClass());
 
-        return getCardFilteredByPriorityLabelId(desiredPriorityLabel, cardDTOS);
+        return getCardFilteredByPriorityLabelId(desiredPriorityLabel, cardTrelloDtos);
     }
 
-    public List<CardDTO> getExpiringIn5DaysCardsByIdBoard(String idBoard) {
+    public List<CardTrelloDto> getExpiringIn5DaysCardsByIdBoard(String idBoard) {
         String url = buildUrlGetCardsByIdBoardRequest(idBoard);
         String json = getJsonFromRequest(url);
 
-        List<CardDTO> cardDTOS = gson.fromJson(json, listCardsDtoTypeClass());
+        List<CardTrelloDto> cardTrelloDtos = gson.fromJson(json, listCardsDtoTypeClass());
 
-        List<CardDTO> expiringIn5DaysCards = getExpiringIn5DaysCardsFromToday(cardDTOS);
+        List<CardTrelloDto> expiringIn5DaysCards = getExpiringIn5DaysCardsFromToday(cardTrelloDtos);
         System.out.println(expiringIn5DaysCards);
         return expiringIn5DaysCards;
     }
 
 
-    public List<CardDTO> getExpiringIn5DaysCardsByIdList(String idList) {
+    public List<CardTrelloDto> getExpiringIn5DaysCardsByIdList(String idList) {
         String url = buildUrlGetCardsByIdListRequest(idList);
         String json = getJsonFromRequest(url);
 
-        List<CardDTO> cardDTOS = gson.fromJson(json, listCardsDtoTypeClass());
+        List<CardTrelloDto> cardTrelloDtos = gson.fromJson(json, listCardsDtoTypeClass());
 
-        List<CardDTO> expiringIn5DaysCards = getExpiringIn5DaysCardsFromToday(cardDTOS);
+        List<CardTrelloDto> expiringIn5DaysCards = getExpiringIn5DaysCardsFromToday(cardTrelloDtos);
         System.out.println(expiringIn5DaysCards);
         return expiringIn5DaysCards;
 
     }
 
-    private static List<CardDTO> getExpiringIn5DaysCardsFromToday(List<CardDTO> cardDTOS) {
+    private static List<CardTrelloDto> getExpiringIn5DaysCardsFromToday(List<CardTrelloDto> cardTrelloDtos) {
         LocalDateTime today = LocalDateTime.now();
         LocalDateTime localDateTimeIn5Days = LocalDateTime.now().plusDays(5L);
 
-        List<CardDTO> expiringIn5DaysCards = cardDTOS.stream()
-                .filter(cardDTO -> {
-                    if (cardDTO.getExpirationDate() != null) {
-                        LocalDateTime expirationDate = LocalDateTime.parse(cardDTO.getExpirationDate().substring(0, 19));
+        List<CardTrelloDto> expiringIn5DaysCards = cardTrelloDtos.stream()
+                .filter(cardTrelloDto -> {
+                    if (cardTrelloDto.getDue() != null) {
+                        LocalDateTime expirationDate = LocalDateTime.parse(cardTrelloDto.getDue().substring(0, 19));
                         return today.isBefore(expirationDate)
                                 && localDateTimeIn5Days.isAfter(expirationDate);
                     }
@@ -205,8 +201,8 @@ public class TrelloCardServiceImpl implements TrelloCardService {
         return expiringIn5DaysCards;
     }
 
-    private static List<CardDTO> getCardFilteredByPriorityLabelId(String idLabel, List<CardDTO> cardDTOS) {
-        List<CardDTO> highPriorityCards = cardDTOS
+    private static List<CardTrelloDto> getCardFilteredByPriorityLabelId(String idLabel, List<CardTrelloDto> cardTrelloDtos) {
+        List<CardTrelloDto> highPriorityCards = cardTrelloDtos
                 .stream()
                 .filter(cardDTO -> cardDTO.getIdLabels().contains(idLabel))
                 .toList();
