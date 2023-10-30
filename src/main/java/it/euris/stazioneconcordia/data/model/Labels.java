@@ -16,6 +16,10 @@ import java.util.List;
 @Table(name = "labels")
 public class Labels implements Model {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_db")
+    private Long idDb;
+
     @Column(name = "id")
     private String id;
 

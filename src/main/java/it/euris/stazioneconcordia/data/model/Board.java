@@ -24,6 +24,10 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTi
 @Where(clause = "closed = false")
 public class Board implements Model {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_db")
+    private Long idDb;
+
     @Column(name = "id")
     private String id;
 

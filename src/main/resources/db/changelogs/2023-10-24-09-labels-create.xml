@@ -17,7 +17,7 @@
             <column name="id" type="VARCHAR(255)">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="id_board" type="VARCHAR(255)"/>
+            <column name="id_board" type="BIGINT(20)"/>
             <column name="name" type="VARCHAR(255)"/>
             <column name="color" type="VARCHAR(255)"/>
             <column name="uses" type="BIGINT(20)"/>
@@ -25,7 +25,7 @@
 
         <addForeignKeyConstraint baseTableName="labels" baseColumnNames="id_board" constraintName="FK_BOARD_ON_LABELS"
                                  referencedTableName="board"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id_db"/>
         <rollback>
             <dropTable tableName="labels"/>
         </rollback>

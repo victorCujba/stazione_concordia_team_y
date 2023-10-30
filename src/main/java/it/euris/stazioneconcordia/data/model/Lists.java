@@ -23,6 +23,10 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 @Where(clause = "closed = false")
 public class Lists implements Model {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_db")
+    private Long idDb;
+
     @Column(name = "id")
     private String id;
 

@@ -14,19 +14,22 @@
         </preConditions>
         <comment>List table create</comment>
         <createTable tableName="list">
-            <column name="id" type="VARCHAR(255)">
+            <column name="id_db" type="BIGINT(20)" autoIncrement="true">
                 <constraints primaryKey="true"/>
+            </column>
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)"/>
             <column name="position" type="BIGINT(20)"/>
             <column name="closed" type="BOOLEAN"/>
             <column name="label" type= "ENUM('TO_DO','WORKING_ON','FINISHED')"/>
-            <column name="id_board" type="VARCHAR(255)"/>
+            <column name="id_board" type="BIGINT(20)"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="list" baseColumnNames="id_board" constraintName="FK_BOARD_ON_LIST"
                                  referencedTableName="board"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id_db"/>
 
         <rollback>
             <dropTable tableName="list"/>

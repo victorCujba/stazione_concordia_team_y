@@ -18,13 +18,13 @@
             </column>
             <column name="key" type="VARCHAR(255)"/>
             <column name="token" type="VARCHAR(255)"/>
-            <column name="id_board" type="VARCHAR(255)"/>
+            <column name="id_board" type="BIGINT(20)"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="key_token" baseColumnNames="id_board"
                                  constraintName="FK_BOARD_ON_KEY_TOKEN"
                                  referencedTableName="board"
-                                 referencedColumnNames="id"/>
+                                 referencedColumnNames="id_db"/>
 
         <rollback>
             <dropTable tableName="key_token"/>
