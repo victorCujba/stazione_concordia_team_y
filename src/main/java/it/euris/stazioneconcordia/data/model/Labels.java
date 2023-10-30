@@ -45,7 +45,8 @@ public class Labels implements Model {
     public LabelsDTO toDto() {
         return LabelsDTO
                 .builder()
-                .id(idTrello)
+                .id(numberToString(id))
+                .idTrello(idTrello)
                 .idBoard(numberToString(board.getId()))
                 .name(name)
                 .color(color)

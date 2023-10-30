@@ -56,7 +56,8 @@ public class Comment implements Model {
     public CommentDTO toDto() {
         return CommentDTO
                 .builder()
-                .id(idTrello)
+                .id(numberToString(id))
+                .idTrello(idTrello)
                 .idUser(user.getId())
                 .idCard(numberToString(card.getId()))
                 .date(localDateTimeToString(date))

@@ -21,6 +21,7 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 public class CommentDTO implements Dto {
 
     private String id;
+    private String idTrello;
     private String date;
     private DataDTO data;
     private String deleted;
@@ -33,6 +34,7 @@ public class CommentDTO implements Dto {
         return Comment
                 .builder()
                 .id(stringToLong(id))
+                .idTrello(idTrello)
                 .date(stringToLocalDateTime(date))
                 .commentBody(data.getText())
                 .deleted(stringToBoolean(deleted))
