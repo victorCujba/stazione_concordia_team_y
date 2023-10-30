@@ -2,9 +2,11 @@ package it.euris.stazioneconcordia.data.dto;
 
 import com.google.gson.annotations.SerializedName;
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
+import it.euris.stazioneconcordia.data.dto.archetype.TrelloDto;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
 import it.euris.stazioneconcordia.data.model.User;
+import it.euris.stazioneconcordia.data.trelloDto.CommentTrelloDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +25,6 @@ public class CommentDTO implements Dto {
     private String date;
     private DataDTO data;
     private String deleted;
-    @SerializedName("idMemberCreator")
     private String idUser;
     private String idCard;
 
@@ -38,6 +39,17 @@ public class CommentDTO implements Dto {
                 .deleted(stringToBoolean(deleted))
                 .card(Card.builder().id(data.getCard().getId()).build())
                 .user(User.builder().id(idUser).build())
+                .build();
+    }
+
+    @Override
+    public CommentTrelloDto toTrelloDto() {
+        return CommentTrelloDto.builder()
+                .id(id)
+                .idMemberCreator(idUser)
+                .idCard(idCard)
+                .text(data.getText())
+                .date(date)
                 .build();
     }
 
