@@ -20,8 +20,8 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "comment")
-@SQLDelete(sql = "UPDATE comment SET deleted = true WHERE id = ?")
-@Where(clause = "deleted = false")
+//@SQLDelete(sql = "UPDATE comment SET deleted = true WHERE id = ?")
+//@Where(clause = "deleted = false")
 public class Comment implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

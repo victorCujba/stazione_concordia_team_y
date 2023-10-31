@@ -21,8 +21,8 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "card")
-@SQLDelete(sql = "UPDATE card SET closed = true WHERE id = ?")
-@Where(clause = "closed = false")
+//@SQLDelete(sql = "UPDATE card SET closed = true WHERE id = ?")
+//@Where(clause = "closed = false")
 public class Card implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

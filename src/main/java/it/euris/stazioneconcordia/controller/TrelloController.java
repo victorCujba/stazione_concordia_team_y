@@ -1,25 +1,30 @@
 package it.euris.stazioneconcordia.controller;
 
+import com.google.gson.Gson;
 import it.euris.stazioneconcordia.data.dto.*;
 import it.euris.stazioneconcordia.data.model.*;
 import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
 import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
 import it.euris.stazioneconcordia.data.trelloDto.CommentTrelloDto;
-import it.euris.stazioneconcordia.data.trelloDto.LabelsTrelloDto;
 import it.euris.stazioneconcordia.service.*;
 
 import it.euris.stazioneconcordia.service.trelloService.BoardTrelloService;
 import it.euris.stazioneconcordia.service.trelloService.CardTrelloService;
-import it.euris.stazioneconcordia.service.trelloService.CommentTrelloService;
 import it.euris.stazioneconcordia.service.trelloService.LabelsTrelloService;
+import it.euris.stazioneconcordia.trello.service.impl.TrelloCardServiceImpl;
 import it.euris.stazioneconcordia.trello.service.impl.TrelloCommentService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+
+import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.numberToString;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLong;
 
 
 @AllArgsConstructor
@@ -27,6 +32,10 @@ import java.util.List;
 @RequestMapping("/v1/from-trello")
 public class TrelloController {
     private BoardTrelloService boardTrelloService;
+
+    private LabelsTrelloService labelsTrelloService;
+
+
 
     private BoardService boardService;
 
@@ -44,17 +53,15 @@ public class TrelloController {
 
     private CardTrelloService cardTrelloService;
 
-    private CommentTrelloService commentTrelloService;
 
-    private LabelsTrelloService labelsTrelloService;
 
 
     @GetMapping("/sync")
-    public void getInfoFromTrello(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
+    public void getInfoFromTrello(@RequestParam String idBoard) {
         getBoardFromTrello(idBoard);
-        getAllUsersFromBoard(idBoard, key, token);
-        getLabelsFromTrelloBoardByIdBoard(idBoard);
-        ListsDTO[] listDTOs = getListsFromTrelloBoard(idBoard, key, token);
+        getAllUsersFromBoard(idBoard, KEY_VALUE, TOKEN_VALUE);
+        labelsTrelloService.getLabelsByIdBoard(idBoard);
+
         for (ListsDTO listDTO : listDTOs) {
 //            CardDTO[] cardDTOs = getCardsFromTrelloList(listDTO.getIdTrello(), key, token);
 //            for (CardDTO cardDTO : cardDTOs) {
@@ -92,9 +99,13 @@ public class TrelloController {
     }
 
 
-    public List<LabelsTrelloDto> getLabelsFromTrelloBoardByIdBoard(@RequestParam String idBoard) {
-        return labelsTrelloService.getLabelsFromTrelloBoard(idBoard);
-
+    public LabelsDTO[] getLabelsFromTrelloBoard(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
+        Labels[] labels = labelsService.getLabelsFromTrelloBoard(idBoard, key, token);
+        LabelsDTO[] labelsDTOs = new LabelsDTO[labels.length];
+        for (int i = 0; i < labels.length; i++) {
+            labelsDTOs[i] = labels[i].toDto();
+        }
+        return labelsDTOs;
     }
 
     public UserDTO[] getAllUsersFromBoard(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
@@ -107,9 +118,13 @@ public class TrelloController {
     }
 
     @GetMapping("/comments")
-    public List<CommentTrelloDto> getCommentsFromTrelloCardByIdCard(@RequestParam String idCard) {
-        return commentTrelloService.getAllCommentsFromCardByIdCard(idCard);
-
+    public CommentDTO[] getCommentsFromCard(@RequestParam Long idCard, @RequestParam String key, @RequestParam String token) {
+        Comment[] comments = commentService.getCommentsFromCard(idCard, key, token);
+        CommentDTO[] commentDTOs = new CommentDTO[comments.length];
+        for (int i = 0; i < comments.length; i++) {
+            commentDTOs[i] = comments[i].toDto();
+        }
+        return commentDTOs;
     }
 
     @GetMapping("/comment")

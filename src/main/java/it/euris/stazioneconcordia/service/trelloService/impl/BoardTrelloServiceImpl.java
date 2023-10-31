@@ -17,8 +17,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
-@Service
 @AllArgsConstructor
+@Service
 public class BoardTrelloServiceImpl implements BoardTrelloService {
 
     BoardService boardService;
@@ -35,7 +35,8 @@ public class BoardTrelloServiceImpl implements BoardTrelloService {
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         Gson gson = new Gson();
         BoardTrelloDTO boardTrelloDTO = gson.fromJson(response.body(), BoardTrelloDTO.class);
-
+//        BoardDTO boardDTO = boardTrelloDTO.trellotoDto();
+//        Board board = boardDTO.toModel();
         System.out.println(boardTrelloDTO.toString());
         return boardTrelloDTO;
     }
