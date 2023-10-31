@@ -1,9 +1,11 @@
 package it.euris.stazioneconcordia.service.impl;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import it.euris.stazioneconcordia.data.dto.ListsDTO;
 import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.model.Lists;
+import it.euris.stazioneconcordia.data.trelloDto.ListsTrelloDto;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CardRepository;
@@ -13,12 +15,16 @@ import it.euris.stazioneconcordia.service.ListsService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+
+import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
 
 @AllArgsConstructor
 @Service
@@ -73,9 +79,9 @@ public class ListsServiceImpl implements ListsService {
 
     @Override
     @SneakyThrows
-    public Lists[] getListFromTrelloBoard(Long idBoard, String key, String token) {
-        String url = "https://api.trello.com/1/boards/" + idBoard + "/lists?key=" + key + "&token=" + token;
-        URI targetURI = new URI(url);
+    public List<ListsTrelloDto> getListsFromTrelloByIdBoard(String idBoard) {
+
+        URI targetURI = new URI(buildUrlGetListsFromTrelloByIdBoardRequest(idBoard));
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(targetURI)
                 .GET()
@@ -83,17 +89,13 @@ public class ListsServiceImpl implements ListsService {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         Gson gson = new Gson();
-        ListsDTO[] listDTOs = gson.fromJson(response.body(), ListsDTO[].class);
-        for (ListsDTO listDTO : listDTOs) {
-            Lists list = listDTO.toModel();
-            insert(list);
-        }
+        Type listType = new TypeToken<List<ListsTrelloDto>>() {
+        }.getType();
+        return gson.fromJson(response.body(), listType);
+    }
 
-        Lists[] lists = new Lists[listDTOs.length];
-        for (int i = 0; i < listDTOs.length; i++) {
-            lists[i] = listDTOs[i].toModel();
-        }
-
-        return lists;
+    private String buildUrlGetListsFromTrelloByIdBoardRequest(String idBoard) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_GET_LISTS_BY_ID_BOARD)
+                .buildAndExpand(idBoard, KEY_VALUE, TOKEN_VALUE).toString();
     }
 }

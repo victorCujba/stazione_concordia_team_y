@@ -1,9 +1,11 @@
 package it.euris.stazioneconcordia.service.impl;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import it.euris.stazioneconcordia.data.dto.CommentDTO;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
+import it.euris.stazioneconcordia.data.trelloDto.CommentTrelloDto;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CommentRepository;
@@ -11,13 +13,17 @@ import it.euris.stazioneconcordia.service.CommentService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
 
 @AllArgsConstructor
 @Service
@@ -77,36 +83,25 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @SneakyThrows
-    public Comment[] getCommentsFromCard(Long idCard, String key, String token) {
-        String url = "https://api.trello.com/1/cards/" + idCard + "/actions?key=" + key + "&token=" + token;
+    public List<CommentTrelloDto> getCommentsFromCardByIdCard(String idCard) {
 
-        URI targetURI = new URI(url);
-
+        URI targetURI = new URI(buildUrlForGetCommentsFromCardByIdCard(idCard));
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(targetURI)
                 .GET()
                 .build();
 
         HttpClient httpClient = HttpClient.newHttpClient();
-
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
         Gson gson = new Gson();
+        Type listType = new TypeToken<List<CommentTrelloDto>>() {
+        }.getType();
 
-        CommentDTO[] commentDTOs = gson.fromJson(response.body(), CommentDTO[].class);
+        return gson.fromJson(response.body(), listType);
+    }
 
-        for (CommentDTO commentDTO : commentDTOs) {
-            String date = commentDTO.getDate().substring(0, 19);
-            commentDTO.setDate(date);
-            Comment comment = commentDTO.toModel();
-            insert(comment);
-        }
-
-        Comment[] comments = new Comment[commentDTOs.length];
-        for (int i = 0; i < commentDTOs.length; i++) {
-            comments[i] = commentDTOs[i].toModel();
-        }
-
-        return comments;
+    private String buildUrlForGetCommentsFromCardByIdCard(String idCard) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_GET_COMMENTS_BY_ID_CARD)
+                .buildAndExpand(idCard, KEY_VALUE, TOKEN_VALUE).toString();
     }
 }

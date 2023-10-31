@@ -3,6 +3,7 @@ package it.euris.stazioneconcordia.service;
 
 import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.model.Lists;
+import it.euris.stazioneconcordia.data.trelloDto.ListsTrelloDto;
 
 import java.util.List;
 
@@ -21,5 +22,5 @@ public interface ListsService {
 
     Lists findByLabel(ListLabel toListLabel);
 
-    Lists[] getListFromTrelloBoard(Long idBoard, String key, String token);
+    List<ListsTrelloDto> getListsFromTrelloByIdBoard(String idBoard);
 }

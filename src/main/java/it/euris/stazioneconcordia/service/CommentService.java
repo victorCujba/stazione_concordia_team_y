@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.service;
 
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
+import it.euris.stazioneconcordia.data.trelloDto.CommentTrelloDto;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public interface CommentService {
 
     Comment getLastComment(Card card);
 
-    Comment[] getCommentsFromCard(Long idCard, String key, String token);
+    List<CommentTrelloDto> getCommentsFromCardByIdCard(String idCard);
 }

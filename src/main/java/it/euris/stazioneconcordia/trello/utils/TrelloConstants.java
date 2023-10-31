@@ -50,6 +50,13 @@ public interface TrelloConstants {
     String URL_API_TRELLO_GET_CARDS_BY_ID_LISTS = "https://api.trello.com/1/lists/{id}/cards?key={key}&token={token}";
     String URL_API_TRELLO_GET_CARD_BY_ID_CARD = "https://api.trello.com/1/cards/{id}?key={key}&token={token}";
     String URL_API_TRELLO_GET_BADGES_BY_ID_CARD = "https://api.trello.com/1/cards/{id}/badges?key={key}&token={token}";
+    String URL_API_TRELLO_GET_BOARD_BY_ID_BOARD = "https://api.trello.com/1/boards/{idBoard}?key={key}&token={token}";
     String URL_API_TRELLO_GET_COMMENTS_BY_ID_CARD = "https://api.trello.com/1/cards/{idCard}/actions?filter=commentCard&key={key}&token={token}";
     String URL_API_TRELLO_POST_COMMENT_BY_ID_CARD = "https://api.trello.com/1/cards/{id}/actions/comments?text={text}&key={key}&token={token}";
+    String URL_API_TRELLO_GET_USER_BY_USERNAME = "https://api.trello.com/1/members/{userName}?key={key}&token={token}";
+    String URL_API_TRELLO_GET_LISTS_BY_ID_BOARD = "https://api.trello.com/1/boards/{idBoard}/lists?key={key}&token={token}";
+    String URL_API_TRELLO_GET_LABELS_BY_ID_BOARD = "https://api.trello.com/1/boards/{idBoard}/labels?key={key}&token={token}";
+    String URL_API_TRELLO_GET_ALL_USERS_BY_ID_BOARD = "https://api.trello.com/1/boards/{idBoard}//members?key={key}&token={token}";
+
+
 }

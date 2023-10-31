@@ -1,13 +1,18 @@
 package it.euris.stazioneconcordia.service;
 
 import it.euris.stazioneconcordia.data.model.Labels;
+import it.euris.stazioneconcordia.data.trelloDto.LabelsTrelloDto;
+import lombok.SneakyThrows;
+
+import java.util.List;
 
 public interface LabelsService {
     Labels insert(Labels labels);
 
     Labels findById(Long idLabels);
 
-    Labels[] getLabelsFromTrelloBoard(Long idBoard, String key, String token);
+    List<LabelsTrelloDto> getLabelsFromTrelloBoardByIdBoard(String idBoard);
+
 }
 
 

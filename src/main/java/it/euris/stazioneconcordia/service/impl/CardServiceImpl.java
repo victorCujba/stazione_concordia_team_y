@@ -1,8 +1,10 @@
 package it.euris.stazioneconcordia.service.impl;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.model.Card;
+import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CardRepository;
@@ -10,7 +12,9 @@ import it.euris.stazioneconcordia.service.CardService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -20,6 +24,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
 
 @AllArgsConstructor
 @Service
@@ -94,11 +100,9 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @SneakyThrows
-    public Card[] getCardsFromTrelloList(Long idList, String key, String token) {
+    public List<CardTrelloDto> getCardsFromTrelloList(String idList) {
 
-        String url = "https://api.trello.com/1/lists/" + idList + "/cards?key=" + key + "&token=" + token;
-
-        URI targetURI = new URI(url);
+        URI targetURI = new URI(buildUrlForGetCardsFromTrelloListByIdList(idList));
 
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(targetURI)
@@ -106,30 +110,17 @@ public class CardServiceImpl implements CardService {
                 .build();
 
         HttpClient httpClient = HttpClient.newHttpClient();
-
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
         Gson gson = new Gson();
+        Type listType = new TypeToken<List<CardTrelloDto>>() {
+        }.getType();
 
-        CardDTO[] cardDTOs = gson.fromJson(response.body(), CardDTO[].class);
+        return  gson.fromJson(response.body(), listType);
+    }
 
-        for (CardDTO cardDTO : cardDTOs) {
-            String date = cardDTO.getDateLastActivity().substring(0, 19);
-            cardDTO.setDateLastActivity(date);
-            if (cardDTO.getExpirationDate()!=null) {
-                String date2 = cardDTO.getExpirationDate().substring(0, 19);
-                cardDTO.setExpirationDate(date2);
-            }
-            Card card = cardDTO.toModel();
-            insert(card);
-        }
-
-        Card[] cards = new Card[cardDTOs.length];
-        for (int i = 0; i < cardDTOs.length; i++) {
-            cards[i] = cardDTOs[i].toModel();
-        }
-
-        return cards;
+    private String buildUrlForGetCardsFromTrelloListByIdList(String idList) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_GET_CARDS_BY_ID_LISTS)
+                .buildAndExpand(idList, KEY_VALUE, TOKEN_VALUE).toString();
     }
 
 

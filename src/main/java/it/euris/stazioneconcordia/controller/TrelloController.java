@@ -2,7 +2,7 @@ package it.euris.stazioneconcordia.controller;
 
 import it.euris.stazioneconcordia.data.dto.*;
 import it.euris.stazioneconcordia.data.model.*;
-import it.euris.stazioneconcordia.data.trelloDto.CommentTrelloDto;
+import it.euris.stazioneconcordia.data.trelloDto.*;
 import it.euris.stazioneconcordia.service.*;
 import it.euris.stazioneconcordia.trello.service.impl.TrelloCommentService;
 import lombok.AllArgsConstructor;
@@ -37,80 +37,54 @@ public class TrelloController {
 
 
     @GetMapping("/sync")
-    public void getInfoFromTrello(@RequestParam Long idBoard, @RequestParam String key, @RequestParam String token) {
-        getBoardFromTrello(idBoard, key, token);
-        getAllUsersFromBoard(idBoard, key, token);
-        getLabelsFromTrelloBoard(idBoard, key, token);
-        ListsDTO[] listDTOs = getListsFromTrelloBoard(idBoard, key, token);
-        for (ListsDTO listDTO : listDTOs) {
-            CardDTO[] cardDTOs = getCardsFromTrelloList(stringToLong(listDTO.getId()), key, token);
-            for (CardDTO cardDTO : cardDTOs) {
-                getComment((cardDTO.getId()));
+    public void getInfoFromTrello(@RequestParam String idBoard) {
+        getBoardFromTrello(idBoard);
+        getAllUsersFromTrelloBoardByIdBoard(idBoard);
+        getLabelsFromTrelloBoardByIdBoard(idBoard);
+        List<ListsTrelloDto> listsTrelloDtos = getListsFromTrelloBoard(idBoard);
+        for (ListsTrelloDto listsTrelloDto : listsTrelloDtos) {
+            List<CardTrelloDto> cardTrelloDtos = getCardsFromTrelloList(listsTrelloDto.getId());
+            for (CardTrelloDto cardTrelloDto : cardTrelloDtos) {
+                getComment((cardTrelloDto.getId()));
             }
         }
     }
 
-    public BoardDTO getBoardFromTrello(@RequestParam Long idBoard, @RequestParam String key, @RequestParam String token) {
-        return boardService.getBoardFromTrello(idBoard, key, token).toDto();
+    public BoardTrelloDTO getBoardFromTrello(@RequestParam String idBoard) {
+        return boardService.getBoardFromTrello(idBoard);
     }
 
-    public ListsDTO[] getListsFromTrelloBoard(@RequestParam Long idBoard, @RequestParam String key, @RequestParam String token) {
-        Lists[] lists = listsService.getListFromTrelloBoard(idBoard, key, token);
-        ListsDTO[] listsDTOs = new ListsDTO[lists.length];
-        for (int i = 0; i < lists.length; i++) {
-            listsDTOs[i] = lists[i].toDto();
-        }
-        return listsDTOs;
+    public List<ListsTrelloDto> getListsFromTrelloBoard(@RequestParam String idBoard) {
+        return listsService.getListsFromTrelloByIdBoard(idBoard);
     }
 
-    public CardDTO[] getCardsFromTrelloList(@RequestParam Long idList, @RequestParam String key, @RequestParam String token) {
-        Card[] cards = cardService.getCardsFromTrelloList(idList, key, token);
-        CardDTO[] cardDTOs = new CardDTO[cards.length];
-        for (int i = 0; i < cards.length; i++) {
-            cardDTOs[i] = cards[i].toDto();
-        }
-        return cardDTOs;
+    public List<CardTrelloDto> getCardsFromTrelloList(@RequestParam String idList) {
+        return cardService.getCardsFromTrelloList(idList);
     }
 
-    public UserDTO getUserByUsername(@RequestParam String username, @RequestParam String key, @RequestParam String token) {
-        User user = userService.getUserFromTrello(username, key, token);
-        return user.toDto();
+    public UserTrelloDto getUserByUserName(@RequestParam String username) {
+        return userService.getUserFromTrelloByUserName(username);
     }
 
 
-    public LabelsDTO[] getLabelsFromTrelloBoard(@RequestParam Long idBoard, @RequestParam String key, @RequestParam String token) {
-        Labels[] labels = labelsService.getLabelsFromTrelloBoard(idBoard, key, token);
-        LabelsDTO[] labelsDTOs = new LabelsDTO[labels.length];
-        for (int i = 0; i < labels.length; i++) {
-            labelsDTOs[i] = labels[i].toDto();
-        }
-        return labelsDTOs;
+    public List<LabelsTrelloDto> getLabelsFromTrelloBoardByIdBoard(@RequestParam String idBoard) {
+        return labelsService.getLabelsFromTrelloBoardByIdBoard(idBoard);
+
     }
 
-    public UserDTO[] getAllUsersFromBoard(@RequestParam Long idBoard, @RequestParam String key, @RequestParam String token) {
-        User[] users = userService.getUserFromTrelloBoard(idBoard, key, token);
-        UserDTO[] userDTOs = new UserDTO[users.length];
-        for (int i = 0; i < users.length; i++) {
-            userDTOs[i] = users[i].toDto();
-        }
-        return userDTOs;
+    public List<UserTrelloDto> getAllUsersFromTrelloBoardByIdBoard(@RequestParam String idBoard) {
+        return userService.getAllUsersFromTrelloBoardByIdBoard(idBoard);
     }
 
     @GetMapping("/comments")
-    public CommentDTO[] getCommentsFromCard(@RequestParam Long idCard, @RequestParam String key, @RequestParam String token) {
-        Comment[] comments = commentService.getCommentsFromCard(idCard, key, token);
-        CommentDTO[] commentDTOs = new CommentDTO[comments.length];
-        for (int i = 0; i < comments.length; i++) {
-            commentDTOs[i] = comments[i].toDto();
-        }
-        return commentDTOs;
+    public List<CommentTrelloDto> getCommentsFromCardByIdCard(@RequestParam String idCard) {
+        return commentService.getCommentsFromCardByIdCard(idCard);
+
     }
 
     @GetMapping("/comment")
     public List<CommentTrelloDto> getComment(@RequestParam String idCard) {
-//        trelloCardService.getCardsByIdBoard(BOARD_ID_VALUE);
-//        trelloCardService.getCardsByIdLists(LIST_O1_ID_VALUE);
-//        trelloCardService.getCardByIdCard(CARD_01_ID_VALUE);
+
         List<CommentTrelloDto> commentTrelloDTOs = trelloCommentService.getAllCommentsByIdCard(idCard);
         for (CommentTrelloDto commentTrelloDto : commentTrelloDTOs) {
             String date = commentTrelloDto.getDate().substring(0, 19);

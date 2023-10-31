@@ -1,6 +1,7 @@
 package it.euris.stazioneconcordia.service;
 
 import it.euris.stazioneconcordia.data.model.User;
+import it.euris.stazioneconcordia.data.trelloDto.UserTrelloDto;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface UserService {
 
     User findById(String idUser);
 
-    User getUserFromTrello(String username, String key, String token);
+    UserTrelloDto getUserFromTrelloByUserName(String username);
 
-    User[] getUserFromTrelloBoard(Long idBoard, String key, String token);
+    List<UserTrelloDto> getAllUsersFromTrelloBoardByIdBoard(String idBoard);
 }

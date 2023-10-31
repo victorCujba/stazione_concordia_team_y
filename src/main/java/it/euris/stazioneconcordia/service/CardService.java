@@ -1,6 +1,8 @@
 package it.euris.stazioneconcordia.service;
 
+import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.model.Card;
+import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
 
 import java.util.List;
 
@@ -20,5 +22,5 @@ public interface CardService {
 
     Card findById(Long idCard);
 
-    Card[] getCardsFromTrelloList(Long idList, String key, String token);
+    List<CardTrelloDto> getCardsFromTrelloList(String idList);
 }
