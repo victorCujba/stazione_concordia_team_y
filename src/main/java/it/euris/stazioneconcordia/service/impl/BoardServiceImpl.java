@@ -57,20 +57,9 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    @SneakyThrows
-    public Board getBoardFromTrello(String idBoard, String key, String token) {
-        String url = "https://api.trello.com/1/boards/" + idBoard + "?key=" + key + "&token=" + token;
-        URI targetURI = new URI(url);
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(targetURI)
-                .GET()
-                .build();
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        Gson gson = new Gson();
-        BoardTrelloDTO boardTrelloDTO = gson.fromJson(response.body(), BoardTrelloDTO.class);
-        BoardDTO boardDTO = boardTrelloDTO.trellotoDto();
-        Board board = boardDTO.toModel();
-        return insert(board);
+    public Board findByTrelloId(String idTrello) {
+        return boardRepository.findByIdTrello(idTrello);
     }
+
+
 }

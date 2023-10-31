@@ -43,7 +43,7 @@ public class BoardDTO implements Dto {
     @Override
     public BoardTrelloDTO toTrelloDto() {
         return BoardTrelloDTO.builder()
-                .id(id)
+                .id(idTrello)
                 .name(name)
                 .desc(description)
                 .url(url)
