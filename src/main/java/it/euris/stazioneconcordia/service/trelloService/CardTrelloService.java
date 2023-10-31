@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface CardTrelloService {
 
+    List<CardTrelloDto> getCardsByIdBoard(String idTrelloBoard);
     List<CardTrelloDto> getCardsByIdList(String idTrelloList);
 
     CardTrelloDto getCardByIdCard(String idCard);

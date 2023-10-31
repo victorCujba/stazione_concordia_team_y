@@ -44,9 +44,5 @@ public class BoardTrelloServiceImpl implements BoardTrelloService {
                 .buildAndExpand(idBoard, KEY_VALUE, TOKEN_VALUE).toString();
     }
 
-    public static void main(String[] args) {
-        BoardTrelloServiceImpl boardTrelloService = new BoardTrelloServiceImpl();
-        boardTrelloService.getBoardFromTrelloByIdBoard(BOARD_ID_VALUE);
-    }
 
 }

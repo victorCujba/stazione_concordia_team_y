@@ -2,8 +2,6 @@ package it.euris.stazioneconcordia.service.trelloService.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.euris.stazioneconcordia.data.dto.CardStateDTO;
-import it.euris.stazioneconcordia.data.model.CardState;
 import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
 import it.euris.stazioneconcordia.service.trelloService.CardTrelloService;
 import lombok.SneakyThrows;
@@ -14,15 +12,31 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTimeToString;
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToListLabel;
 
 public class CardTrelloServiceImpl implements CardTrelloService {
+
+    @Override
+    @SneakyThrows
+    public List<CardTrelloDto> getCardsByIdBoard(String idTrelloBoard) {
+
+        URI targetURI = new URI(buildUrlGetCardsFromTrelloByIdBoard(idTrelloBoard));
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetURI)
+                .GET()
+                .build();
+
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        Type listType = getListType();
+        Gson gson = new Gson();
+
+        return gson.fromJson(response.body(), listType);
+
+    }
+
 
     @Override
     @SneakyThrows
@@ -36,12 +50,12 @@ public class CardTrelloServiceImpl implements CardTrelloService {
 
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        Type listType = new TypeToken<List<CardTrelloDto>>() {
-        }.getType();
+        Type listType = getListType();
         Gson gson = new Gson();
 
         return gson.fromJson(response.body(), listType);
     }
+
 
     @Override
     @SneakyThrows
@@ -78,10 +92,7 @@ public class CardTrelloServiceImpl implements CardTrelloService {
 //            cardStateHistory.add(initializingState.toModel());
 
 
-
-
 //        }
-
 
         Gson gson = new Gson();
         String requestBody = gson.toJson(cardTrelloDto);
@@ -116,13 +127,15 @@ public class CardTrelloServiceImpl implements CardTrelloService {
                 .buildAndExpand(idTrelloList, KEY_VALUE, TOKEN_VALUE).toString();
     }
 
-    public static void main(String[] args) {
-        CardTrelloService cardTrelloService = new CardTrelloServiceImpl();
-        //     cardTrelloService.getCardsByIdList(LIST_O1_ID_VALUE);
-//        cardTrelloService.getCardByIdCard(CARD_02_ID_VALUE);
-        String idCard = "652d5736ec602d3f7cd4c698";
-        String idList = "652d5736ec602d3f7cd4c627";
-        cardTrelloService.putCardToAnotherListByIdCardAndIdList(idCard,LIST_O1_ID_VALUE);
+    private String buildUrlGetCardsFromTrelloByIdBoard(String idTrelloBoard) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_GET_CARDS_BY_ID_BOARD)
+                .buildAndExpand(idTrelloBoard, KEY_VALUE, TOKEN_VALUE).toString();
     }
+
+    private static Type getListType() {
+        return new TypeToken<List<CardTrelloDto>>() {
+        }.getType();
+    }
+
 
 }
