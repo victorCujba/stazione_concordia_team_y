@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
 import it.euris.stazioneconcordia.service.trelloService.CardTrelloService;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.lang.reflect.Type;
@@ -15,7 +17,8 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
-
+@AllArgsConstructor
+@Service
 public class CardTrelloServiceImpl implements CardTrelloService {
 
     @Override

@@ -36,7 +36,7 @@ public class CardDTO implements Dto {
 
     @Override
     public Card toModel() {
-        if (idLabels.size()==0){
+        if (idLabels.isEmpty()){
             idLabels.add(0,"0");
         }
         return Card

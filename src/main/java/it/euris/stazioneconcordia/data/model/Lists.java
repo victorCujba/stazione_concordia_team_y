@@ -19,8 +19,8 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "list")
-@SQLDelete(sql = "UPDATE list SET closed = true WHERE id = ?")
-@Where(clause = "closed = false")
+//@SQLDelete(sql = "UPDATE list SET closed = true WHERE id = ?")
+//@Where(clause = "closed = false")
 public class Lists implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

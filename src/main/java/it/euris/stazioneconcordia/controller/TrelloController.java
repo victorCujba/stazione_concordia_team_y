@@ -10,6 +10,7 @@ import it.euris.stazioneconcordia.service.*;
 
 import it.euris.stazioneconcordia.service.trelloService.BoardTrelloService;
 import it.euris.stazioneconcordia.service.trelloService.CardTrelloService;
+import it.euris.stazioneconcordia.service.trelloService.LabelsTrelloService;
 import it.euris.stazioneconcordia.trello.service.impl.TrelloCardServiceImpl;
 import it.euris.stazioneconcordia.trello.service.impl.TrelloCommentService;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.CARD_01_ID_VALUE;
+import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.numberToString;
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLong;
 
@@ -31,6 +32,10 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLon
 @RequestMapping("/v1/from-trello")
 public class TrelloController {
     private BoardTrelloService boardTrelloService;
+
+    private LabelsTrelloService labelsTrelloService;
+
+
 
     private BoardService boardService;
 
@@ -49,12 +54,14 @@ public class TrelloController {
     private CardTrelloService cardTrelloService;
 
 
+
+
     @GetMapping("/sync")
-    public void getInfoFromTrello(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
+    public void getInfoFromTrello(@RequestParam String idBoard) {
         getBoardFromTrello(idBoard);
-        getAllUsersFromBoard(idBoard, key, token);
-        getLabelsFromTrelloBoard(idBoard, key, token);
-        ListsDTO[] listDTOs = getListsFromTrelloBoard(idBoard, key, token);
+        getAllUsersFromBoard(idBoard, KEY_VALUE, TOKEN_VALUE);
+        labelsTrelloService.getLabelsByIdBoard(idBoard);
+
         for (ListsDTO listDTO : listDTOs) {
 //            CardDTO[] cardDTOs = getCardsFromTrelloList(listDTO.getIdTrello(), key, token);
 //            for (CardDTO cardDTO : cardDTOs) {

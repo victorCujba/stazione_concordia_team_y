@@ -6,7 +6,9 @@ import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
 import it.euris.stazioneconcordia.service.BoardService;
 import it.euris.stazioneconcordia.service.trelloService.BoardTrelloService;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -15,7 +17,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
-
+@AllArgsConstructor
+@Service
 public class BoardTrelloServiceImpl implements BoardTrelloService {
 
     BoardService boardService;
