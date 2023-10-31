@@ -93,45 +93,7 @@ public class CardServiceImpl implements CardService {
         return cardRepository.findById(idCard).orElse(Card.builder().build());
     }
 
-    @Override
-    @SneakyThrows
-    public Card[] getCardsFromTrelloList(String idTrelloList, String key, String token) {
 
-        String url = "https://api.trello.com/1/lists/" + idTrelloList + "/cards?key=" + key + "&token=" + token;
-
-        URI targetURI = new URI(url);
-
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(targetURI)
-                .GET()
-                .build();
-
-        HttpClient httpClient = HttpClient.newHttpClient();
-
-        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-        Gson gson = new Gson();
-
-        CardTrelloDto[] cardTrelloDtos = gson.fromJson(response.body(), CardTrelloDto[].class);
-
-        for (CardTrelloDto cardTrelloDto : cardTrelloDtos) {
-            String date = cardTrelloDto.getDateLastActivity().substring(0, 19);
-            cardTrelloDto.setDateLastActivity(date);
-            if (cardTrelloDto.getDue()!=null) {
-                String date2 = cardTrelloDto.getDue().substring(0, 19);
-                cardTrelloDto.setDue(date2);
-            }
-            Card card = cardTrelloDto.trellotoDto().toModel();
-            insert(card);
-        }
-
-        Card[] cards = new Card[cardTrelloDtos.length];
-        for (int i = 0; i < cardTrelloDtos.length; i++) {
-            cards[i] = cardTrelloDtos[i].trellotoDto().toModel();
-        }
-
-        return cards;
-    }
 
 
 }

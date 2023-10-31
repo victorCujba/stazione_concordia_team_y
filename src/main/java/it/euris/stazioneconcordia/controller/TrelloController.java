@@ -4,9 +4,12 @@ import com.google.gson.Gson;
 import it.euris.stazioneconcordia.data.dto.*;
 import it.euris.stazioneconcordia.data.model.*;
 import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
+import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
 import it.euris.stazioneconcordia.data.trelloDto.CommentTrelloDto;
 import it.euris.stazioneconcordia.service.*;
 
+import it.euris.stazioneconcordia.service.trelloService.BoardTrelloService;
+import it.euris.stazioneconcordia.service.trelloService.CardTrelloService;
 import it.euris.stazioneconcordia.trello.service.impl.TrelloCardServiceImpl;
 import it.euris.stazioneconcordia.trello.service.impl.TrelloCommentService;
 import lombok.AllArgsConstructor;
@@ -27,6 +30,7 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLon
 @RestController
 @RequestMapping("/v1/from-trello")
 public class TrelloController {
+    private BoardTrelloService boardTrelloService;
 
     private BoardService boardService;
 
@@ -42,24 +46,27 @@ public class TrelloController {
 
     private TrelloCommentService trelloCommentService;
 
+    private CardTrelloService cardTrelloService;
+
 
     @GetMapping("/sync")
     public void getInfoFromTrello(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
-        getBoardFromTrello(idBoard, key, token);
+        getBoardFromTrello(idBoard);
         getAllUsersFromBoard(idBoard, key, token);
         getLabelsFromTrelloBoard(idBoard, key, token);
         ListsDTO[] listDTOs = getListsFromTrelloBoard(idBoard, key, token);
         for (ListsDTO listDTO : listDTOs) {
-            CardDTO[] cardDTOs = getCardsFromTrelloList(listDTO.getIdTrello(), key, token);
+//            CardDTO[] cardDTOs = getCardsFromTrelloList(listDTO.getIdTrello(), key, token);
 //            for (CardDTO cardDTO : cardDTOs) {
 //                getComment(stringToLong(cardDTO.getId()));
 //            }
         }
     }
 
-    public Board getBoardFromTrello(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
-        return boardService.getBoardFromTrello(idBoard, key, token);
+    public BoardTrelloDTO getBoardFromTrello(@RequestParam String idBoard) {
+        return boardTrelloService.getBoardFromTrelloByIdBoard(idBoard);
     }
+
 
     public ListsDTO[] getListsFromTrelloBoard(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
         Lists[] lists = listsService.getListFromTrelloBoard(idBoard, key, token);
@@ -70,13 +77,13 @@ public class TrelloController {
         return listsDTOs;
     }
 
-    public CardDTO[] getCardsFromTrelloList(@RequestParam String idTrelloList, @RequestParam String key, @RequestParam String token) {
-        Card[] cards = cardService.getCardsFromTrelloList(idTrelloList, key, token);
-        CardDTO[] cardDTOs = new CardDTO[cards.length];
-        for (int i = 0; i < cards.length; i++) {
-            cardDTOs[i] = cards[i].toDto();
-        }
-        return cardDTOs;
+    public List<CardTrelloDto> getCardsFromTrelloList(@RequestParam String idTrelloList) {
+        List<CardTrelloDto> cardTrelloDtos = cardTrelloService.getCardsByIdList(idTrelloList);
+//        CardDTO[] cardDTOs = new CardDTO[cards.length];
+//        for (int i = 0; i < cards.length; i++) {
+//            cardDTOs[i] = cards[i].toDto();
+//        }
+        return null;
     }
 
     public UserDTO getUserByUsername(@RequestParam String username, @RequestParam String key, @RequestParam String token) {
