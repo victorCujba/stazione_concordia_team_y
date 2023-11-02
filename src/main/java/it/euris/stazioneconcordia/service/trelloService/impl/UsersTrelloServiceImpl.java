@@ -22,6 +22,11 @@ import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
 @AllArgsConstructor
 public class UsersTrelloServiceImpl implements UserTrelloService {
 
+    private final Gson gson;
+
+    public UsersTrelloServiceImpl() {
+        this.gson = new Gson();
+    }
 
     @Override
     @SneakyThrows
@@ -35,15 +40,39 @@ public class UsersTrelloServiceImpl implements UserTrelloService {
 
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        Gson gson = new Gson();
 
         return gson.fromJson(response.body(), getListType());
+    }
+
+
+    @Override
+    @SneakyThrows
+    public UserTrelloDto getUserFromTrello(String username) {
+
+        URI targetURI = new URI(buildUrlGetUserFromTrelloByUserName(username));
+
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetURI)
+                .GET()
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+        return gson.fromJson(response.body(), UserTrelloDto.class);
+
     }
 
     private Type getListType() {
         return new TypeToken<List<UserTrelloDto>>() {
         }.getType();
     }
+
+
+    private String buildUrlGetUserFromTrelloByUserName(String username) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_GET_USER_BY_USERNAME)
+                .build(username, KEY_VALUE, TOKEN_VALUE).toString();
+    }
+
 
     private String buildUrlGetUsersFromTrelloBoardByIdBoard(String idBoard) {
         return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_GET_ALL_USERS_BY_ID_BOARD)
