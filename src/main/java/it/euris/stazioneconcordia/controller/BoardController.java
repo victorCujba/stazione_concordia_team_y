@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.controller;
 
 import it.euris.stazioneconcordia.data.dto.BoardDTO;
 import it.euris.stazioneconcordia.data.model.Board;
+import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.service.BoardService;
@@ -20,8 +21,8 @@ public class BoardController {
     private BoardService boardService;
 
     @GetMapping("/v1")
-    public List<BoardDTO> getAllBoards() {
-        return boardService.findAll().stream().map(Board::toDto).toList();
+    public List<Board> getAllBoards() {
+        return boardService.findAll();
     }
 
     @PostMapping("/v1")
@@ -33,6 +34,18 @@ public class BoardController {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, e.getMessage());
         }
+    }
+
+    @PostMapping("/v1/trello")
+    public BoardDTO insertBoardFromTrello(@RequestBody BoardTrelloDTO boardTrelloDTO) {
+        try {
+            BoardDTO boardDTO = boardTrelloDTO.trellotoDto();
+            return boardService.insertBoardFromTrello(boardDTO).toDto();
+        } catch (IdMustNotBeNullException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
     }
 
     @PutMapping("/v1")
@@ -55,6 +68,11 @@ public class BoardController {
     @GetMapping("/v1/{id}")
     public BoardDTO getBoardById(@PathVariable("id") Long idBoard) {
         return boardService.findById(idBoard).toDto();
+    }
+
+    @GetMapping("/v1/trello/{id_trello}")
+    public BoardDTO getBoardByTrelloIdFromDb(@PathVariable("id_trello") String idTrello) {
+        return boardService.getBoardByIdTrelloFromDb(idTrello).toDto();
     }
 
 

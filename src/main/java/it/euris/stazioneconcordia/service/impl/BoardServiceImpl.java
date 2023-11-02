@@ -1,5 +1,6 @@
 package it.euris.stazioneconcordia.service.impl;
 
+import it.euris.stazioneconcordia.data.dto.BoardDTO;
 import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
@@ -8,6 +9,7 @@ import it.euris.stazioneconcordia.service.BoardService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -30,6 +32,29 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public Board insertBoardFromTrello(BoardDTO boardDTO) {
+        Board board = boardDTO.toModel();
+        if (board.getId() != null) {
+            throw new IdMustBeNullException();
+        }
+        Integer insertedBoard = boardRepository.insertBoardFromTrello(
+                board.getIdTrello(),
+                board.getName(),
+                board.getDescription(),
+                board.getUrl(),
+                LocalDateTime.now()
+        );
+
+        if (insertedBoard != 1) {
+            System.out.println("Board was not inserted in dataBase");
+        } else {
+            System.out.println("Board was inserted successfully");
+        }
+        return board;
+    }
+
+
+    @Override
     public Board update(Board board) {
         if (board.getId() == null) {
             throw new IdMustNotBeNullException();
@@ -44,13 +69,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Board findById(Long idBoard) {
-        return boardRepository.findById(idBoard).orElse(Board.builder().build());
+    public Board findById(Long boardId) {
+        return boardRepository.findById(boardId).orElse(Board.builder().build());
     }
 
     @Override
-    public Board findByTrelloId(String idTrello) {
-        return boardRepository.findByIdTrello(idTrello);
+    public Board getBoardByIdTrelloFromDb(String idTrello) {
+        return boardRepository.getBoardByIdTrello(idTrello);
     }
 
 

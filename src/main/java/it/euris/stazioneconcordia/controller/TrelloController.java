@@ -41,19 +41,18 @@ public class TrelloController {
     @GetMapping("/sync")
     public void getInfoFromTrello(@RequestParam String idBoard) {
         getBoardFromTrello(idBoard);
-        getAllUsersFromBoard(idBoard);
-        labelsTrelloService.getLabelsByIdBoard(idBoard);
+        insertBoardFromTrelloToDb(idBoard);
 
-//        for (ListsDTO listDTO : listDTOs) {
-//            CardDTO[] cardDTOs = getCardsFromTrelloList(listDTO.getIdTrello(), key, token);
-//            for (CardDTO cardDTO : cardDTOs) {
-//                getComment(stringToLong(cardDTO.getId()));
-//            }
     }
-//    }
+
 
     public BoardTrelloDTO getBoardFromTrello(@RequestParam String idBoard) {
         return boardTrelloService.getBoardFromTrelloByIdBoard(idBoard);
+    }
+
+    public void insertBoardFromTrelloToDb(@RequestParam String idBoard) {
+        BoardDTO boardDTO = getBoardFromTrello(idBoard).trellotoDto();
+        boardService.insertBoardFromTrello(boardDTO);
     }
 
 
