@@ -18,4 +18,6 @@ public interface BoardService {
     Board findById(Long idBoard);
 
     Board findByTrelloId(String idTrello);
+
+
 }
