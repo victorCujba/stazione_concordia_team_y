@@ -1,8 +1,6 @@
 package it.euris.stazioneconcordia.service.trelloService.impl;
 
 import com.google.gson.Gson;
-import it.euris.stazioneconcordia.data.dto.BoardDTO;
-import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
 import it.euris.stazioneconcordia.service.BoardService;
 import it.euris.stazioneconcordia.service.trelloService.BoardTrelloService;
@@ -35,8 +33,6 @@ public class BoardTrelloServiceImpl implements BoardTrelloService {
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         Gson gson = new Gson();
         BoardTrelloDTO boardTrelloDTO = gson.fromJson(response.body(), BoardTrelloDTO.class);
-//        BoardDTO boardDTO = boardTrelloDTO.trellotoDto();
-//        Board board = boardDTO.toModel();
         System.out.println(boardTrelloDTO.toString());
         return boardTrelloDTO;
     }

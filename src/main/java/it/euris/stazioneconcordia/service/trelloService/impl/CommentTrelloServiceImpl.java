@@ -25,7 +25,7 @@ public class CommentTrelloServiceImpl implements CommentTrelloService {
 
     @Override
     @SneakyThrows
-    public List<CommentTrelloDto> getAllCommentsFromCardByIdCard(String idCard) {
+    public List<CommentTrelloDto> getCommentsFromCardByIdCard(String idCard) {
 
         URI targetURI = new URI(buildUrlGetAllCommentsFromCardByIdCard(idCard));
         HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -54,7 +54,7 @@ public class CommentTrelloServiceImpl implements CommentTrelloService {
 
     public static void main(String[] args) {
         CommentTrelloServiceImpl commentTrelloService = new CommentTrelloServiceImpl();
-        commentTrelloService.getAllCommentsFromCardByIdCard(CARD_01_ID_VALUE);
+        commentTrelloService.getCommentsFromCardByIdCard(CARD_01_ID_VALUE);
     }
 
 }

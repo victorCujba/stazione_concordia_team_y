@@ -84,18 +84,6 @@ public class CardTrelloServiceImpl implements CardTrelloService {
 
         CardTrelloDto cardTrelloDto = getCardByIdCard(idCard);
         cardTrelloDto.setIdList(idList);
-//        if (cardTrelloDto.trellotoDto().toModel().getStateHistory().isEmpty()) {
-//            List<CardState> cardStateHistory = new ArrayList<>();
-//            CardStateDTO initializingState = CardStateDTO.builder()
-//                    .dateLastUpdate(localDateTimeToString(LocalDateTime.now()).substring(0, 19))
-//                    .fromList(cardTrelloDto.getIdList())
-//                    .toList(idList)
-//                    .idCard(cardTrelloDto.getId())
-//                    .build();
-//            cardStateHistory.add(initializingState.toModel());
-
-
-//        }
 
         Gson gson = new Gson();
         String requestBody = gson.toJson(cardTrelloDto);
