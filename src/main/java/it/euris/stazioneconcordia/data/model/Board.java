@@ -4,8 +4,7 @@ import it.euris.stazioneconcordia.data.dto.BoardDTO;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,8 +18,6 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "board")
-//@SQLDelete(sql = "UPDATE board SET closed = true WHERE id = ?")
-//@Where(clause = "closed = false")
 public class Board implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

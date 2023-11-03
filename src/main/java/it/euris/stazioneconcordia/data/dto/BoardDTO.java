@@ -1,7 +1,6 @@
 package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
-import it.euris.stazioneconcordia.data.dto.archetype.TrelloDto;
 import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
 import lombok.AllArgsConstructor;

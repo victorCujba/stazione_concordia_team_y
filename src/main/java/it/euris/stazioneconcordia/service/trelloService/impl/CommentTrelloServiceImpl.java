@@ -2,7 +2,6 @@ package it.euris.stazioneconcordia.service.trelloService.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.euris.stazioneconcordia.data.dto.CommentDTO;
 import it.euris.stazioneconcordia.data.trelloDto.CommentTrelloDto;
 import it.euris.stazioneconcordia.service.trelloService.CommentTrelloService;
 import lombok.AllArgsConstructor;
@@ -52,9 +51,5 @@ public class CommentTrelloServiceImpl implements CommentTrelloService {
                 .buildAndExpand(idCard, KEY_VALUE, TOKEN_VALUE).toString();
     }
 
-    public static void main(String[] args) {
-        CommentTrelloServiceImpl commentTrelloService = new CommentTrelloServiceImpl();
-        commentTrelloService.getCommentsFromCardByIdCard(CARD_01_ID_VALUE);
-    }
 
 }

@@ -1,7 +1,6 @@
 package it.euris.stazioneconcordia.service.trelloService;
 
 import it.euris.stazioneconcordia.data.trelloDto.UserTrelloDto;
-import lombok.SneakyThrows;
 
 import java.util.List;
 

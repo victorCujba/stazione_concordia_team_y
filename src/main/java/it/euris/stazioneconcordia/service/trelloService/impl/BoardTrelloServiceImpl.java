@@ -3,7 +3,6 @@ package it.euris.stazioneconcordia.service.trelloService.impl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
-import it.euris.stazioneconcordia.service.BoardService;
 import it.euris.stazioneconcordia.service.trelloService.BoardTrelloService;
 import it.euris.stazioneconcordia.utility.LocalDateTimeTypeAdapter;
 import lombok.AllArgsConstructor;

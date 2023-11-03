@@ -5,8 +5,6 @@ import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import it.euris.stazioneconcordia.data.enums.ListLabel;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import java.util.List;
 
@@ -19,8 +17,6 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "list")
-//@SQLDelete(sql = "UPDATE list SET closed = true WHERE id = ?")
-//@Where(clause = "closed = false")
 public class Lists implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

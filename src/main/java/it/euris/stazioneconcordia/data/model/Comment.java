@@ -1,14 +1,9 @@
 package it.euris.stazioneconcordia.data.model;
 
-import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.dto.CommentDTO;
-import it.euris.stazioneconcordia.data.dto.DataDTO;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-
 import java.time.LocalDateTime;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
@@ -20,8 +15,7 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "comment")
-//@SQLDelete(sql = "UPDATE comment SET deleted = true WHERE id = ?")
-//@Where(clause = "deleted = false")
+
 public class Comment implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

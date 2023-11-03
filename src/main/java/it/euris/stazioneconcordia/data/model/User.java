@@ -7,7 +7,6 @@ import lombok.*;
 
 import java.util.List;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.booleanToString;
 
 
 @Builder

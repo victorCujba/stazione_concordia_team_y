@@ -2,8 +2,6 @@ package it.euris.stazioneconcordia.service.trelloService.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.euris.stazioneconcordia.data.model.Lists;
-import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
 import it.euris.stazioneconcordia.data.trelloDto.ListsTrelloDto;
 import it.euris.stazioneconcordia.service.trelloService.ListsTrelloService;
 import lombok.AllArgsConstructor;

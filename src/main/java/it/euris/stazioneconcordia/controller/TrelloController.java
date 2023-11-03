@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
 
 
 @AllArgsConstructor
