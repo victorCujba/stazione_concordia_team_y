@@ -1,7 +1,6 @@
 package it.euris.stazioneconcordia.service.impl;
 
 import it.euris.stazioneconcordia.data.model.User;
-import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.UserRepository;
 import it.euris.stazioneconcordia.service.UserService;
@@ -22,10 +21,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User insert(User user) {
-
-        if (user.getId() != null) {
-            throw new IdMustBeNullException();
-        }
         return userRepository.save(user);
     }
 

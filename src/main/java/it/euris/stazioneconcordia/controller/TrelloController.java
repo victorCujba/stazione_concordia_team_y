@@ -40,42 +40,52 @@ public class TrelloController {
 
     @GetMapping("/sync")
     public void getInfoFromTrello(@RequestParam String idBoard) {
-        getBoardFromTrello(idBoard);
         insertBoardFromTrelloToDb(idBoard);
+        insertUsersFromTrelloToDb(idBoard);
+        insertUsersFromTrelloToDb(idBoard);
 
     }
 
 
-    public BoardTrelloDTO getBoardFromTrello(@RequestParam String idBoard) {
+    public BoardTrelloDTO getBoardFromTrello(String idBoard) {
         return boardTrelloService.getBoardFromTrelloByIdBoard(idBoard);
     }
 
-    public void insertBoardFromTrelloToDb(@RequestParam String idBoard) {
+    public void insertBoardFromTrelloToDb(String idBoard) {
         BoardDTO boardDTO = getBoardFromTrello(idBoard).trellotoDto();
         boardService.insertBoardFromTrello(boardDTO);
     }
 
 
-    public List<ListsTrelloDto> getListsFromTrelloBoard(@RequestParam String idBoard) {
+    public List<ListsTrelloDto> getListsFromTrelloBoard(String idBoard) {
         return listsTrelloService.getListsByIdBoard(idBoard);
     }
 
-    public List<CardTrelloDto> getCardsFromTrelloList(@RequestParam String idTrelloList) {
+    public List<CardTrelloDto> getCardsFromTrelloList(String idTrelloList) {
         return cardTrelloService.getCardsByIdList(idTrelloList);
     }
 
-    public UserTrelloDto getUserFromTrelloByUsername(@RequestParam String username) {
-        return userTrelloService.getUserFromTrello(username);
+    public UserTrelloDto getUserFromTrelloByUsername(String username) {
+        return userTrelloService.getUserFromTrelloByUserName(username);
     }
 
 
-    public List<LabelsTrelloDto> getLabelsFromTrelloBoard(@RequestParam String idBoard) {
+    public List<LabelsTrelloDto> getLabelsFromTrelloBoard(String idBoard) {
         return labelsTrelloService.getLabelsByIdBoard(idBoard);
 
     }
 
-    public List<UserTrelloDto> getAllUsersFromBoard(@RequestParam String idBoard) {
-        return userTrelloService.getUsersFromTrello(idBoard);
+    public List<UserTrelloDto> getAllUsersFromBoard(String idBoard) {
+        return userTrelloService.getUsersFromTrelloByIdBoard(idBoard);
+    }
+
+    private void insertUsersFromTrelloToDb(String idBoard) {
+        List<UserDTO> userDTOS = getAllUsersFromBoard(idBoard).stream().map(UserTrelloDto::trellotoDto)
+                .toList();
+        List<User> userList = userDTOS.stream().map(UserDTO::toModel).toList();
+        for (User user : userList) {
+            userService.insert(user);
+        }
     }
 
     @GetMapping("/comments")

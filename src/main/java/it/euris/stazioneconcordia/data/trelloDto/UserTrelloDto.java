@@ -17,6 +17,7 @@ public class UserTrelloDto implements TrelloDto {
     private String bio;
     private String avatarUrl;
     private String email;
+    private String status;
     @Override
     public UserDTO trellotoDto() {
         return UserDTO
@@ -26,6 +27,7 @@ public class UserTrelloDto implements TrelloDto {
                 .bio(bio)
                 .avatarUrl(avatarUrl)
                 .email(email)
+                .status(status)
                 .build();
     }
 }

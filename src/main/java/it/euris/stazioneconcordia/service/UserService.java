@@ -1,5 +1,6 @@
 package it.euris.stazioneconcordia.service;
 
+import it.euris.stazioneconcordia.data.dto.UserDTO;
 import it.euris.stazioneconcordia.data.model.User;
 
 import java.util.List;

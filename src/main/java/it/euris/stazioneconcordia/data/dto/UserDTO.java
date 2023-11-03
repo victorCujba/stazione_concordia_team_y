@@ -32,7 +32,7 @@ public class UserDTO implements Dto {
                 .bio(bio)
                 .avatarUrl(avatarUrl)
                 .email(email)
-                .status(stringToBoolean(status))
+                .status(status)
                 .build();
     }
 

@@ -7,8 +7,10 @@ import java.util.List;
 
 public interface UserTrelloService {
 
-    List<UserTrelloDto> getUsersFromTrello(String idBoard);
+    List<String> getUsersIdFromTrello(String idBoard);
+
+    List<UserTrelloDto> getUsersFromTrelloByIdBoard(String idBoard);
 
 
-    UserTrelloDto getUserFromTrello(String username);
+    UserTrelloDto getUserFromTrelloByUserName(String username);
 }
