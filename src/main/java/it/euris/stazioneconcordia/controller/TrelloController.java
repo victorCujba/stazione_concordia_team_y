@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-
 @AllArgsConstructor
 @RestController
 @RequestMapping("/v1/from-trello")
@@ -42,6 +41,7 @@ public class TrelloController {
         insertBoardFromTrelloToDb(idBoard);
         insertUsersFromTrelloToDb(idBoard);
         insertUsersFromTrelloToDb(idBoard);
+        insertLabelsFromTrelloToDb(idBoard);
 
     }
 
@@ -74,18 +74,28 @@ public class TrelloController {
 
     }
 
+    public void insertLabelsFromTrelloToDb(String idBoard) {
+        Long idBoardFromDB = boardService.getBoardByIdTrelloFromDb(idBoard).getId();
+        getLabelsFromTrelloBoard(idBoard).stream()
+                .map(LabelsTrelloDto::trellotoDto)
+                .map(LabelsDTO::toModel)
+                .forEach(labels -> {
+                    labels.setBoard(Board.builder().id(idBoardFromDB).build());
+                    labelsService.insert(labels);
+                });
+    }
+
     public List<UserTrelloDto> getAllUsersFromBoard(String idBoard) {
         return userTrelloService.getUsersFromTrelloByIdBoard(idBoard);
     }
 
-    private void insertUsersFromTrelloToDb(String idBoard) {
-        List<UserDTO> userDTOS = getAllUsersFromBoard(idBoard).stream().map(UserTrelloDto::trellotoDto)
-                .toList();
-        List<User> userList = userDTOS.stream().map(UserDTO::toModel).toList();
-        for (User user : userList) {
-            userService.insert(user);
-        }
+    public void insertUsersFromTrelloToDb(String idBoard) {
+        getAllUsersFromBoard(idBoard).stream()
+                .map(UserTrelloDto::trellotoDto)
+                .map(UserDTO::toModel)
+                .forEach(userService::insert);
     }
+
 
     @GetMapping("/comments")
     public List<CommentTrelloDto> getCommentsFromCard(@RequestParam String idCard) {
