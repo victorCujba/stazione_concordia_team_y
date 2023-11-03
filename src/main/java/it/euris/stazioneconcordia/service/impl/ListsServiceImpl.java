@@ -64,4 +64,15 @@ public class ListsServiceImpl implements ListsService {
                 .orElse(null);
     }
 
+    @Override
+    public Lists getListByIdTrelloFromDb(String idTrello) {
+        return listsRepository.getListByIdTrello(idTrello);
+    }
+
+    @Override
+    public List<String> getAllIdTrelloForLists() {
+        return listsRepository.getAllIdTrelloLists();
+    }
+
+
 }

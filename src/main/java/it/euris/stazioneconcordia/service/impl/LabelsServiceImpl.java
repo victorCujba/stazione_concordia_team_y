@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @AllArgsConstructor
 @Service
@@ -26,6 +28,16 @@ public class LabelsServiceImpl implements LabelsService {
     @Override
     public Labels findById(Long idLabels) {
         return labelsRepository.findById(idLabels).orElse(Labels.builder().build());
+    }
+
+    @Override
+    public Labels getLabelByIdTrelloFromDb(String idTrello) {
+        return labelsRepository.getLabelByIdTrello(idTrello);
+    }
+
+    @Override
+    public List<String> getAllIdTrelloForLabels() {
+        return labelsRepository.getAllIdTrelloLabels();
     }
 
 

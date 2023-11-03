@@ -20,5 +20,7 @@ public interface ListsService {
     Lists findById(Long idLists);
 
     Lists findByLabel(ListLabel toListLabel);
+    Lists getListByIdTrelloFromDb(String idTrello);
 
+    List<String> getAllIdTrelloForLists();
 }
