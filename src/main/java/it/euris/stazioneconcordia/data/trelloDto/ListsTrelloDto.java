@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class ListsTrelloDto implements TrelloDto {
     private String id;
     private String name;
-    private String position;
+    private String pos;
     private String closed;
     private String idBoard;
 
@@ -26,7 +26,7 @@ public class ListsTrelloDto implements TrelloDto {
                 .name(name)
                 .closed(closed)
                 .idTrelloBoard(idBoard)
-                .position(position)
+                .position(pos)
                 .build();
     }
 }

@@ -34,7 +34,7 @@ public class ListsDTO implements Dto {
                 .name(name)
                 .position(stringToLong(position))
                 .closed(stringToBoolean(closed))
-                .board(Board.builder().id(1L).idTrello(idTrelloBoard).build())
+                .board(Board.builder().idTrello(idTrelloBoard).build())
                 .build();
     }
 
@@ -44,7 +44,7 @@ public class ListsDTO implements Dto {
                 .builder()
                 .id(id)
                 .name(name)
-                .position(position)
+                .pos(position)
                 .closed(closed)
                 .idBoard(idTrelloBoard)
                 .build();

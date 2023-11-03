@@ -40,8 +40,8 @@ public class TrelloController {
     public void getInfoFromTrello(@RequestParam String idBoard) {
         insertBoardFromTrelloToDb(idBoard);
         insertUsersFromTrelloToDb(idBoard);
-        insertUsersFromTrelloToDb(idBoard);
         insertLabelsFromTrelloToDb(idBoard);
+        insertListsFromTrelloToDb(idBoard);
 
     }
 
@@ -94,6 +94,22 @@ public class TrelloController {
                 .map(UserTrelloDto::trellotoDto)
                 .map(UserDTO::toModel)
                 .forEach(userService::insert);
+    }
+
+    public List<ListsTrelloDto> getAllListsFromBoard(String idBoard) {
+        return listsTrelloService.getListsByIdBoard(idBoard);
+    }
+
+
+    public void insertListsFromTrelloToDb(String idBoard) {
+        Long idBoardFromDB = boardService.getBoardByIdTrelloFromDb(idBoard).getId();
+        getAllListsFromBoard(idBoard).stream()
+                .map(ListsTrelloDto::trellotoDto)
+                .map(ListsDTO::toModel)
+                .forEach(lists -> {
+                    lists.setBoard(Board.builder().id(idBoardFromDB).build());
+                    listsService.insert(lists);
+                });
     }
 
 
