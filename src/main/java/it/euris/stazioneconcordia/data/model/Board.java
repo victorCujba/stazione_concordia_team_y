@@ -39,9 +39,6 @@ public class Board implements Model {
     @Column(name = "date_last_activity")
     private LocalDateTime dateLastActivity;
 
-    @Column(name = "closed")
-    @Builder.Default
-    private Boolean closed = false;
 
     @OneToMany
     @JoinColumn(name = "id_board")
@@ -60,7 +57,6 @@ public class Board implements Model {
                 .name(name)
                 .description(description)
                 .url(url)
-                .closed(booleanToString(closed))
                 .dateLastActivity(localDateTimeToString(dateLastActivity))
                 .build();
     }

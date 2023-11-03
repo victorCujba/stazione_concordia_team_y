@@ -21,7 +21,6 @@ public class BoardDTO implements Dto {
     private String name;
     private String description;
     private String url;
-    private String closed;
     private String dateLastActivity;
 
 
@@ -35,7 +34,6 @@ public class BoardDTO implements Dto {
                 .description(description)
                 .url(url)
                 .dateLastActivity(stringToLocalDateTime(dateLastActivity))
-                .closed(stringToBoolean(closed))
                 .build();
     }
 
