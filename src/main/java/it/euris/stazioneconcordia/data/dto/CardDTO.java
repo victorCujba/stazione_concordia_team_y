@@ -24,6 +24,7 @@ public class CardDTO implements Dto {
     private String id;
     private String idTrello;
     private String idList;
+    private String idUser;
     private List<String> idLabels;
     private String name;
     private String position;
