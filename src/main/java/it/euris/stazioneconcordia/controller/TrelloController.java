@@ -1,5 +1,6 @@
 package it.euris.stazioneconcordia.controller;
 
+import com.google.gson.reflect.TypeToken;
 import it.euris.stazioneconcordia.data.dto.*;
 import it.euris.stazioneconcordia.data.model.*;
 import it.euris.stazioneconcordia.data.trelloDto.*;
@@ -13,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @AllArgsConstructor
@@ -42,7 +46,8 @@ public class TrelloController {
         insertUsersFromTrelloToDb(idBoard);
         insertLabelsFromTrelloToDb(idBoard);
         insertListsFromTrelloToDb(idBoard);
-        insertCardsFromTrelloToDb();
+        insertCardsFromTrelloToDb(idBoard);
+        insertCommentsFromTrelloToDb();
 
     }
 
@@ -128,19 +133,46 @@ public class TrelloController {
                     card.setLabels(Labels.builder().id(idLabelFromDb).build());
                     cardService.insert(card);
                 });
-
     }
 
 
-    public void insertCardsFromTrelloToDb() {
-        List<String> idTrelloListsFromDb = getAllIdTrelloForListsFromDb();
-        List<String> idTrelloLabelFromDb = getAllIdTrelloForLabelsFromDb();
-        for (String idList : idTrelloListsFromDb) {
-            for (String idLabel : idTrelloLabelFromDb) {
-                insertCardsByIdListAndIdLabel(idList, idLabel);
-            }
+    public void insertCardsFromTrelloToDb(String idBoard) {
+        List<CardTrelloDto> cardTrelloDtos = new ArrayList<>();
+
+        for(String idList : getAllIdTrelloForLabelsFromDb()){
+            List<CardTrelloDto> cardsList = getCardsFromTrelloList(idList);
+            cardTrelloDtos.addAll(cardsList);
         }
+        for (CardTrelloDto card : cardTrelloDtos) {
+            String idLabel = card.getIdLabels().toString();
+            insertCardByLabel(idLabel, card);
+        }
+
+//        List<String> idTrelloListsFromDb = getAllIdTrelloForListsFromDb();
+//        List<String> idTrelloLabelFromDb = getAllIdTrelloForLabelsFromDb();
+//        for (String idList : idTrelloListsFromDb) {
+//            for (String idLabel : idTrelloLabelFromDb) {
+//                insertCardsByIdListAndIdLabel(idList, idLabel);
+//            }
+//        }
     }
+
+    private void insertCardByLabel(String idLabel, CardTrelloDto card) {
+
+        Long idLabelFromDb = labelsService.getLabelByIdTrelloFromDb(idLabel).getId();
+
+
+        if(!cardService.cardExistByTrelloIdAndLabel(card.getId(),idLabelFromDb)) {
+            Long idListFromDb = listsService.getListByIdTrelloFromDb(card.getIdList()).getId();
+
+            card.trellotoDto().toModel().setList(Lists.builder().id(idListFromDb).build());
+            card.trellotoDto().toModel().setLabels(Labels.builder().id(idLabelFromDb).build());
+            card.trellotoDto().toModel().setList(Lists.builder().id(idLabelFromDb).build());
+        }
+
+    }
+
+
 
     private List<String> getAllIdTrelloForLabelsFromDb() {
         return labelsService.getAllIdTrelloForLabels();
@@ -148,6 +180,32 @@ public class TrelloController {
 
     private List<String> getAllIdTrelloForListsFromDb() {
         return listsService.getAllIdTrelloForLists();
+    }
+
+    private void insertCommentsFromTrelloToDb() {
+        List<String> idTrelloCardsFromDb = cardService.getAllIdTrelloForCardsFromDb();
+        for (String idCard : idTrelloCardsFromDb) {
+            insertCommentsByIdCard(idCard);
+        }
+    }
+
+
+    public void insertCommentsByIdCard(String idCard) {
+        Long idCardFromDb = cardService.getCardByIdTrelloFromDb(idCard);
+        getAllCommentsByIdCard(idCard).stream()
+                .map(CommentTrelloDto::trellotoDto)
+                .map(CommentDTO::toModel)
+                .forEach(comment -> {
+                            comment.setCard(Card.builder().id(idCardFromDb).build());
+                            commentService.insert(comment);
+                        }
+
+                );
+    }
+
+
+    public List<CommentTrelloDto> getAllCommentsByIdCard(String idCard) {
+        return commentTrelloService.getCommentsFromCardByIdCard(idCard);
     }
 
 

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -85,7 +86,22 @@ public class CardServiceImpl implements CardService {
         return cardRepository.findById(idCard).orElse(Card.builder().build());
     }
 
+    @Override
+    public Long getCardByIdTrelloFromDb(String idTrelloCard) {
+        return cardRepository.getCardByIdTrello(idTrelloCard);
+    }
 
+    @Override
+    public List<String> getAllIdTrelloForCardsFromDb() {
+        return cardRepository.getTrelloIds();
+    }
+
+    @Override
+    public boolean cardExistByTrelloIdAndLabel(String idTrello, Long idLabel) {
+
+        Card existingCard = cardRepository.findByTrelloIdAndIdLabel(idTrello, idLabel);
+        return existingCard != null;
+    }
 
 
 }

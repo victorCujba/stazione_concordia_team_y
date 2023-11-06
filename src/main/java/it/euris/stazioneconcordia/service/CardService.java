@@ -3,6 +3,7 @@ package it.euris.stazioneconcordia.service;
 import it.euris.stazioneconcordia.data.model.Card;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CardService {
 
@@ -21,4 +22,9 @@ public interface CardService {
     Card findById(Long idCard);
 
 
+    Long getCardByIdTrelloFromDb(String idCard);
+
+    List<String> getAllIdTrelloForCardsFromDb();
+
+    boolean cardExistByTrelloIdAndLabel(String idTrello, Long idLabel);
 }
