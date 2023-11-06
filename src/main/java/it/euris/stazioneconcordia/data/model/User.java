@@ -41,6 +41,9 @@ public class User implements Model {
     @JoinColumn(name = "id_user")
     private List<Comment> comments;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<CardUser> cardUsersq;
+
     @Override
     public UserDTO toDto() {
         return UserDTO.builder()

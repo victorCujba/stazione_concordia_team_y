@@ -1,5 +1,8 @@
 package it.euris.stazioneconcordia.data.model;
 
+import it.euris.stazioneconcordia.data.dto.CardUserDTO;
+import it.euris.stazioneconcordia.data.dto.archetype.Dto;
+import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "card_user")
-public class CardUser {
+public class CardUser implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,4 +27,13 @@ public class CardUser {
     @MapsId("id_user")
     @JoinColumn(name = "id_user")
     private User user;
+
+    @Override
+    public CardUserDTO toDto() {
+        return CardUserDTO.builder()
+                .id(id)
+                .idCard(card.getId())
+                .idUser(user.getId())
+                .build();
+    }
 }

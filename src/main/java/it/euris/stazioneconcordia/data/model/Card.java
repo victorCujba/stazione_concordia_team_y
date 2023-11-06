@@ -57,9 +57,13 @@ public class Card implements Model {
     @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
     private List<CardState> stateHistory;
 
+    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
+    private List<CardUser> cardUsers;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_label")
     private Labels labels;
+
 
     @Override
     public CardDTO toDto() {
