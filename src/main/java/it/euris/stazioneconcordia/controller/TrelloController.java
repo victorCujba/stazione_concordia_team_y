@@ -139,9 +139,9 @@ public class TrelloController {
                     cardService.insert(card);
                 });
     }
-    public void compareCard(Card card,Card card2){
-        if(card.getDateLastActivity().isAfter(card2.getDateLastActivity())
-    }
+//    public void compareCard(Card card,Card card2){
+//        if(card.getDateLastActivity().isAfter(card2.getDateLastActivity())
+//    }
 
 
     public void insertCardsFromTrelloToDb() {
