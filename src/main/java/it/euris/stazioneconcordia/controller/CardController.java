@@ -51,6 +51,18 @@ public class CardController {
             );
         }
     }
+    @PutMapping("/v1/move")
+    public CardDTO moveCard(@RequestParam Long idCard , @RequestParam Long idList) {
+        try {
+            Card card = cardService.findById(idCard).toDto().toModel();
+            cardService.findById(idCard).setList(listsService.findById(idList));
+            return cardService.update(card).toDto();
+        } catch (IdMustNotBeNullException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, e.getMessage()
+            );
+        }
+    }
 
     @DeleteMapping("/v1/{id}")
     public Boolean deleteById(@PathVariable("id") Long idCard) {
