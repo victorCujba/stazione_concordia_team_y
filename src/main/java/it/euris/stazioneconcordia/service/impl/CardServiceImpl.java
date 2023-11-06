@@ -4,10 +4,14 @@ import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CardRepository;
+import it.euris.stazioneconcordia.repository.LabelsRepository;
+import it.euris.stazioneconcordia.repository.ListsRepository;
 import it.euris.stazioneconcordia.service.CardService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.sound.midi.Soundbank;
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -20,6 +24,8 @@ import java.util.stream.Collectors;
 public class CardServiceImpl implements CardService {
 
     CardRepository cardRepository;
+    LabelsRepository labelsRepository;
+    ListsRepository listsRepository;
 
     @Override
     public List<Card> findAll() {
@@ -101,6 +107,30 @@ public class CardServiceImpl implements CardService {
 
         Card existingCard = cardRepository.findByTrelloIdAndIdLabel(idTrello, idLabel);
         return existingCard != null;
+    }
+
+    @Override
+    public Integer insertIntoDb(Card card) {
+        Long labelId = labelsRepository.getLabelByIdTrello(card.getLabels().getIdTrello()).getId();
+        Long listId = listsRepository.getListByIdTrello(card.getList().getIdTrello()).getId();
+        Integer insertedCard = cardRepository.insert(
+                card.getIdTrello(),
+                card.getName(),
+                card.getPosition(),
+                card.getLabels().getName(),
+                card.getDescription(),
+                card.getExpirationDate(),
+                LocalDateTime.now(),
+                card.getClosed(),
+                listId,
+                labelId);
+
+        if (insertedCard != 1) {
+            System.out.println("Card non inserted");
+        } else {
+            System.out.println("Card created successfully!!! ");
+        }
+        return insertedCard;
     }
 
 

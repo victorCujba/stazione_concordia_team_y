@@ -57,7 +57,7 @@ public class Card implements Model {
     @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
     private List<CardState> stateHistory;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_label")
     private Labels labels;
 
