@@ -1,6 +1,5 @@
 package it.euris.stazioneconcordia.controller;
 
-import com.google.gson.reflect.TypeToken;
 import it.euris.stazioneconcordia.data.dto.*;
 import it.euris.stazioneconcordia.data.model.*;
 import it.euris.stazioneconcordia.data.trelloDto.*;
@@ -14,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 
 @AllArgsConstructor
@@ -57,8 +54,10 @@ public class TrelloController {
     }
 
     public void insertBoardFromTrelloToDb(String idBoard) {
-        BoardDTO boardDTO = getBoardFromTrello(idBoard).trellotoDto();
-        boardService.insertBoardFromTrello(boardDTO);
+        if (boardService.getBoardByIdTrelloFromDb(idBoard) == null) {
+            BoardDTO boardDTO = getBoardFromTrello(idBoard).trellotoDto();
+            boardService.insertBoardFromTrello(boardDTO);
+        }
     }
 
 
@@ -86,8 +85,10 @@ public class TrelloController {
                 .map(LabelsTrelloDto::trellotoDto)
                 .map(LabelsDTO::toModel)
                 .forEach(labels -> {
-                    labels.setBoard(Board.builder().id(idBoardFromDB).build());
-                    labelsService.insert(labels);
+                    if (!(labelsService.getAllIdTrelloForLabels().contains(labels.getIdTrello()))) {
+                        labels.setBoard(Board.builder().id(idBoardFromDB).build());
+                        labelsService.insert(labels);
+                    }
                 });
     }
 
@@ -113,8 +114,10 @@ public class TrelloController {
                 .map(ListsTrelloDto::trellotoDto)
                 .map(ListsDTO::toModel)
                 .forEach(lists -> {
-                    lists.setBoard(Board.builder().id(idBoardFromDB).build());
-                    listsService.insert(lists);
+                    if (!(listsService.getAllIdTrelloForLists().contains(lists.getIdTrello()))) {
+                        lists.setBoard(Board.builder().id(idBoardFromDB).build());
+                        listsService.insert(lists);
+                    }
                 });
     }
 
@@ -133,6 +136,9 @@ public class TrelloController {
                     card.setLabels(Labels.builder().id(idLabelFromDb).build());
                     cardService.insert(card);
                 });
+    }
+    public void compareCard(Card card,Card card2){
+        if(card.getDateLastActivity().isAfter(card2.getDateLastActivity())
     }
 
 
@@ -230,4 +236,5 @@ public class TrelloController {
 //        return commentDTOs;
         return null;
     }
+
 }
