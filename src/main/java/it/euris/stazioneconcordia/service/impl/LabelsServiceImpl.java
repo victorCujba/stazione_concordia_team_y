@@ -40,5 +40,10 @@ public class LabelsServiceImpl implements LabelsService {
         return labelsRepository.getAllIdTrelloLabels();
     }
 
+    @Override
+    public Long getDefaultLabelId() {
+        return labelsRepository.getDefaultLabel();
+    }
+
 
 }

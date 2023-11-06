@@ -11,10 +11,14 @@ public interface LabelsRepository extends JpaRepository<Labels, Long> {
 
     String SELECT_LABEL_BY_ID_TRELLO = "SELECT labels.id, labels.id_trello, labels.id_board, labels.name, labels.color, labels.uses " +
             "FROM labels " +
-            "WHERE labels.id_trello =:id_trello ";
+            "WHERE labels.id_trello = :id_trello ";
 
     String SELECT_ID_TRELLO = "SELECT labels.id_trello " +
             " FROM labels";
+    String SELECT_DEFAULT_LABEL = "SELECT labels.id" +
+            "FROM labels " +
+            "WHERE labels.name = DefaultLabel ";
+
 
     @Query(value = SELECT_LABEL_BY_ID_TRELLO, nativeQuery = true)
     Labels getLabelByIdTrello(@Param("id_trello") String idTrello);
@@ -22,4 +26,6 @@ public interface LabelsRepository extends JpaRepository<Labels, Long> {
     @Query(value = SELECT_ID_TRELLO, nativeQuery = true)
     List<String> getAllIdTrelloLabels();
 
+    @Query(value = SELECT_DEFAULT_LABEL, nativeQuery = true)
+    Long getDefaultLabel();
 }
