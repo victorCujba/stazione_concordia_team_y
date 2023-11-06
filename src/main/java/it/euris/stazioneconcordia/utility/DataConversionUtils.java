@@ -22,11 +22,11 @@ public class DataConversionUtils {
 
 
     public static LocalDateTime stringToLocalDateTime(String value) {
-        return value == null ? null : LocalDateTime.parse(value);
+        return value == null ? null : LocalDateTime.parse(value.substring(0,19));
     }
 
     public static String localDateTimeToString(LocalDateTime value) {
-        return value == null ? null : value.toString();
+        return value == null ? null : value.toString().substring(0, 19);
     }
 
     public static Boolean stringToBoolean(String value) {

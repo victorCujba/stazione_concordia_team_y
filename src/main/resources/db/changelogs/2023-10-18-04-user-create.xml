@@ -20,7 +20,7 @@
             <column name="bio" type="VARCHAR(255)"/>
             <column name="avatar_url" type="VARCHAR(255)"/>
             <column name="email" type="VARCHAR(255)"/>
-            <column name="status" type="BOOLEAN"/>
+            <column name="status" type="VARCHAR(255)"/>
         </createTable>
 
         <rollback>

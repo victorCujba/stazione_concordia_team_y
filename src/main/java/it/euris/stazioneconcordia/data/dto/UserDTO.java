@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToBoolean;
 
 @Data
 @AllArgsConstructor
@@ -32,7 +31,7 @@ public class UserDTO implements Dto {
                 .bio(bio)
                 .avatarUrl(avatarUrl)
                 .email(email)
-                .status(stringToBoolean(status))
+                .status(status)
                 .build();
     }
 

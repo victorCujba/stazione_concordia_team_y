@@ -1,130 +1,217 @@
 package it.euris.stazioneconcordia.controller;
 
-import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import it.euris.stazioneconcordia.data.dto.*;
 import it.euris.stazioneconcordia.data.model.*;
-import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
-import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
-import it.euris.stazioneconcordia.data.trelloDto.CommentTrelloDto;
+import it.euris.stazioneconcordia.data.trelloDto.*;
 import it.euris.stazioneconcordia.service.*;
 
-import it.euris.stazioneconcordia.service.trelloService.BoardTrelloService;
-import it.euris.stazioneconcordia.service.trelloService.CardTrelloService;
-import it.euris.stazioneconcordia.service.trelloService.LabelsTrelloService;
-import it.euris.stazioneconcordia.trello.service.impl.TrelloCardServiceImpl;
+import it.euris.stazioneconcordia.service.trelloService.*;
 import it.euris.stazioneconcordia.trello.service.impl.TrelloCommentService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
-
-import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.numberToString;
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLong;
+import java.util.Set;
 
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/v1/from-trello")
 public class TrelloController {
+
     private BoardTrelloService boardTrelloService;
-
     private LabelsTrelloService labelsTrelloService;
-
-
-
     private BoardService boardService;
-
     private ListsService listsService;
-
     private CardService cardService;
-
     private LabelsService labelsService;
-
     private UserService userService;
-
     private CommentService commentService;
-
     private TrelloCommentService trelloCommentService;
-
     private CardTrelloService cardTrelloService;
-
-
+    private CommentTrelloService commentTrelloService;
+    private ListsTrelloService listsTrelloService;
+    private UserTrelloService userTrelloService;
 
 
     @GetMapping("/sync")
     public void getInfoFromTrello(@RequestParam String idBoard) {
-        getBoardFromTrello(idBoard);
-        getAllUsersFromBoard(idBoard, KEY_VALUE, TOKEN_VALUE);
-        labelsTrelloService.getLabelsByIdBoard(idBoard);
+        insertBoardFromTrelloToDb(idBoard);
+        insertUsersFromTrelloToDb(idBoard);
+        insertLabelsFromTrelloToDb(idBoard);
+        insertListsFromTrelloToDb(idBoard);
+        insertCardsFromTrelloToDb(idBoard);
+        insertCommentsFromTrelloToDb();
 
-        for (ListsDTO listDTO : listDTOs) {
-//            CardDTO[] cardDTOs = getCardsFromTrelloList(listDTO.getIdTrello(), key, token);
-//            for (CardDTO cardDTO : cardDTOs) {
-//                getComment(stringToLong(cardDTO.getId()));
-//            }
-        }
     }
 
-    public BoardTrelloDTO getBoardFromTrello(@RequestParam String idBoard) {
+
+    public BoardTrelloDTO getBoardFromTrello(String idBoard) {
         return boardTrelloService.getBoardFromTrelloByIdBoard(idBoard);
     }
 
-
-    public ListsDTO[] getListsFromTrelloBoard(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
-        Lists[] lists = listsService.getListFromTrelloBoard(idBoard, key, token);
-        ListsDTO[] listsDTOs = new ListsDTO[lists.length];
-        for (int i = 0; i < lists.length; i++) {
-            listsDTOs[i] = lists[i].toDto();
-        }
-        return listsDTOs;
+    public void insertBoardFromTrelloToDb(String idBoard) {
+        BoardDTO boardDTO = getBoardFromTrello(idBoard).trellotoDto();
+        boardService.insertBoardFromTrello(boardDTO);
     }
 
-    public List<CardTrelloDto> getCardsFromTrelloList(@RequestParam String idTrelloList) {
-        List<CardTrelloDto> cardTrelloDtos = cardTrelloService.getCardsByIdList(idTrelloList);
-//        CardDTO[] cardDTOs = new CardDTO[cards.length];
-//        for (int i = 0; i < cards.length; i++) {
-//            cardDTOs[i] = cards[i].toDto();
+
+    public List<ListsTrelloDto> getListsFromTrelloBoard(String idBoard) {
+        return listsTrelloService.getListsByIdBoard(idBoard);
+    }
+
+    public List<CardTrelloDto> getCardsFromTrelloList(String idTrelloList) {
+        return cardTrelloService.getCardsByIdList(idTrelloList);
+    }
+
+    public UserTrelloDto getUserFromTrelloByUsername(String username) {
+        return userTrelloService.getUserFromTrelloByUserName(username);
+    }
+
+
+    public List<LabelsTrelloDto> getLabelsFromTrelloBoard(String idBoard) {
+        return labelsTrelloService.getLabelsByIdBoard(idBoard);
+
+    }
+
+    public void insertLabelsFromTrelloToDb(String idBoard) {
+        Long idBoardFromDB = boardService.getBoardByIdTrelloFromDb(idBoard).getId();
+        getLabelsFromTrelloBoard(idBoard).stream()
+                .map(LabelsTrelloDto::trellotoDto)
+                .map(LabelsDTO::toModel)
+                .forEach(labels -> {
+                    labels.setBoard(Board.builder().id(idBoardFromDB).build());
+                    labelsService.insert(labels);
+                });
+    }
+
+    public List<UserTrelloDto> getAllUsersFromBoard(String idBoard) {
+        return userTrelloService.getUsersFromTrelloByIdBoard(idBoard);
+    }
+
+    public void insertUsersFromTrelloToDb(String idBoard) {
+        getAllUsersFromBoard(idBoard).stream()
+                .map(UserTrelloDto::trellotoDto)
+                .map(UserDTO::toModel)
+                .forEach(userService::insert);
+    }
+
+    public List<ListsTrelloDto> getAllListsFromBoard(String idBoard) {
+        return listsTrelloService.getListsByIdBoard(idBoard);
+    }
+
+
+    public void insertListsFromTrelloToDb(String idBoard) {
+        Long idBoardFromDB = boardService.getBoardByIdTrelloFromDb(idBoard).getId();
+        getAllListsFromBoard(idBoard).stream()
+                .map(ListsTrelloDto::trellotoDto)
+                .map(ListsDTO::toModel)
+                .forEach(lists -> {
+                    lists.setBoard(Board.builder().id(idBoardFromDB).build());
+                    listsService.insert(lists);
+                });
+    }
+
+    public List<CardTrelloDto> getCardsFromTrelloByIdList(String idList) {
+        return cardTrelloService.getCardsByIdList(idList);
+    }
+
+    public void insertCardsByIdListAndIdLabel(String idList, String idLabel) {
+        Long idListFromDb = listsService.getListByIdTrelloFromDb(idList).getId();
+        Long idLabelFromDb = labelsService.getLabelByIdTrelloFromDb(idLabel).getId();
+        getCardsFromTrelloByIdList(idList).stream()
+                .map(CardTrelloDto::trellotoDto)
+                .map(CardDTO::toModel)
+                .forEach(card -> {
+                    card.setList(Lists.builder().id(idListFromDb).build());
+                    card.setLabels(Labels.builder().id(idLabelFromDb).build());
+                    cardService.insert(card);
+                });
+    }
+
+
+    public void insertCardsFromTrelloToDb(String idBoard) {
+        List<CardTrelloDto> cardTrelloDtos = new ArrayList<>();
+
+        for(String idList : getAllIdTrelloForLabelsFromDb()){
+            List<CardTrelloDto> cardsList = getCardsFromTrelloList(idList);
+            cardTrelloDtos.addAll(cardsList);
+        }
+        for (CardTrelloDto card : cardTrelloDtos) {
+            String idLabel = card.getIdLabels().toString();
+            insertCardByLabel(idLabel, card);
+        }
+
+//        List<String> idTrelloListsFromDb = getAllIdTrelloForListsFromDb();
+//        List<String> idTrelloLabelFromDb = getAllIdTrelloForLabelsFromDb();
+//        for (String idList : idTrelloListsFromDb) {
+//            for (String idLabel : idTrelloLabelFromDb) {
+//                insertCardsByIdListAndIdLabel(idList, idLabel);
+//            }
 //        }
-        return null;
     }
 
-    public UserDTO getUserByUsername(@RequestParam String username, @RequestParam String key, @RequestParam String token) {
-        User user = userService.getUserFromTrello(username, key, token);
-        return user.toDto();
-    }
+    private void insertCardByLabel(String idLabel, CardTrelloDto card) {
+
+        Long idLabelFromDb = labelsService.getLabelByIdTrelloFromDb(idLabel).getId();
 
 
-    public LabelsDTO[] getLabelsFromTrelloBoard(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
-        Labels[] labels = labelsService.getLabelsFromTrelloBoard(idBoard, key, token);
-        LabelsDTO[] labelsDTOs = new LabelsDTO[labels.length];
-        for (int i = 0; i < labels.length; i++) {
-            labelsDTOs[i] = labels[i].toDto();
+        if(!cardService.cardExistByTrelloIdAndLabel(card.getId(),idLabelFromDb)) {
+            Long idListFromDb = listsService.getListByIdTrelloFromDb(card.getIdList()).getId();
+
+            card.trellotoDto().toModel().setList(Lists.builder().id(idListFromDb).build());
+            card.trellotoDto().toModel().setLabels(Labels.builder().id(idLabelFromDb).build());
+            card.trellotoDto().toModel().setList(Lists.builder().id(idLabelFromDb).build());
         }
-        return labelsDTOs;
+
     }
 
-    public UserDTO[] getAllUsersFromBoard(@RequestParam String idBoard, @RequestParam String key, @RequestParam String token) {
-        User[] users = userService.getUserFromTrelloBoard(idBoard, key, token);
-        UserDTO[] userDTOs = new UserDTO[users.length];
-        for (int i = 0; i < users.length; i++) {
-            userDTOs[i] = users[i].toDto();
-        }
-        return userDTOs;
+
+
+    private List<String> getAllIdTrelloForLabelsFromDb() {
+        return labelsService.getAllIdTrelloForLabels();
     }
+
+    private List<String> getAllIdTrelloForListsFromDb() {
+        return listsService.getAllIdTrelloForLists();
+    }
+
+    private void insertCommentsFromTrelloToDb() {
+        List<String> idTrelloCardsFromDb = cardService.getAllIdTrelloForCardsFromDb();
+        for (String idCard : idTrelloCardsFromDb) {
+            insertCommentsByIdCard(idCard);
+        }
+    }
+
+
+    public void insertCommentsByIdCard(String idCard) {
+        Long idCardFromDb = cardService.getCardByIdTrelloFromDb(idCard);
+        getAllCommentsByIdCard(idCard).stream()
+                .map(CommentTrelloDto::trellotoDto)
+                .map(CommentDTO::toModel)
+                .forEach(comment -> {
+                            comment.setCard(Card.builder().id(idCardFromDb).build());
+                            commentService.insert(comment);
+                        }
+
+                );
+    }
+
+
+    public List<CommentTrelloDto> getAllCommentsByIdCard(String idCard) {
+        return commentTrelloService.getCommentsFromCardByIdCard(idCard);
+    }
+
 
     @GetMapping("/comments")
-    public CommentDTO[] getCommentsFromCard(@RequestParam Long idCard, @RequestParam String key, @RequestParam String token) {
-        Comment[] comments = commentService.getCommentsFromCard(idCard, key, token);
-        CommentDTO[] commentDTOs = new CommentDTO[comments.length];
-        for (int i = 0; i < comments.length; i++) {
-            commentDTOs[i] = comments[i].toDto();
-        }
-        return commentDTOs;
+    public List<CommentTrelloDto> getCommentsFromCard(@RequestParam String idCard) {
+        return commentTrelloService.getCommentsFromCardByIdCard(idCard);
     }
 
     @GetMapping("/comment")

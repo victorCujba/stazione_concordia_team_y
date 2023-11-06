@@ -1,7 +1,6 @@
 package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
-import it.euris.stazioneconcordia.data.dto.archetype.TrelloDto;
 import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
 import lombok.AllArgsConstructor;
@@ -22,7 +21,6 @@ public class BoardDTO implements Dto {
     private String name;
     private String description;
     private String url;
-    private String closed;
     private String dateLastActivity;
 
 
@@ -36,7 +34,6 @@ public class BoardDTO implements Dto {
                 .description(description)
                 .url(url)
                 .dateLastActivity(stringToLocalDateTime(dateLastActivity))
-                .closed(stringToBoolean(closed))
                 .build();
     }
 

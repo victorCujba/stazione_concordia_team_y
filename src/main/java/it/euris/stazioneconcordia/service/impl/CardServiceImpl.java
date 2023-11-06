@@ -1,25 +1,18 @@
 package it.euris.stazioneconcordia.service.impl;
 
-import com.google.gson.Gson;
-import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.model.Card;
-import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CardRepository;
 import it.euris.stazioneconcordia.service.CardService;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -93,7 +86,22 @@ public class CardServiceImpl implements CardService {
         return cardRepository.findById(idCard).orElse(Card.builder().build());
     }
 
+    @Override
+    public Long getCardByIdTrelloFromDb(String idTrelloCard) {
+        return cardRepository.getCardByIdTrello(idTrelloCard);
+    }
 
+    @Override
+    public List<String> getAllIdTrelloForCardsFromDb() {
+        return cardRepository.getTrelloIds();
+    }
+
+    @Override
+    public boolean cardExistByTrelloIdAndLabel(String idTrello, Long idLabel) {
+
+        Card existingCard = cardRepository.findByTrelloIdAndIdLabel(idTrello, idLabel);
+        return existingCard != null;
+    }
 
 
 }

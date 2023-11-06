@@ -1,8 +1,6 @@
 package it.euris.stazioneconcordia.data.dto;
 
-import com.google.gson.annotations.SerializedName;
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
-import it.euris.stazioneconcordia.data.dto.archetype.TrelloDto;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
 import it.euris.stazioneconcordia.data.model.User;

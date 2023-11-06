@@ -7,7 +7,6 @@ import lombok.*;
 
 import java.util.List;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.booleanToString;
 
 
 @Builder
@@ -35,8 +34,7 @@ public class User implements Model {
     private String email;
 
     @Column(name = "status")
-    @Builder.Default
-    private Boolean status = false;
+    private String status;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @MapsId("id_user")
@@ -51,7 +49,7 @@ public class User implements Model {
                 .bio(bio)
                 .avatarUrl(avatarUrl)
                 .email(email)
-                .status(booleanToString(status))
+                .status(status)
                 .build();
     }
 }

@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface CommentTrelloService {
 
-    List<CommentTrelloDto> getAllCommentsFromCardByIdCard(String idCard);
+    List<CommentTrelloDto> getCommentsFromCardByIdCard(String idCard);
 }

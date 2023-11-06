@@ -20,6 +20,7 @@ public interface ListsService {
     Lists findById(Long idLists);
 
     Lists findByLabel(ListLabel toListLabel);
+    Lists getListByIdTrelloFromDb(String idTrello);
 
-    Lists[] getListFromTrelloBoard(String idBoard, String key, String token);
+    List<String> getAllIdTrelloForLists();
 }
