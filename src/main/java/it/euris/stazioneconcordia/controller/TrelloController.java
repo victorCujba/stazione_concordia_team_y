@@ -61,7 +61,6 @@ public class TrelloController {
         boardService.insertBoardFromTrello(boardDTO);
     }
 
-
     public List<ListsTrelloDto> getListsFromTrelloBoard(String idBoard) {
         return listsTrelloService.getListsByIdBoard(idBoard);
     }
@@ -144,6 +143,7 @@ public class TrelloController {
 
         for (String idList : getAllIdTrelloForListsFromDb()) {
             List<CardTrelloDto> cardsList = getCardsFromTrelloByIdList(idList);
+
             cardTrelloDtos.addAll(cardsList);
         }
         for (CardTrelloDto card : cardTrelloDtos) {
