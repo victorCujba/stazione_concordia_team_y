@@ -30,6 +30,10 @@ public interface CardRepository extends JpaRepository<Card, Long> {
             + " FROM Card "
             + " WHERE card.id_trello = :id_trello "
             + " AND card.id_list = :id_label ";
+    String SELECT_CARD_BY_ID_TRELLO = "SELECT card.id, card.id_trello, card.name, card.position, card.priority, card.description, card.expiration_date, card.date_last_activity, " +
+            " card.closed, card.id_list, card.id_user, card.id_label "
+            + " FROM Card "
+            + " WHERE card.id_trello = :id_trello ";
 
     String INSERT_INTO_CARD_TABLE = "INSERT INTO card ( card.id_trello, card.name, card.position, card.priority, card.description, card.expiration_date, card.date_last_activity, card.closed, card.id_list, card.id_label ) " +
             "VALUES (:id_trello, :name, :position, :priority, :description, :expiration_date, :date_last_activity, :closed, :id_list, :id_label )";
@@ -48,6 +52,8 @@ public interface CardRepository extends JpaRepository<Card, Long> {
 
     @Query(value = SELECT_CARD_BY_ID_TRELLO_AND_ID_LABEL, nativeQuery = true)
     Card findByTrelloIdAndIdLabel(@Param("id_trello") String idTrello, @Param("id_label") Long idLabel);
+    @Query(value = SELECT_CARD_BY_ID_TRELLO, nativeQuery = true)
+    Card findByTrelloId(@Param("id_trello") String idTrello);
 
     @Modifying
     @Query(value = INSERT_INTO_CARD_TABLE, nativeQuery = true)

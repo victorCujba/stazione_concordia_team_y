@@ -27,6 +27,7 @@ public interface CardService {
     List<String> getAllIdTrelloForCardsFromDb();
 
     boolean cardExistByTrelloIdAndLabel(String idTrello, Long idLabel);
+    boolean cardExistByTrelloId(String idTrello);
 
     Integer insertIntoDb(Card card);
 }
