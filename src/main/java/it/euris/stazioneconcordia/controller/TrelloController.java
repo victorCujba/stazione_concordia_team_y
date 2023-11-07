@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+//import java.io.IOException;
+//import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,27 +145,16 @@ public class TrelloController {
                 });
     }
 
-//    public Card cardExist(Card card) {
-//        Card resultCard;
+//    public void compareCard(CardDTO card,CardTrelloDto card2) throws URISyntaxException, IOException, InterruptedException {
 //
-//                cardService
-//                .findAll()
-//                .forEach(card1 -> {
-//                    if (card1.getIdTrello().equals(card.getIdTrello())) {
-//                        resultCard = compareCard(card1, card);
-//
-//                    }
-//                });
-//        return resultCard;
-//
+//        if(card.toModel().getDateLastActivity().isBefore(card2.trellotoDto().toModel().getDateLastActivity())){
+//            cardTrelloService.update(card.getIdTrello(),card); ;
+//        } else if (card.toModel().getDateLastActivity().isAfter(card2.trellotoDto().toModel().getDateLastActivity())) {
+//            Card cardFromTrello= cardService.getCardIfExistByTrelloId(card2.trellotoDto().toModel().getIdTrello());
+//            cardService.update(cardFromTrello);
+//        }
+
 //    }
-    public Card compareCard(Card card,Card card2){
-        if(card.getDateLastActivity().isAfter(card2.getDateLastActivity())){
-            return card;
-        }else{
-            return card2;
-        }
-    }
 
 
     public void insertCardsFromTrelloToDb() {
@@ -184,7 +175,12 @@ public class TrelloController {
                         insertCardByLabel(idLabel, card);
                     }
                 }
-            }else{return;}
+            }
+//            }else{
+//               CardDTO cardDTOofDb= cardService.getCardIfExistByTrelloId(card.getId()).toDto();
+//               compareCard(cardDTOofDb,card);
+//
+//            }
         }
     }
 

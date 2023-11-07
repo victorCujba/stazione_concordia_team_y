@@ -58,6 +58,7 @@ public interface TrelloConstants {
     String URL_API_TRELLO_GET_LABELS_BY_ID_BOARD = "https://api.trello.com/1/boards/{idBoard}/labels?key={key}&token={token}";
     String URL_API_TRELLO_GET_ALL_USERS_BY_ID_BOARD = "https://api.trello.com/1/boards/{idBoard}//members?key={key}&token={token}";
     String URL_API_TRELLO_PUT_MOVE_CARD_BY_ID_LIST_AND_ID_CARD = "https://api.trello.com/1/cards/{idCard}?&idList={idList}&key={key}&token={token}";
+//    String URL_API_TRELLO_UPDATE_CARD = "https://api.trello.com/1/cards/{idCard}?&key={key}&token={token}";
     String URL_API_TRELLO_GET_USER_BY_ID_USER = "https://api.trello.com/1/members/{id}?key={key}&token={token}";
 
 

@@ -2,15 +2,19 @@ package it.euris.stazioneconcordia.service.trelloService.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+//import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
+//import it.euris.stazioneconcordia.service.ListsService;
 import it.euris.stazioneconcordia.service.trelloService.CardTrelloService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+//import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URI;
+//import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -20,6 +24,7 @@ import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
 @AllArgsConstructor
 @Service
 public class CardTrelloServiceImpl implements CardTrelloService {
+//    private ListsService listsService;
 
     @Override
     @SneakyThrows
@@ -101,11 +106,42 @@ public class CardTrelloServiceImpl implements CardTrelloService {
         System.out.println("Response Body: " + responseBody);
         return cardTrelloDto;
     }
+//    @SneakyThrows
+//    @Override
+//    public void update(String idCard,CardDTO cardDTO) {
+//        URI targetUri = new URI(buildUrlUpdateACard(idCard));
+//
+//        CardTrelloDto cardTrelloDto = getCardByIdCard(idCard);
+//        cardTrelloDto.setIdList(listsService.findById(Long.valueOf(cardDTO.getIdList())).getIdTrello());
+//        cardTrelloDto.setDateLastActivity(cardDTO.getDateLastActivity());
+//        cardTrelloDto.setName(cardDTO.getName());
+//        cardTrelloDto.setDesc(cardDTO.getDescription());
+//
+//        Gson gson = new Gson();
+//        String requestBody = gson.toJson(cardTrelloDto);
+//        HttpRequest httpRequest = HttpRequest.newBuilder()
+//                .uri(targetUri)
+//                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+//                .build();
+//        HttpClient httpClient = HttpClient.newHttpClient();
+//        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+//        int statusCode = response.statusCode();
+//        String responseBody = response.body();
+//
+//        System.out.println("HTTP Status Code: " + statusCode);
+//        System.out.println("Response Body: " + responseBody);
+//
+//
+//    }
 
     private String buildUrlPutCardToAnotherListRequest(String idCard, String idList) {
         return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_PUT_MOVE_CARD_BY_ID_LIST_AND_ID_CARD)
                 .buildAndExpand(idCard, idList, KEY_VALUE, TOKEN_VALUE).toString();
     }
+//    private String buildUrlUpdateACard(String idCard) {
+//        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_UPDATE_CARD)
+//                .buildAndExpand(idCard, KEY_VALUE, TOKEN_VALUE).toString();
+//    }
 
 
     private String buildUrlGetCardFromTrelloByIdCard(String idCard) {
