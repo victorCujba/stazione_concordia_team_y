@@ -14,17 +14,17 @@ import lombok.NoArgsConstructor;
 public class CommentTrelloDto implements TrelloDto {
 
     private String id;
-    private String idCard;
     private String idMemberCreator;
-    private String text;
+    private CommentDataDTO data;
     private String date;
 
     @Override
     public CommentDTO trellotoDto() {
         return CommentDTO.builder()
                 .idTrello(id)
-                .idCard(idCard)
                 .idUser(idMemberCreator)
+                .idCard(data.getCard().getId())
+                .commentBody(data.getText())
                 .date(date)
                 .build();
     }

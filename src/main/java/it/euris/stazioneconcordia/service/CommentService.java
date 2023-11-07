@@ -21,4 +21,5 @@ public interface CommentService {
 
     Comment getLastComment(Card card);
 
+    Integer insertComment(Comment comment);
 }
