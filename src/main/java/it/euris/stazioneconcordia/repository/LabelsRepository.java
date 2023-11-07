@@ -20,7 +20,7 @@ public interface LabelsRepository extends JpaRepository<Labels, Long> {
             "WHERE labels.name = DefaultLabel ";
 
     String SELECT_LABEL_BY_NAME = "SELECT *" +
-            "FROM labels" +
+            "FROM labels " +
             "WHERE labels.name = :name";
 
     @Query(value = SELECT_LABEL_BY_ID_TRELLO, nativeQuery = true)
@@ -33,5 +33,5 @@ public interface LabelsRepository extends JpaRepository<Labels, Long> {
     Long getDefaultLabel();
 
     @Query(value = SELECT_LABEL_BY_NAME, nativeQuery = true)
-    Long getLabelIdByNameFromDb(@Param("name") String highPriority);
+    Labels getLabelIdByNameFromDb(@Param("name") String priorityName);
 }

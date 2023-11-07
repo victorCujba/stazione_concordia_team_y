@@ -51,6 +51,7 @@ public interface CardRepository extends JpaRepository<Card, Long> {
 
     @Query(value = SELECT_CARD_BY_ID_TRELLO_AND_ID_LABEL, nativeQuery = true)
     Card findByTrelloIdAndIdLabel(@Param("id_trello") String idTrello, @Param("id_label") Long idLabel);
+
     @Query(value = SELECT_CARD_BY_ID_TRELLO, nativeQuery = true)
     Card findByTrelloId(@Param("id_trello") String idTrello);
 
@@ -70,4 +71,6 @@ public interface CardRepository extends JpaRepository<Card, Long> {
             @Param("id_label") Long idLabel
     );
 
+    @Query(value = "SELECT * FROM card  WHERE card.expiration_date BETWEEN :startDate AND :endDate", nativeQuery = true)
+    List<Card> getExpiringIn5DaysCards(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

@@ -27,7 +27,15 @@ public interface CardService {
     List<String> getAllIdTrelloForCardsFromDb();
 
     boolean cardExistByTrelloIdAndLabel(String idTrello, Long idLabel);
+
     boolean cardExistByTrelloId(String idTrello);
 
     Integer insertIntoDb(Card card);
+
+    List<Card> getHighPriorityCards();
+
+    List<Card> getMediumPriorityCards();
+
+    List<Card> getLowPriorityCards();
+    List<Card> getExpiringIn5DaysCards();
 }

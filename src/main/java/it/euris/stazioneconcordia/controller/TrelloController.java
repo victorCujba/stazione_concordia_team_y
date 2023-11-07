@@ -90,10 +90,11 @@ public class TrelloController {
                         labelsService.insert(labels);
                     }
                 });
-       Labels defaultLabel = Labels.builder().idTrello("0").name("DefaultLabel")
+        Labels defaultLabel = Labels.builder().idTrello("0").name("DefaultLabel")
                 .board(Board.builder().id(idBoardFromDB).build()).build();
-       if (!(labelsService.getAllIdTrelloForLabels().contains(defaultLabel.getIdTrello()))){
-        labelsService.insert(defaultLabel);}
+        if (!(labelsService.getAllIdTrelloForLabels().contains(defaultLabel.getIdTrello()))) {
+            labelsService.insert(defaultLabel);
+        }
     }
 
     public List<UserTrelloDto> getAllUsersFromBoard(String idBoard) {
@@ -143,7 +144,7 @@ public class TrelloController {
                 });
     }
 
-//    public Card cardExist(Card card) {
+    //    public Card cardExist(Card card) {
 //        Card resultCard;
 //
 //                cardService
@@ -157,10 +158,10 @@ public class TrelloController {
 //        return resultCard;
 //
 //    }
-    public Card compareCard(Card card,Card card2){
-        if(card.getDateLastActivity().isAfter(card2.getDateLastActivity())){
+    public Card compareCard(Card card, Card card2) {
+        if (card.getDateLastActivity().isAfter(card2.getDateLastActivity())) {
             return card;
-        }else{
+        } else {
             return card2;
         }
     }
@@ -184,7 +185,9 @@ public class TrelloController {
                         insertCardByLabel(idLabel, card);
                     }
                 }
-            }else{return;}
+            } else {
+                return;
+            }
         }
     }
 
@@ -238,10 +241,25 @@ public class TrelloController {
         return commentTrelloService.getCommentsFromCardByIdCard(idCard);
     }
 
-//    @GetMapping("/comments")
-//    public List<CommentTrelloDto> getCommentsFromCard(@RequestParam String idCard) {
-//        return commentTrelloService.getCommentsFromCardByIdCard(idCard);
-//    }
+    @GetMapping("/high-priority-cards")
+    public List<CardDTO> getHighPriorityCards() {
+        return cardService.getHighPriorityCards().stream().map(Card::toDto).toList();
+    }
+
+    @GetMapping("/medium-priority-cards")
+    public List<CardDTO> getMediumPriorityCards() {
+        return cardService.getMediumPriorityCards().stream().map(Card::toDto).toList();
+    }
+
+    @GetMapping("/low-priority-cards")
+    public List<CardDTO> getLowPriorityCards() {
+        return cardService.getLowPriorityCards().stream().map(Card::toDto).toList();
+    }
+
+    @GetMapping("/expiring-in-5-days-cards")
+    public List<CardDTO> getExpiringCards() {
+        return cardService.getExpiringIn5DaysCards().stream().map(Card::toDto).toList();
+    }
 
     @GetMapping("/comment")
     public List<CommentDTO> getComment(@RequestParam Long idCard) {
