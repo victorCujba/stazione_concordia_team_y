@@ -3,6 +3,7 @@ package it.euris.stazioneconcordia.controller;
 import it.euris.stazioneconcordia.data.dto.*;
 import it.euris.stazioneconcordia.data.model.*;
 import it.euris.stazioneconcordia.data.trelloDto.*;
+import it.euris.stazioneconcordia.repository.CardRepository;
 import it.euris.stazioneconcordia.service.*;
 
 import it.euris.stazioneconcordia.service.trelloService.*;
@@ -127,21 +128,41 @@ public class TrelloController {
         return cardTrelloService.getCardsByIdList(idList);
     }
 
-//    public void insertCardsByIdListAndIdLabel(String idList, String idLabel) {
-//        Long idListFromDb = listsService.getListByIdTrelloFromDb(idList).getId();
-//        Long idLabelFromDb = labelsService.getLabelByIdTrelloFromDb(idLabel).getId();
-//        getCardsFromTrelloByIdList(idList).stream()
-//                .map(CardTrelloDto::trellotoDto)
-//                .map(CardDTO::toModel)
-//                .forEach(card -> {
-//                    card.setList(Lists.builder().id(idListFromDb).build());
-//                    card.setLabels(Labels.builder().id(idLabelFromDb).build());
-//                    cardService.insert(card);
+    public void insertCardsByIdListAndIdLabel(String idList, String idLabel) {
+        Long idListFromDb = listsService.getListByIdTrelloFromDb(idList).getId();
+        Long idLabelFromDb = labelsService.getLabelByIdTrelloFromDb(idLabel).getId();
+        getCardsFromTrelloByIdList(idList).stream()
+                .map(CardTrelloDto::trellotoDto)
+                .map(CardDTO::toModel)
+                .forEach(card -> {
+//                    cardExist(card);
+                    card.setList(Lists.builder().id(idListFromDb).build());
+                    card.setLabels(Labels.builder().id(idLabelFromDb).build());
+                    cardService.insert(card);
+                });
+    }
+
+//    public Card cardExist(Card card) {
+//        Card resultCard;
+//
+//                cardService
+//                .findAll()
+//                .forEach(card1 -> {
+//                    if (card1.getIdTrello().equals(card.getIdTrello())) {
+//                        resultCard = compareCard(card1, card);
+//
+//                    }
 //                });
+//        return resultCard;
+//
 //    }
-////    public void compareCard(Card card,Card card2){
-////        if(card.getDateLastActivity().isAfter(card2.getDateLastActivity())
-////    }
+    public Card compareCard(Card card,Card card2){
+        if(card.getDateLastActivity().isAfter(card2.getDateLastActivity())){
+            return card;
+        }else{
+            return card2;
+        }
+    }
 
 
     public void insertCardsFromTrelloToDb() {
