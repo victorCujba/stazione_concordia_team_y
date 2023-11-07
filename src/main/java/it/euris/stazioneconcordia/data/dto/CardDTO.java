@@ -1,15 +1,14 @@
 package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
-import it.euris.stazioneconcordia.data.model.Card;
-import it.euris.stazioneconcordia.data.model.Labels;
-import it.euris.stazioneconcordia.data.model.Lists;
+import it.euris.stazioneconcordia.data.model.*;
 import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
