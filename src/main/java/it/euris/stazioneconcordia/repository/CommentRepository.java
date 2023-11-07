@@ -31,10 +31,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             @Param("id_user") String idUser
     );
 
-    @Query(value = "SELECT * FROM comment\n" +
-            "WHERE id_card = :id_card " +
-            "\n" +
-            "ORDER BY date DESC\n" +
-            "LIMIT 1;", nativeQuery = true)
-    Comment findLastCommentByIdCard(Long idCard);
+    @Query(value = "SELECT * FROM comment WHERE id_card = :id_card ORDER BY date DESC LIMIT 1 ", nativeQuery = true)
+    Comment findLastCommentByIdCard(@Param("id_card") Long idCard);
 }
