@@ -19,6 +19,7 @@ public class CardTrelloDto implements TrelloDto {
     private String id;
     private String idList;
     private List<String> idLabels;
+//    private List<String> idMembers;
     private String name;
     private String pos;
     private String closed;
@@ -33,6 +34,7 @@ public class CardTrelloDto implements TrelloDto {
                 .idTrello(id)
                 .idList(idList)
                 .idLabels(idLabels)
+//                .idUser(idMembers)
                 .name(name)
                 .closed(closed)
                 .description(desc)

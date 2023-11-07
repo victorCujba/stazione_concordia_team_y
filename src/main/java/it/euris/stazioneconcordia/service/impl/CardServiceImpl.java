@@ -10,13 +10,10 @@ import it.euris.stazioneconcordia.service.CardService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.sound.midi.Soundbank;
-import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -104,7 +101,6 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public boolean cardExistByTrelloIdAndLabel(String idTrello, Long idLabel) {
-
         Card existingCard = cardRepository.findByTrelloIdAndIdLabel(idTrello, idLabel);
         return existingCard != null;
     }

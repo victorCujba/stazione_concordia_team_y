@@ -26,7 +26,7 @@ public class DataConversionUtils {
     }
 
     public static String localDateTimeToString(LocalDateTime value) {
-        return value == null ? null : value.toString().substring(0, 19);
+        return value == null ? null : value.toString();
     }
 
     public static Boolean stringToBoolean(String value) {
