@@ -40,8 +40,8 @@ public class TrelloController {
     @GetMapping("/sync")
     public void getInfoFromTrello(@RequestParam String idBoard) {
         insertBoardFromTrelloToDb(idBoard);
-        insertUsersFromTrelloToDb(idBoard);
         insertLabelsFromTrelloToDb(idBoard);
+        insertUsersFromTrelloToDb(idBoard);
         insertListsFromTrelloToDb(idBoard);
         insertCardsFromTrelloToDb();
         insertCommentsFromTrelloToDb();
