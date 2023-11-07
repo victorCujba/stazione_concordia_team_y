@@ -173,15 +173,17 @@ public class TrelloController {
             cardTrelloDtos.addAll(cardsList);
         }
         for (CardTrelloDto card : cardTrelloDtos) {
-            List<String> idLabels = card.getIdLabels();
-            if (idLabels == null || idLabels.isEmpty()) {
-                String idLabel = "0";
-                insertCardByLabel(idLabel, card);
-            } else {
-                for (String idLabel : idLabels) {
+            if (!(cardService.cardExistByTrelloId(card.getId()))) {
+                List<String> idLabels = card.getIdLabels();
+                if (idLabels == null || idLabels.isEmpty()) {
+                    String idLabel = "0";
                     insertCardByLabel(idLabel, card);
+                } else {
+                    for (String idLabel : idLabels) {
+                        insertCardByLabel(idLabel, card);
+                    }
                 }
-            }
+            }else{return;}
         }
     }
 
