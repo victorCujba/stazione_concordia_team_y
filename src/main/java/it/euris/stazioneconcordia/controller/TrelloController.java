@@ -90,9 +90,10 @@ public class TrelloController {
                         labelsService.insert(labels);
                     }
                 });
-        Labels defaultLabel = Labels.builder().idTrello("0").name("DefaultLabel")
+       Labels defaultLabel = Labels.builder().idTrello("0").name("DefaultLabel")
                 .board(Board.builder().id(idBoardFromDB).build()).build();
-        labelsService.insert(defaultLabel);
+       if (!(labelsService.getAllIdTrelloForLabels().contains(defaultLabel.getIdTrello()))){
+        labelsService.insert(defaultLabel);}
     }
 
     public List<UserTrelloDto> getAllUsersFromBoard(String idBoard) {
