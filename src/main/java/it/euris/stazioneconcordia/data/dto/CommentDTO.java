@@ -4,6 +4,7 @@ import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
 import it.euris.stazioneconcordia.data.model.User;
+import it.euris.stazioneconcordia.data.trelloDto.CommentDataDTO;
 import it.euris.stazioneconcordia.data.trelloDto.CommentTrelloDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,8 +47,7 @@ public class CommentDTO implements Dto {
         return CommentTrelloDto.builder()
                 .id(id)
                 .idMemberCreator(idUser)
-                .idCard(idCard)
-                .text(commentBody)
+                .data(CommentDataDTO.builder().text(commentBody).card(CardDTO.builder().idTrello(idCard).build()).build())
                 .date(date)
                 .build();
     }
