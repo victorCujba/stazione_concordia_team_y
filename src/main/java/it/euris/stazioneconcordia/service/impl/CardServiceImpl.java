@@ -126,7 +126,7 @@ public class CardServiceImpl implements CardService {
                 card.getLabels().getName(),
                 card.getDescription(),
                 card.getExpirationDate(),
-                LocalDateTime.now(),
+                card.getDateLastActivity(),
                 card.getClosed(),
                 listId,
                 labelId);
