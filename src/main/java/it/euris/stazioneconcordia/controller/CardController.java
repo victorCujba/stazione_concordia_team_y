@@ -6,12 +6,14 @@ import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.service.CardService;
+import it.euris.stazioneconcordia.service.LabelsService;
 import it.euris.stazioneconcordia.service.ListsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -22,6 +24,7 @@ public class CardController {
     private CardService cardService;
 
     private ListsService listsService;
+    private LabelsService labelsService;
 
     @GetMapping("/v1")
     public List<CardDTO> findAll() {
@@ -54,8 +57,10 @@ public class CardController {
     @PutMapping("/v1/move")
     public CardDTO moveCard(@RequestParam Long idCard , @RequestParam Long idList) {
         try {
-            Card card = cardService.findById(idCard).toDto().toModel();
-            cardService.findById(idCard).setList(listsService.findById(idList));
+            Card card = cardService.findById(idCard);
+            card.setList(listsService.findById(idList));
+           // card.setLabels(labelsService.findById(idLabels));
+            card.setDateLastActivity(LocalDateTime.now());
             return cardService.update(card).toDto();
         } catch (IdMustNotBeNullException e) {
             throw new ResponseStatusException(

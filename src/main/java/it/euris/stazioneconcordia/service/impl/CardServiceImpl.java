@@ -104,6 +104,12 @@ public class CardServiceImpl implements CardService {
         Card existingCard = cardRepository.findByTrelloIdAndIdLabel(idTrello, idLabel);
         return existingCard != null;
     }
+    @Override
+    public boolean cardExistByTrelloId(String idTrello) {
+
+        Card existingCard = cardRepository.findByTrelloId(idTrello);
+        return existingCard != null;
+    }
 
     @Override
     public Integer insertIntoDb(Card card) {
