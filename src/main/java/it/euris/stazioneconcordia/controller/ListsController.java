@@ -5,12 +5,14 @@ import it.euris.stazioneconcordia.data.dto.ListsDTO;
 import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
+import it.euris.stazioneconcordia.service.BoardService;
 import it.euris.stazioneconcordia.service.ListsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -19,6 +21,7 @@ import java.util.List;
 public class ListsController {
 
     private ListsService listsService;
+    private BoardService boardService;
 
     @GetMapping("/v1")
     public List<ListsDTO> findAll() {
@@ -26,9 +29,13 @@ public class ListsController {
     }
 
     @PostMapping("/v1")
-    public ListsDTO insert(@RequestBody ListsDTO listsDTO) {
+    public ListsDTO insert(@RequestParam String idBoard, @RequestParam String name) {
         try {
-            Lists lists = listsDTO.toModel();
+            Lists lists = Lists.builder()
+                    .board(boardService.getBoardByIdTrelloFromDb(idBoard))
+                    .name(name)
+                    .dateLastActivity(LocalDateTime.now())
+                    .build();
             return listsService.insert(lists).toDto();
         } catch (IdMustBeNullException e) {
             throw new ResponseStatusException(
