@@ -82,10 +82,12 @@ public class CardController {
                 listsService.update(toLists);
                 return cardService.update(card).toDto();
             }
+
         } catch (ResponseStatusException e) {
             throw new RuntimeException(e);
         }
     }
+
 
 //
 //            Card card = cardService.findById(idCard);

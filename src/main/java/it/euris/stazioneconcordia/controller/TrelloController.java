@@ -3,6 +3,8 @@ package it.euris.stazioneconcordia.controller;
 import it.euris.stazioneconcordia.data.dto.*;
 import it.euris.stazioneconcordia.data.model.*;
 import it.euris.stazioneconcordia.data.trelloDto.*;
+import it.euris.stazioneconcordia.repository.CardRepository;
+import it.euris.stazioneconcordia.repository.ListsRepository;
 import it.euris.stazioneconcordia.service.*;
 
 import it.euris.stazioneconcordia.service.trelloService.*;
@@ -36,6 +38,7 @@ public class TrelloController {
     private CommentTrelloService commentTrelloService;
     private ListsTrelloService listsTrelloService;
     private UserTrelloService userTrelloService;
+    private ListsRepository listsRepository;
 
 
     @GetMapping("/sync")
@@ -44,7 +47,7 @@ public class TrelloController {
         insertLabelsFromTrelloToDb(idBoard);
         insertUsersFromTrelloToDb(idBoard);
         insertListsFromTrelloToDb(idBoard);
-        insertCardsFromTrelloToDb();
+        insertCardsFromTrelloToDb(idBoard);
         insertCommentsFromTrelloToDb();
 
     }
@@ -90,6 +93,33 @@ public class TrelloController {
             } else {
                 updatedUser.setId(existingUser.getId());
                 userService.update(updatedUser);
+            }
+        });
+    }
+
+    @PostMapping("/insert-labels-from-trello")
+    public void insertLabels(@RequestParam String idBoard) {
+        insertLabelsFromTrelloToDb(idBoard);
+    }
+
+    @PostMapping("/insert-cards-from-trello")
+    public void insertCards(@RequestParam String idBoard) {
+        List<CardTrelloDto> cardTrelloDtos = cardTrelloService.getCardsByIdBoard(idBoard);
+
+        cardTrelloDtos.forEach(cardTrelloDto -> {
+            CardDTO cardDTO = cardTrelloDto.trellotoDto();
+            Card updatedCard = cardDTO.toModel();
+            updatedCard.setLabels(labelsService.getLabelByIdTrelloFromDb(updatedCard.getLabels().getIdTrello()));
+            updatedCard.setList(listsService.getListByIdTrelloFromDb(updatedCard.getList().getIdTrello()));
+
+            Card existingCard = cardService.getCardByIdTrelloFromDb(updatedCard.getIdTrello());
+            if (existingCard == null) {
+                cardService.insert(updatedCard);
+            } else {
+                updatedCard.setId(existingCard.getId());
+                updatedCard.setDateLastActivity(LocalDateTime.now());
+                cardService.update(updatedCard);
+
             }
         });
     }
@@ -220,7 +250,7 @@ public class TrelloController {
     }
 
 
-    public void insertCardsFromTrelloToDb() {
+    public void insertCardsFromTrelloToDb(String idBoard) {
         List<CardTrelloDto> cardTrelloDtos = new ArrayList<>();
 
         for (String idList : getAllIdTrelloForListsFromDb()) {
