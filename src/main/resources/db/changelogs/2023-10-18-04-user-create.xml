@@ -13,8 +13,11 @@
         </preConditions>
         <comment>User table create</comment>
         <createTable tableName="user">
-            <column name="id" type="VARCHAR(255)">
+            <column name="id" type="BIGINT(20)">
                 <constraints primaryKey="true"/>
+            </column>
+            <column name="id_trello" type="VARCHAR(255)">
+                <constraints nullable="true"/>
             </column>
             <column name="full_name" type="VARCHAR(255)"/>
             <column name="bio" type="VARCHAR(255)"/>

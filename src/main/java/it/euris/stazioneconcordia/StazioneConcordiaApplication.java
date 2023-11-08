@@ -13,8 +13,4 @@ public class StazioneConcordiaApplication {
     public static void main(String[] args) {
         SpringApplication.run(StazioneConcordiaApplication.class, args);
     }
-//    @Bean
-//    public RestTemplate getRestTemplate() {
-//        return new RestTemplate();
-//    }
 }

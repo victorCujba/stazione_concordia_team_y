@@ -18,7 +18,7 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="id_card" type="BIGINT(20)"/>
-            <column name="id_user" type="VARCHAR(255)"/>
+            <column name="id_user" type="BIGINT(20)"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="card_user" baseColumnNames="id_card" constraintName="FK_CARD_ON_CARD_USER"

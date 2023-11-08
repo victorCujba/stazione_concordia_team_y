@@ -59,7 +59,7 @@ public class ListsServiceImpl implements ListsService {
     public Lists findByLabel(ListLabel toListLabel) {
         return listsRepository.findAll()
                 .stream()
-                .filter(lists -> lists.getLabel() == toListLabel)
+//                .filter(lists -> lists.getLabel() == toListLabel)
                 .findFirst()
                 .orElse(null);
     }

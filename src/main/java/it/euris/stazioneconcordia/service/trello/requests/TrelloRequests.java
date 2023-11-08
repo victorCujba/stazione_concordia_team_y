@@ -1,4 +1,4 @@
-package it.euris.stazioneconcordia.trello.requests;
+package it.euris.stazioneconcordia.service.trello.requests;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

@@ -58,14 +58,14 @@ public class CardStateController {
 
         Card card = cardService.findById(idCard);
         Lists fromList = card.getList();
-        ListLabel fromListLabel = fromList.getLabel();
+//        ListLabel fromListLabel = fromList.getLabel();
         Lists toList = listsService.findByLabel(toListLabel);
 
         CardState cardState = CardState
                 .builder()
                 .card(card)
-                .dateLastUpdate(LocalDateTime.now())
-                .fromList(fromListLabel)
+//                .dateLastUpdate(LocalDateTime.now())
+//                .fromList(fromListLabel)
                 .toList(toListLabel)
                 .build();
 

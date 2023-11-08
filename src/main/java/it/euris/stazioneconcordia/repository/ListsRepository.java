@@ -11,13 +11,10 @@ import java.util.List;
 
 public interface ListsRepository extends JpaRepository<Lists, Long> {
 
-    String SELECT_LIST_BY_ID_TRELLO = "SELECT list.id, list.id_trello, list.name, list.position, list.closed, list.label, list.id_board " +
-            "FROM list " +
-            "WHERE list.id_trello = :id_trello ";
 
     String SELECT_ID_TRELLO = "SELECT list.id_trello " + " FROM list";
 
-    @Query(value = SELECT_LIST_BY_ID_TRELLO, nativeQuery = true)
+    @Query(value = "SELECT * FROM list WHERE list.id_trello = :id_trello ", nativeQuery = true)
     Lists getListByIdTrello(@Param("id_trello") String idTrello);
 
     @Query(value = SELECT_ID_TRELLO, nativeQuery = true)

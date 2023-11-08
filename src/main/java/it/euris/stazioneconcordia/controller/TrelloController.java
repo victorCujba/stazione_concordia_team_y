@@ -3,21 +3,19 @@ package it.euris.stazioneconcordia.controller;
 import it.euris.stazioneconcordia.data.dto.*;
 import it.euris.stazioneconcordia.data.model.*;
 import it.euris.stazioneconcordia.data.trelloDto.*;
-import it.euris.stazioneconcordia.repository.CardRepository;
 import it.euris.stazioneconcordia.service.*;
 
 import it.euris.stazioneconcordia.service.trelloService.*;
-import it.euris.stazioneconcordia.trello.service.impl.TrelloCommentService;
+import it.euris.stazioneconcordia.service.trello.service.impl.TrelloCommentService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-//import java.io.IOException;
-//import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTimeToString;
 
 
 @AllArgsConstructor
@@ -51,15 +49,50 @@ public class TrelloController {
 
     }
 
+    @PostMapping("/insertBoardFromTrello")
+    public void insertBoard(@RequestParam String idBoard) {
+        insertBoardFromTrelloToDb(idBoard);
+    }
+
+    @PostMapping("/insertListFromTrello")
+    public void insertList(@RequestParam String idBoard) {
+        List<ListsTrelloDto> listsTrelloDtos = listsTrelloService.getListsByIdBoard(idBoard);
+        Board board = boardService.getBoardByIdTrelloFromDb(idBoard);
+
+        listsTrelloDtos.forEach(listsTrelloDto -> {
+            ListsDTO listsDTO = listsTrelloDto.trellotoDto();
+            Lists updatedList = listsDTO.toModel();
+            updatedList.setBoard(board);
+
+            Lists existingList = listsService.getListByIdTrelloFromDb(updatedList.getIdTrello());
+
+            if (existingList == null) {
+                listsService.insert(updatedList);
+            } else {
+                updatedList.setId(existingList.getId());
+                updatedList.setDateLastActivity(LocalDateTime.now());
+                listsService.update(updatedList);
+            }
+        });
+    }
+
 
     public BoardTrelloDTO getBoardFromTrello(String idBoard) {
         return boardTrelloService.getBoardFromTrelloByIdBoard(idBoard);
     }
 
     public void insertBoardFromTrelloToDb(String idBoard) {
+        BoardTrelloDTO boardTrelloDTO = getBoardFromTrello(idBoard);
+        BoardDTO boardDTO = boardTrelloDTO.trellotoDto();
+        Board board = boardDTO.toModel();
         if (boardService.getBoardByIdTrelloFromDb(idBoard) == null) {
-            BoardDTO boardDTO = getBoardFromTrello(idBoard).trellotoDto();
-            boardService.insertBoardFromTrello(boardDTO);
+            boardService.insert(board);
+
+        } else {
+            Long idBoardFromDB = boardService.getBoardByIdTrelloFromDb(idBoard).getId();
+            board.setId(idBoardFromDB);
+            board.setDateLastActivity(LocalDateTime.now());
+            boardService.update(board);
         }
     }
 
@@ -92,10 +125,11 @@ public class TrelloController {
                         labelsService.insert(labels);
                     }
                 });
-       Labels defaultLabel = Labels.builder().idTrello("0").name("DefaultLabel")
+        Labels defaultLabel = Labels.builder().idTrello("0").name("DefaultLabel")
                 .board(Board.builder().id(idBoardFromDB).build()).build();
-       if (!(labelsService.getAllIdTrelloForLabels().contains(defaultLabel.getIdTrello()))){
-        labelsService.insert(defaultLabel);}
+        if (!(labelsService.getAllIdTrelloForLabels().contains(defaultLabel.getIdTrello()))) {
+            labelsService.insert(defaultLabel);
+        }
     }
 
     public List<UserTrelloDto> getAllUsersFromBoard(String idBoard) {
@@ -145,16 +179,27 @@ public class TrelloController {
                 });
     }
 
-//    public void compareCard(CardDTO card,CardTrelloDto card2) throws URISyntaxException, IOException, InterruptedException {
+    //    public Card cardExist(Card card) {
+//        Card resultCard;
 //
-//        if(card.toModel().getDateLastActivity().isBefore(card2.trellotoDto().toModel().getDateLastActivity())){
-//            cardTrelloService.update(card.getIdTrello(),card); ;
-//        } else if (card.toModel().getDateLastActivity().isAfter(card2.trellotoDto().toModel().getDateLastActivity())) {
-//            Card cardFromTrello= cardService.getCardIfExistByTrelloId(card2.trellotoDto().toModel().getIdTrello());
-//            cardService.update(cardFromTrello);
-//        }
-
+//                cardService
+//                .findAll()
+//                .forEach(card1 -> {
+//                    if (card1.getIdTrello().equals(card.getIdTrello())) {
+//                        resultCard = compareCard(card1, card);
+//
+//                    }
+//                });
+//        return resultCard;
+//
 //    }
+    public Card compareCard(Card card, Card card2) {
+        if (card.getDateLastActivity().isAfter(card2.getDateLastActivity())) {
+            return card;
+        } else {
+            return card2;
+        }
+    }
 
 
     public void insertCardsFromTrelloToDb() {
@@ -175,12 +220,9 @@ public class TrelloController {
                         insertCardByLabel(idLabel, card);
                     }
                 }
+            } else {
+                return;
             }
-//            }else{
-//               CardDTO cardDTOofDb= cardService.getCardIfExistByTrelloId(card.getId()).toDto();
-//               compareCard(cardDTOofDb,card);
-//
-//            }
         }
     }
 
@@ -199,7 +241,7 @@ public class TrelloController {
             card.trellotoDto().toModel().setList(Lists.builder().id(idListFromDb).build());
             card.trellotoDto().toModel().setLabels(Labels.builder().id(idLabelFromDb).build());
             card.trellotoDto().toModel().setList(Lists.builder().id(idLabelFromDb).build());
-            cardService.insertIntoDb(card.trellotoDto().toModel());
+//            cardService.insertIntoDb(card.trellotoDto().toModel());
         }
 
     }
@@ -234,10 +276,40 @@ public class TrelloController {
         return commentTrelloService.getCommentsFromCardByIdCard(idCard);
     }
 
-//    @GetMapping("/comments")
-//    public List<CommentTrelloDto> getCommentsFromCard(@RequestParam String idCard) {
-//        return commentTrelloService.getCommentsFromCardByIdCard(idCard);
-//    }
+    @GetMapping("/high-priority-cards")
+    public List<CardDTO> getHighPriorityCards() {
+        return cardService.getHighPriorityCards().stream().map(Card::toDto).toList();
+    }
+
+    @GetMapping("/medium-priority-cards")
+    public List<CardDTO> getMediumPriorityCards() {
+        return cardService.getMediumPriorityCards().stream().map(Card::toDto).toList();
+    }
+
+    @GetMapping("/low-priority-cards")
+    public List<CardDTO> getLowPriorityCards() {
+        return cardService.getLowPriorityCards().stream().map(Card::toDto).toList();
+    }
+
+    @GetMapping("/expiring-in-5-days-cards")
+    public List<CardDTO> getExpiringCards() {
+        return cardService.getExpiringIn5DaysCards().stream().map(Card::toDto).toList();
+    }
+
+    @PostMapping("/comment")
+    public CommentDTO addCommentToCardByIdCard(String idCardTrello, String userName, String commentBody) {
+        String idUser = userService.getUserByUserName(userName).getId();
+        CommentDTO commentToInsert = CommentDTO.builder().idCard(idCardTrello)
+                .commentBody(commentBody)
+                .idCard(idCardTrello)
+                .idUser(idUser)
+                .date(localDateTimeToString(LocalDateTime.now()))
+                .idTrello("testIdTrello")
+                .build();
+        commentService.insert(commentToInsert.toModel());
+        return commentToInsert;
+    }
+
 
     @GetMapping("/comment")
     public List<CommentDTO> getComment(@RequestParam Long idCard) {
