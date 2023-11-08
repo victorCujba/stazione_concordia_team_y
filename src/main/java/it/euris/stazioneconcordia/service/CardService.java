@@ -30,8 +30,6 @@ public interface CardService {
 
     boolean cardExistByTrelloId(String idTrello);
 
-    Integer insertIntoDb(Card card);
-
     List<Card> getHighPriorityCards();
 
     List<Card> getMediumPriorityCards();

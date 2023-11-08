@@ -13,8 +13,6 @@ public interface BoardService {
 
     Board insert(Board board);
 
-//    Board insertBoardFromTrello(BoardTrelloDTO boardTrelloDTO);
-
     Board update(Board board);
 
     Boolean deleteById(Long idBoard);
