@@ -6,6 +6,7 @@ import it.euris.stazioneconcordia.data.enums.ListLabel;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
@@ -32,13 +33,12 @@ public class Lists implements Model {
     @Column(name = "position")
     private Long position;
 
+    @Column(name = "date_last_activity")
+    private LocalDateTime dateLastActivity;
+
     @Column(name = "closed")
     @Builder.Default
     private Boolean closed = false;
-
-    @Column(name = "label")
-    @Enumerated(EnumType.STRING)
-    private ListLabel label;
 
     @ManyToOne
     @JoinColumn(name = "id_board")

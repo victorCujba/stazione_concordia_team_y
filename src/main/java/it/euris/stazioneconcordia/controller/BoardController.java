@@ -2,8 +2,6 @@ package it.euris.stazioneconcordia.controller;
 
 import it.euris.stazioneconcordia.data.dto.BoardDTO;
 import it.euris.stazioneconcordia.data.model.Board;
-import it.euris.stazioneconcordia.data.model.Card;
-import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.service.BoardService;
@@ -63,8 +61,21 @@ public class BoardController {
 
     @GetMapping("/v1/trello/{id_trello}")
     public BoardDTO getBoardByTrelloIdFromDb(@PathVariable("id_trello") String idTrello) {
-        return boardService.getBoardByIdTrelloFromDb(idTrello).toDto();
+        try {
+
+            Board board = boardService.getBoardByIdTrelloFromDb(idTrello);
+            if (board == null) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "There are no boards in data base which match to whit id Trello = " + idTrello);
+            }
+            if (board.getIdTrello() == null) {
+                throw new NullPointerException();
+            }
+            return board.toDto();
+        } catch (NullPointerException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
     }
-
-
 }

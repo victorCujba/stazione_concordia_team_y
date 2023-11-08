@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTimeToString;
 
@@ -56,17 +57,23 @@ public class TrelloController {
     @PostMapping("/insertListFromTrello")
     public void insertList(@RequestParam String idBoard) {
         List<ListsTrelloDto> listsTrelloDtos = listsTrelloService.getListsByIdBoard(idBoard);
-        List<ListsDTO> listsDTOS = listsTrelloDtos.stream().map(ListsTrelloDto::trellotoDto).toList();
-        List<Lists> lists = listsDTOS.stream().map(ListsDTO::toModel).toList();
-        for (Lists list : lists)
-            if (list != null && listsService.getListByIdTrelloFromDb(list.getIdTrello()) != null) {
-                list.setBoard(boardService.getBoardByIdTrelloFromDb(idBoard));
-                list.setId(listsService.getListByIdTrelloFromDb(list.getIdTrello()).getId());
-                listsService.update(list);
+        Board board = boardService.getBoardByIdTrelloFromDb(idBoard);
+
+        listsTrelloDtos.forEach(listsTrelloDto -> {
+            ListsDTO listsDTO = listsTrelloDto.trellotoDto();
+            Lists updatedList = listsDTO.toModel();
+            updatedList.setBoard(board);
+
+            Lists existingList = listsService.getListByIdTrelloFromDb(updatedList.getIdTrello());
+
+            if (existingList == null) {
+                listsService.insert(updatedList);
             } else {
-                list.setBoard(boardService.getBoardByIdTrelloFromDb(idBoard));
-                listsService.insert(list);
+                updatedList.setId(existingList.getId());
+                updatedList.setDateLastActivity(LocalDateTime.now());
+                listsService.update(updatedList);
             }
+        });
     }
 
 
@@ -234,7 +241,7 @@ public class TrelloController {
             card.trellotoDto().toModel().setList(Lists.builder().id(idListFromDb).build());
             card.trellotoDto().toModel().setLabels(Labels.builder().id(idLabelFromDb).build());
             card.trellotoDto().toModel().setList(Lists.builder().id(idLabelFromDb).build());
-            cardService.insertIntoDb(card.trellotoDto().toModel());
+//            cardService.insertIntoDb(card.trellotoDto().toModel());
         }
 
     }
