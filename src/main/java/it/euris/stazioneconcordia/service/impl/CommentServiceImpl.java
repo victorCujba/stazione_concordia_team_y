@@ -68,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Integer insertComment(Comment comment) {
-        Long cardId = cardRepository.getCardByIdTrello(comment.getCard().getIdTrello());
+//        Long cardId = cardRepository.getCardByIdTrello(comment.getCard().getIdTrello());
 //        Integer insertComment = commentRepository.insertComment(
 //                comment.getIdTrello(),
 //                comment.getDate(),

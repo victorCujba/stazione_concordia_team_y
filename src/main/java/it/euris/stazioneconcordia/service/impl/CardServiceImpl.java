@@ -91,7 +91,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Long getCardByIdTrelloFromDb(String idTrelloCard) {
+    public Card getCardByIdTrelloFromDb(String idTrelloCard) {
         return cardRepository.getCardByIdTrello(idTrelloCard);
     }
 
@@ -109,7 +109,7 @@ public class CardServiceImpl implements CardService {
     @Override
     public boolean cardExistByTrelloId(String idTrello) {
 
-        Card existingCard = cardRepository.findByTrelloId(idTrello);
+        Card existingCard = cardRepository.getCardByIdTrello(idTrello);
         return existingCard != null;
     }
 

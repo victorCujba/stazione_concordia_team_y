@@ -38,7 +38,7 @@ public class CommentDTO implements Dto {
                 .commentBody(commentBody)
                 .deleted(stringToBoolean(deleted))
                 .card(Card.builder().idTrello(idCard).build())
-                .user(User.builder().id(idUser).build())
+                .user(User.builder().id(stringToLong(idUser)).build())
                 .build();
     }
 
