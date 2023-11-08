@@ -1,7 +1,6 @@
-package it.euris.stazioneconcordia.trello.data;
+package it.euris.stazioneconcordia.service.trello.data;
 
-import it.euris.stazioneconcordia.data.dto.archetype.Model;
-import it.euris.stazioneconcordia.trello.enums.HttpRequestType;
+import it.euris.stazioneconcordia.service.trello.enums.HttpRequestType;
 import lombok.*;
 
 

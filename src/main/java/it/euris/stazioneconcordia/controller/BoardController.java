@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -37,22 +38,11 @@ public class BoardController {
         }
     }
 
-    @PostMapping("/v1/trello")
-    public BoardDTO insertBoardFromTrello(@RequestBody BoardTrelloDTO boardTrelloDTO) {
-        try {
-            BoardDTO boardDTO = boardTrelloDTO.trellotoDto();
-            return boardService.insertBoardFromTrello(boardDTO).toDto();
-        } catch (IdMustNotBeNullException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-
-    }
-
     @PutMapping("/v1")
     public BoardDTO updateBoard(@RequestBody BoardDTO boardDTO) {
         try {
             Board board = boardDTO.toModel();
+            board.setDateLastActivity(LocalDateTime.now());
             return boardService.update(board).toDto();
         } catch (IdMustNotBeNullException e) {
             throw new ResponseStatusException(

@@ -1,4 +1,4 @@
-package it.euris.stazioneconcordia.trello.utils;
+package it.euris.stazioneconcordia.service.trello.utils;
 
 import lombok.Getter;
 import lombok.Setter;

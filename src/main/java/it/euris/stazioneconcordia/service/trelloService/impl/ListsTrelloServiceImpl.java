@@ -16,7 +16,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
-import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
+import static it.euris.stazioneconcordia.service.trello.utils.TrelloConstants.*;
 
 @AllArgsConstructor
 @Service
