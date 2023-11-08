@@ -10,13 +10,11 @@ import it.euris.stazioneconcordia.service.CardService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.sound.midi.Soundbank;
-import java.sql.SQLOutput;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -104,10 +102,10 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public boolean cardExistByTrelloIdAndLabel(String idTrello, Long idLabel) {
-
         Card existingCard = cardRepository.findByTrelloIdAndIdLabel(idTrello, idLabel);
         return existingCard != null;
     }
+
     @Override
     public boolean cardExistByTrelloId(String idTrello) {
 
@@ -137,6 +135,31 @@ public class CardServiceImpl implements CardService {
             System.out.println("Card created successfully!!! ");
         }
         return insertedCard;
+    }
+
+    @Override
+    public List<Card> getHighPriorityCards() {
+        Long idPriority = labelsRepository.getLabelIdByNameFromDb("Alta Priorità").getId();
+        return cardRepository.findByPriority(idPriority);
+    }
+
+    @Override
+    public List<Card> getMediumPriorityCards() {
+        Long idPriority = labelsRepository.getLabelIdByNameFromDb("Media Priorità").getId();
+        return cardRepository.findByPriority(idPriority);
+    }
+
+    @Override
+    public List<Card> getLowPriorityCards() {
+        Long idPriority = labelsRepository.getLabelIdByNameFromDb("Bassa Priorità").getId();
+        return cardRepository.findByPriority(idPriority);
+    }
+
+    @Override
+    public List<Card> getExpiringIn5DaysCards() {
+        LocalDateTime startDate = LocalDateTime.now();
+        LocalDateTime endDate = LocalDateTime.now().plusDays(5L);
+        return cardRepository.getExpiringIn5DaysCards(startDate, endDate);
     }
 
 

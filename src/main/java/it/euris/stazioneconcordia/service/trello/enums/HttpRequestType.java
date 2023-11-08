@@ -1,4 +1,4 @@
-package it.euris.stazioneconcordia.trello.enums;
+package it.euris.stazioneconcordia.service.trello.enums;
 
 public enum HttpRequestType {
 

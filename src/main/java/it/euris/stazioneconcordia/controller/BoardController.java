@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.controller;
 
 import it.euris.stazioneconcordia.data.dto.BoardDTO;
 import it.euris.stazioneconcordia.data.model.Board;
+import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -21,8 +23,8 @@ public class BoardController {
     private BoardService boardService;
 
     @GetMapping("/v1")
-    public List<Board> getAllBoards() {
-        return boardService.findAll();
+    public List<BoardDTO> getAllBoards() {
+        return boardService.findAll().stream().map(Board::toDto).toList();
     }
 
     @PostMapping("/v1")
@@ -36,22 +38,11 @@ public class BoardController {
         }
     }
 
-    @PostMapping("/v1/trello")
-    public BoardDTO insertBoardFromTrello(@RequestBody BoardTrelloDTO boardTrelloDTO) {
-        try {
-            BoardDTO boardDTO = boardTrelloDTO.trellotoDto();
-            return boardService.insertBoardFromTrello(boardDTO).toDto();
-        } catch (IdMustNotBeNullException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-
-    }
-
     @PutMapping("/v1")
     public BoardDTO updateBoard(@RequestBody BoardDTO boardDTO) {
         try {
             Board board = boardDTO.toModel();
+            board.setDateLastActivity(LocalDateTime.now());
             return boardService.update(board).toDto();
         } catch (IdMustNotBeNullException e) {
             throw new ResponseStatusException(

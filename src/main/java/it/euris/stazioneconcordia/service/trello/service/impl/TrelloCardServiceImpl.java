@@ -1,11 +1,11 @@
-package it.euris.stazioneconcordia.trello.service.impl;
+package it.euris.stazioneconcordia.service.trello.service.impl;
 
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
-import it.euris.stazioneconcordia.trello.service.TrelloCardService;
+import it.euris.stazioneconcordia.service.trello.service.TrelloCardService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -14,7 +14,7 @@ import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
+import static it.euris.stazioneconcordia.service.trello.utils.TrelloConstants.*;
 
 @Service
 public class TrelloCardServiceImpl implements TrelloCardService {

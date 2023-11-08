@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.service.impl;
 
 import it.euris.stazioneconcordia.data.dto.BoardDTO;
 import it.euris.stazioneconcordia.data.model.Board;
+import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.BoardRepository;
@@ -31,27 +32,28 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.save(board);
     }
 
-    @Override
-    public Board insertBoardFromTrello(BoardDTO boardDTO) {
-        Board board = boardDTO.toModel();
-        if (board.getId() != null) {
-            throw new IdMustBeNullException();
-        }
-        Integer insertedBoard = boardRepository.insertBoardFromTrello(
-                board.getIdTrello(),
-                board.getName(),
-                board.getDescription(),
-                board.getUrl(),
-                LocalDateTime.now()
-        );
-
-        if (insertedBoard != 1) {
-            System.out.println("Board was not inserted in dataBase");
-        } else {
-            System.out.println("Board was inserted successfully");
-        }
-        return board;
-    }
+//    @Override
+//    public Board insertBoardFromTrello(BoardTrelloDTO boardTrelloDTO) {
+//        BoardDTO boardDTO = boardTrelloDTO.trellotoDto();
+//        Board board = boardDTO.toModel();
+//        if (board.getId() != null) {
+//            throw new IdMustBeNullException();
+//        }
+////        Integer insertedBoard = boardRepository.insertBoardFromTrello(
+////                board.getIdTrello(),
+////                board.getName(),
+////                board.getDescription(),
+////                board.getUrl(),
+////                LocalDateTime.now()
+////        );
+////
+////        if (insertedBoard != 1) {
+////            System.out.println("Board was not inserted in dataBase");
+////        } else {
+////            System.out.println("Board was inserted successfully");
+////        }
+////        return board;
+//    }
 
 
     @Override

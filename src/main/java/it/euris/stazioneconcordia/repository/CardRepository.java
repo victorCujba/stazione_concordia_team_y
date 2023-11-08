@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 public interface CardRepository extends JpaRepository<Card, Long> {
 
@@ -17,7 +16,7 @@ public interface CardRepository extends JpaRepository<Card, Long> {
             "SELECT card.id, card.id_trello, card.name, card.position, card.priority, card.description, card.expiration_date, card.date_last_activity, " +
                     " card.closed, card.id_list, card.id_user, card.id_label "
                     + "FROM card "
-                    + "WHERE card.priority = :priority";
+                    + "WHERE card.id_label = :id_label";
 
     String SELECT_BY_TRELLO_ID = "SELECT card.id " +
             "FROM card " +
@@ -40,7 +39,7 @@ public interface CardRepository extends JpaRepository<Card, Long> {
 
 
     @Query(value = SELECT_CARD_BY_PRIORITY, nativeQuery = true)
-    List<Card> findByPriority(@Param("priority") String priority);
+    List<Card> findByPriority(@Param("id_label") Long idLabel);
 
 
     @Query(value = SELECT_BY_TRELLO_ID, nativeQuery = true)
@@ -52,6 +51,7 @@ public interface CardRepository extends JpaRepository<Card, Long> {
 
     @Query(value = SELECT_CARD_BY_ID_TRELLO_AND_ID_LABEL, nativeQuery = true)
     Card findByTrelloIdAndIdLabel(@Param("id_trello") String idTrello, @Param("id_label") Long idLabel);
+
     @Query(value = SELECT_CARD_BY_ID_TRELLO, nativeQuery = true)
     Card findByTrelloId(@Param("id_trello") String idTrello);
 
@@ -71,4 +71,6 @@ public interface CardRepository extends JpaRepository<Card, Long> {
             @Param("id_label") Long idLabel
     );
 
+    @Query(value = "SELECT * FROM card  WHERE card.expiration_date BETWEEN :startDate AND :endDate", nativeQuery = true)
+    List<Card> getExpiringIn5DaysCards(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

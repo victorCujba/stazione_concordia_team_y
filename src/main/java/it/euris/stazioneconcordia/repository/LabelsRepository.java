@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface LabelsRepository extends JpaRepository<Labels, Long> {
 
-    String SELECT_LABEL_BY_ID_TRELLO = "SELECT labels.id, labels.id_trello, labels.id_board, labels.name, labels.color, labels.uses " +
+    String SELECT_LABEL_BY_ID_TRELLO = "SELECT * " +
             "FROM labels " +
             "WHERE labels.id_trello = :id_trello ";
 
@@ -19,6 +19,9 @@ public interface LabelsRepository extends JpaRepository<Labels, Long> {
             "FROM labels " +
             "WHERE labels.name = DefaultLabel ";
 
+    String SELECT_LABEL_BY_NAME = "SELECT *" +
+            "FROM labels " +
+            "WHERE labels.name = :name";
 
     @Query(value = SELECT_LABEL_BY_ID_TRELLO, nativeQuery = true)
     Labels getLabelByIdTrello(@Param("id_trello") String idTrello);
@@ -28,4 +31,7 @@ public interface LabelsRepository extends JpaRepository<Labels, Long> {
 
     @Query(value = SELECT_DEFAULT_LABEL, nativeQuery = true)
     Long getDefaultLabel();
+
+    @Query(value = SELECT_LABEL_BY_NAME, nativeQuery = true)
+    Labels getLabelIdByNameFromDb(@Param("name") String priorityName);
 }

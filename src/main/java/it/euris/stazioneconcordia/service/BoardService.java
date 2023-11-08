@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.service;
 
 import it.euris.stazioneconcordia.data.dto.BoardDTO;
 import it.euris.stazioneconcordia.data.model.Board;
+import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
 
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface BoardService {
 
     Board insert(Board board);
 
-    Board insertBoardFromTrello(BoardDTO boardDTO);
+//    Board insertBoardFromTrello(BoardTrelloDTO boardTrelloDTO);
 
     Board update(Board board);
 

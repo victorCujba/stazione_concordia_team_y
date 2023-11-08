@@ -1,4 +1,4 @@
-package it.euris.stazioneconcordia.trello.service.impl;
+package it.euris.stazioneconcordia.service.trello.service.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -16,7 +16,7 @@ import java.lang.reflect.Type;
 import java.util.Comparator;
 import java.util.List;
 
-import static it.euris.stazioneconcordia.trello.utils.TrelloConstants.*;
+import static it.euris.stazioneconcordia.service.trello.utils.TrelloConstants.*;
 
 @Service
 public class TrelloCommentService {
