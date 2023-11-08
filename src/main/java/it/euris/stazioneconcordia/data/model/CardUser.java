@@ -6,6 +6,8 @@ import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.numberToString;
+
 @Builder
 @Getter
 @Setter
@@ -33,7 +35,7 @@ public class CardUser implements Model {
         return CardUserDTO.builder()
                 .id(id)
                 .idCard(card.getId())
-                .idUser(user.getId())
+                .idUser(numberToString(user.getId()))
                 .build();
     }
 }

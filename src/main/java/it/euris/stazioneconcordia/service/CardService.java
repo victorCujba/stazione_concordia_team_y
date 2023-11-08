@@ -22,7 +22,7 @@ public interface CardService {
     Card findById(Long idCard);
 
 
-    Long getCardByIdTrelloFromDb(String idCard);
+    Card getCardByIdTrelloFromDb(String idCard);
 
     List<String> getAllIdTrelloForCardsFromDb();
 
