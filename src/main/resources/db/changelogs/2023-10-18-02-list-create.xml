@@ -18,12 +18,11 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="id_trello" type="VARCHAR(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="name" type="VARCHAR(255)"/>
             <column name="position" type="BIGINT(20)"/>
             <column name="closed" type="BOOLEAN"/>
-            <column name="label" type= "ENUM('TO_DO','WORKING_ON','FINISHED')"/>
             <column name="id_board" type="BIGINT(20)"/>
         </createTable>
 
