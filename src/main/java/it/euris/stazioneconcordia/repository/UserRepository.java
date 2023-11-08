@@ -9,4 +9,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query(value = "SELECT * FROM user WHERE user.full_name = :full_name ", nativeQuery = true)
     User getUserIdByUsername(@Param("full_name") String userName);
+
+    @Query(value = "SELECT * FROM user WHERE user.id_trello = :id_trello", nativeQuery = true)
+    User getByIdTrello(@Param("id_trello") String idTrello);
 }

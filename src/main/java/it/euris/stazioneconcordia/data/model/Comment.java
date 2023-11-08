@@ -4,6 +4,7 @@ import it.euris.stazioneconcordia.data.dto.CommentDTO;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
@@ -52,7 +53,7 @@ public class Comment implements Model {
                 .builder()
                 .id(numberToString(id))
                 .idTrello(idTrello)
-                .idUser(user.getId())
+                .idUser(numberToString(user.getId()))
                 .idCard(numberToString(card.getId()))
                 .date(localDateTimeToString(date))
                 .commentBody(commentBody)

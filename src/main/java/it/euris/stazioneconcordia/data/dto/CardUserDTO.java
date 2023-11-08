@@ -11,6 +11,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.numberToString;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLong;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +29,7 @@ public class CardUserDTO implements Dto {
         return CardUser.builder()
                 .id(id)
                 .card(Card.builder().id(idCard).build())
-                .user(User.builder().id(idUser).build())
+                .user(User.builder().id(stringToLong(idUser)).build())
                 .build();
     }
 

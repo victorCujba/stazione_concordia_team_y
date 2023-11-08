@@ -76,6 +76,24 @@ public class TrelloController {
         });
     }
 
+    @PostMapping("/insert-users-from-trello")
+    public void insertUsers(@RequestParam String idBoard) {
+        List<UserTrelloDto> userTrelloDtos = userTrelloService.getUsersFromTrelloByIdBoard(idBoard);
+
+        userTrelloDtos.forEach(userTrelloDto -> {
+            UserDTO userDTO = userTrelloDto.trellotoDto();
+            User updatedUser = userDTO.toModel();
+
+            User existingUser = userService.getUserByIdTrelloFromDb(updatedUser.getIdTrello());
+            if (existingUser == null) {
+                userService.insert(updatedUser);
+            } else {
+                updatedUser.setId(existingUser.getId());
+                userService.update(updatedUser);
+            }
+        });
+    }
+
 
     public BoardTrelloDTO getBoardFromTrello(String idBoard) {
         return boardTrelloService.getBoardFromTrelloByIdBoard(idBoard);
@@ -298,11 +316,11 @@ public class TrelloController {
 
     @PostMapping("/comment")
     public CommentDTO addCommentToCardByIdCard(String idCardTrello, String userName, String commentBody) {
-        String idUser = userService.getUserByUserName(userName).getId();
+//        String idUser = userService.getUserByUserName(userName).getId();
         CommentDTO commentToInsert = CommentDTO.builder().idCard(idCardTrello)
                 .commentBody(commentBody)
                 .idCard(idCardTrello)
-                .idUser(idUser)
+//                .idUser(idUser)
                 .date(localDateTimeToString(LocalDateTime.now()))
                 .idTrello("testIdTrello")
                 .build();

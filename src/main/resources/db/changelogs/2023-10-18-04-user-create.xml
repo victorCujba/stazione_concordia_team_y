@@ -13,7 +13,7 @@
         </preConditions>
         <comment>User table create</comment>
         <createTable tableName="user">
-            <column name="id" type="BIGINT(20)">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="id_trello" type="VARCHAR(255)">

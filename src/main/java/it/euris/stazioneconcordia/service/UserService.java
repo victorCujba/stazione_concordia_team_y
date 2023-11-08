@@ -18,4 +18,6 @@ public interface UserService {
 
 
     User getUserByUserName(String userName);
+
+    User getUserByIdTrelloFromDb(String idTrello);
 }

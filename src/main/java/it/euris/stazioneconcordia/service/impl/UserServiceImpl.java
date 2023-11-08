@@ -50,4 +50,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.getUserIdByUsername(userName);
     }
 
+    @Override
+    public User getUserByIdTrelloFromDb(String idTrello) {
+        return userRepository.getByIdTrello(idTrello);
+    }
+
 }
