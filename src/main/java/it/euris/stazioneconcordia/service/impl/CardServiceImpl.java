@@ -114,30 +114,6 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Integer insertIntoDb(Card card) {
-        Long labelId = labelsRepository.getLabelByIdTrello(card.getLabels().getIdTrello()).getId();
-        Long listId = listsRepository.getListByIdTrello(card.getList().getIdTrello()).getId();
-        Integer insertedCard = cardRepository.insert(
-                card.getIdTrello(),
-                card.getName(),
-                card.getPosition(),
-                card.getLabels().getName(),
-                card.getDescription(),
-                card.getExpirationDate(),
-                LocalDateTime.now(),
-                card.getClosed(),
-                listId,
-                labelId);
-
-        if (insertedCard != 1) {
-            System.out.println("Card non inserted");
-        } else {
-            System.out.println("Card created successfully!!! ");
-        }
-        return insertedCard;
-    }
-
-    @Override
     public List<Card> getHighPriorityCards() {
         Long idPriority = labelsRepository.getLabelIdByNameFromDb("Alta Priorità").getId();
         return cardRepository.findByPriority(idPriority);
