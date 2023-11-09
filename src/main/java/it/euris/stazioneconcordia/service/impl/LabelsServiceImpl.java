@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.service.impl;
 
 import it.euris.stazioneconcordia.data.model.Labels;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
+import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.LabelsRepository;
 import it.euris.stazioneconcordia.service.LabelsService;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,13 @@ public class LabelsServiceImpl implements LabelsService {
     public Labels insert(Labels labels) {
         if (labels.getId() != null) {
             throw new IdMustBeNullException();
+        }
+        return labelsRepository.save(labels);
+    }
+    @Override
+    public Labels update(Labels labels) {
+        if (labels.getId() == null) {
+            throw new IdMustNotBeNullException();
         }
         return labelsRepository.save(labels);
     }
@@ -44,6 +52,5 @@ public class LabelsServiceImpl implements LabelsService {
     public Long getDefaultLabelId() {
         return labelsRepository.getDefaultLabel();
     }
-
 
 }

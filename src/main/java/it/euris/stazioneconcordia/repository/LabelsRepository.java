@@ -32,6 +32,6 @@ public interface LabelsRepository extends JpaRepository<Labels, Long> {
     @Query(value = SELECT_DEFAULT_LABEL, nativeQuery = true)
     Long getDefaultLabel();
 
-    @Query(value = SELECT_LABEL_BY_NAME, nativeQuery = true)
-    Labels getLabelIdByNameFromDb(@Param("name") String priorityName);
+    @Query(value = "SELECT * FROM labels WHERE LOWER(labels.name) = LOWER(:name)", nativeQuery = true)
+    Labels getLabelIdByNameIgnoreCase(@Param("name") String priorityName);
 }

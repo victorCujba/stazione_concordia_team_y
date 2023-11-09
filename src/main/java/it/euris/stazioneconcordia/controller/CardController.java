@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 @RestController
@@ -88,20 +88,6 @@ public class CardController {
         }
     }
 
-
-//
-//            Card card = cardService.findById(idCard);
-//            card.setList(listsService.findById(idList));
-//            // card.setLabels(labelsService.findById(idLabels));
-//            card.setDateLastActivity(LocalDateTime.now());
-//            return cardService.update(card).toDto();
-//        } catch (IdMustNotBeNullException e) {
-//            throw new ResponseStatusException(
-//                    HttpStatus.BAD_REQUEST, e.getMessage()
-//            );
-//        }
-//    }
-
     @DeleteMapping("/v1/{id}")
     public Boolean deleteById(@PathVariable("id") Long idCard) {
         return cardService.deleteById(idCard);
@@ -119,13 +105,18 @@ public class CardController {
                 .map(Card::toDto)
                 .toList();
     }
+    @GetMapping("/v1/labels/{name}")
+    public List<CardDTO> findByLabelName(@PathVariable("name") String labelName) {
+        try {
+            return cardService.getByLabelName(labelName).stream()
+                    .map(Card::toDto)
+                    .toList();
+        } catch (NullPointerException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Label name : " + labelName + " doesn't  exist, please insert valid label name."
+            );
+        }
 
-    @GetMapping("/v1/labels/{id-labels}")
-    public List<CardDTO> findByLabels(@PathVariable("id-labels") Long idLabels) {
-        return cardService.findByLabels(idLabels)
-                .stream()
-                .map(Card::toDto)
-                .toList();
     }
 
 
