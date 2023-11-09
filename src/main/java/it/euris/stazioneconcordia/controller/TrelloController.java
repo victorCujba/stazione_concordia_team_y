@@ -97,10 +97,6 @@ public class TrelloController {
         });
     }
 
-    @PostMapping("/insert-labels-from-trello")
-    public void insertLabels(@RequestParam String idBoard) {
-        insertLabelsFromTrelloToDb(idBoard);
-    }
 
     @PostMapping("/insert-cards-from-trello")
     public void insertCards(@RequestParam String idBoard) {
@@ -120,6 +116,25 @@ public class TrelloController {
                 updatedCard.setDateLastActivity(LocalDateTime.now());
                 cardService.update(updatedCard);
 
+            }
+        });
+    }
+
+    @PostMapping("/insert-labels-from-trello")
+    public void insertLabels(@RequestParam String idBoard) {
+        List<LabelsTrelloDto> labelsTrelloDtos = labelsTrelloService.getLabelsByIdBoard(idBoard);
+
+        labelsTrelloDtos.forEach(labelsTrelloDto -> {
+            LabelsDTO labelsDTO = labelsTrelloDto.trellotoDto();
+            Labels updatedLabels = labelsDTO.toModel();
+            updatedLabels.setBoard(boardService.getBoardByIdTrelloFromDb(idBoard));
+
+            Labels existingLabel = labelsService.getLabelByIdTrelloFromDb(updatedLabels.getIdTrello());
+            if (existingLabel == null) {
+                labelsService.insert(updatedLabels);
+            } else {
+                updatedLabels.setId(existingLabel.getId());
+                labelsService.update(updatedLabels);
             }
         });
     }
