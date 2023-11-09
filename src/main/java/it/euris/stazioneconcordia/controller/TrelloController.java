@@ -139,6 +139,29 @@ public class TrelloController {
         });
     }
 
+    @PostMapping("/insert-comments-from-trello")
+    public void insertComments(@RequestParam String idBoard) {
+
+
+    }
+
+    public void insertCommentsFromTrelloToDb() {
+        List<CommentTrelloDto> commentList = new ArrayList<>();
+
+        List<String> idTrelloCardList = cardService.getAllIdTrelloForCardsFromDb();
+        for (String idCard : idTrelloCardList) {
+            List<CommentTrelloDto> commentTrelloDtos = getCommentsFromCardByIdCard(idCard);
+            commentList.addAll(commentTrelloDtos);
+        }
+
+        for (CommentTrelloDto commentTrelloDto : commentList) {
+            CommentDTO commentDTO = commentTrelloDto.trellotoDto();
+            Comment comment = commentDTO.toModel();
+            commentService.insertComment(comment);
+        }
+
+    }
+
 
     public BoardTrelloDTO getBoardFromTrello(String idBoard) {
         return boardTrelloService.getBoardFromTrelloByIdBoard(idBoard);
@@ -318,22 +341,6 @@ public class TrelloController {
         return listsService.getAllIdTrelloForLists();
     }
 
-    public void insertCommentsFromTrelloToDb() {
-        List<CommentTrelloDto> commentList = new ArrayList<>();
-
-        List<String> idTrelloCardList = cardService.getAllIdTrelloForCardsFromDb();
-        for (String idCard : idTrelloCardList) {
-            List<CommentTrelloDto> commentTrelloDtos = getCommentsFromCardByIdCard(idCard);
-            commentList.addAll(commentTrelloDtos);
-        }
-
-        for (CommentTrelloDto commentTrelloDto : commentList) {
-            CommentDTO commentDTO = commentTrelloDto.trellotoDto();
-            Comment comment = commentDTO.toModel();
-            commentService.insertComment(comment);
-        }
-
-    }
 
     public List<CommentTrelloDto> getCommentsFromCardByIdCard(String idCard) {
         return commentTrelloService.getCommentsFromCardByIdCard(idCard);
