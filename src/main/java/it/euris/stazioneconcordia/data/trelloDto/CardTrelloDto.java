@@ -43,4 +43,5 @@ public class CardTrelloDto implements TrelloDto {
                 .dateLastActivity(dateLastActivity)
                 .build();
     }
+
 }

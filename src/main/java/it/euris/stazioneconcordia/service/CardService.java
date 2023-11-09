@@ -1,5 +1,6 @@
 package it.euris.stazioneconcordia.service;
 
+import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.model.Card;
 
 import java.util.List;
@@ -35,5 +36,8 @@ public interface CardService {
     List<Card> getMediumPriorityCards();
 
     List<Card> getLowPriorityCards();
+
     List<Card> getExpiringIn5DaysCards();
+
+    List<Card> getByLabelName(String labelName);
 }
