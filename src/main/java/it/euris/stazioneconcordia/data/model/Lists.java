@@ -5,9 +5,8 @@ import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import it.euris.stazioneconcordia.data.enums.ListLabel;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
@@ -19,12 +18,14 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "list")
-@SQLDelete(sql = "UPDATE list SET closed = true WHERE id = ?")
-@Where(clause = "closed = false")
 public class Lists implements Model {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private String id;
+    private Long id;
+
+    @Column(name = "id_trello")
+    private String idTrello;
 
     @Column(name = "name")
     private String name;
@@ -32,13 +33,12 @@ public class Lists implements Model {
     @Column(name = "position")
     private Long position;
 
+    @Column(name = "date_last_activity")
+    private LocalDateTime dateLastActivity;
+
     @Column(name = "closed")
     @Builder.Default
     private Boolean closed = false;
-
-    @Column(name = "label")
-    @Enumerated(EnumType.STRING)
-    private ListLabel label;
 
     @ManyToOne
     @JoinColumn(name = "id_board")
@@ -52,11 +52,11 @@ public class Lists implements Model {
     @Override
     public ListsDTO toDto() {
         return ListsDTO.builder()
-                .id(id)
-                .idBoard(board.getId())
+                .id(numberToString(id))
+                .idTrello(idTrello)
+                .idTrelloBoard(board.getIdTrello())
                 .name(name)
                 .closed(booleanToString(closed))
-                .idLabel(listLabelToString(label))
                 .position(numberToString(position))
                 .build();
     }

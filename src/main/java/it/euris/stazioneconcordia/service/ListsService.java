@@ -1,8 +1,6 @@
 package it.euris.stazioneconcordia.service;
 
 
-import it.euris.stazioneconcordia.data.dto.ListsDTO;
-import it.euris.stazioneconcordia.data.dto.archetype.Model;
 import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.model.Lists;
 
@@ -17,11 +15,12 @@ public interface ListsService {
 
     Lists update(Lists lists);
 
-    Boolean deleteById(String idLists);
+    Boolean deleteById(Long idLists);
 
-    Lists findById(String idLists);
+    Lists findById(Long idLists);
 
     Lists findByLabel(ListLabel toListLabel);
+    Lists getListByIdTrelloFromDb(String idTrello);
 
-    Lists[] getListFromTrelloBoard(String idBoard, String key, String token);
+    List<String> getAllIdTrelloForLists();
 }

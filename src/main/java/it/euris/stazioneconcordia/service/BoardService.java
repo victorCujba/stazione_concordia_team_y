@@ -1,9 +1,10 @@
 package it.euris.stazioneconcordia.service;
 
+import it.euris.stazioneconcordia.data.dto.BoardDTO;
 import it.euris.stazioneconcordia.data.model.Board;
+import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+
 import java.util.List;
 
 public interface BoardService {
@@ -14,9 +15,11 @@ public interface BoardService {
 
     Board update(Board board);
 
-    Boolean deleteById(String idBoard);
+    Boolean deleteById(Long idBoard);
 
-    Board findById(String idBoard);
+    Board findById(Long idBoard);
 
-    Board getBoardFromTrello(String idBoard, String key, String token);
+    Board getBoardByIdTrelloFromDb(String idTrello);
+
+
 }

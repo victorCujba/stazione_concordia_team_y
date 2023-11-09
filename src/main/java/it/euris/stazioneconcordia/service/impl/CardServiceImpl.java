@@ -1,27 +1,20 @@
 package it.euris.stazioneconcordia.service.impl;
 
-import com.google.gson.Gson;
-import it.euris.stazioneconcordia.data.dto.CardDTO;
-import it.euris.stazioneconcordia.data.dto.ListsDTO;
-import it.euris.stazioneconcordia.data.enums.Priority;
-import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.model.Card;
-import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CardRepository;
+import it.euris.stazioneconcordia.repository.LabelsRepository;
+import it.euris.stazioneconcordia.repository.ListsRepository;
 import it.euris.stazioneconcordia.service.CardService;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -29,6 +22,8 @@ import java.util.stream.Collectors;
 public class CardServiceImpl implements CardService {
 
     CardRepository cardRepository;
+    LabelsRepository labelsRepository;
+    ListsRepository listsRepository;
 
     @Override
     public List<Card> findAll() {
@@ -36,11 +31,11 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<Card> findByPriority(Priority priority) {
+    public List<Card> findByLabels(Long idLabels) {
 
         List<Card> cards = cardRepository.findAll();
         List<Card> cardsWithPriority = cards.stream()
-                .filter(card -> card.getPriority() == priority)
+                .filter(card -> Objects.equals(card.getLabels().getId(), idLabels))
                 .collect(Collectors.toList());
 
         return cardsWithPriority;
@@ -70,65 +65,77 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Card insert(Card card) {
-//        if (card.getId() != null) {
-//            throw new IdMustBeNullException();
-//        }
+        if (card.getId() != null) {
+            throw new IdMustBeNullException();
+        }
         return cardRepository.save(card);
     }
 
     @Override
     public Card update(Card card) {
-//        if (card.getId() == null) {
-//            throw new IdMustNotBeNullException();
-//        }
+        if (card.getId() == null) {
+            throw new IdMustNotBeNullException();
+        }
         return cardRepository.save(card);
     }
 
     @Override
-    public Boolean deleteById(String idCard) {
+    public Boolean deleteById(Long idCard) {
         cardRepository.deleteById(idCard);
         return cardRepository.findById(idCard).isEmpty();
     }
 
     @Override
-    public Card findById(String idCard) {
+    public Card findById(Long idCard) {
         return cardRepository.findById(idCard).orElse(Card.builder().build());
     }
 
     @Override
-    @SneakyThrows
-    public Card[] getCardsFromTrelloList(String idList, String key, String token) {
+    public Card getCardByIdTrelloFromDb(String idTrelloCard) {
+        return cardRepository.getCardByIdTrello(idTrelloCard);
+    }
 
-        String url = "https://api.trello.com/1/lists/" + idList + "/cards?key=" + key + "&token=" + token;
+    @Override
+    public List<String> getAllIdTrelloForCardsFromDb() {
+        return cardRepository.getTrelloIds();
+    }
 
-        URI targetURI = new URI(url);
+    @Override
+    public boolean cardExistByTrelloIdAndLabel(String idTrello, Long idLabel) {
+        Card existingCard = cardRepository.findByTrelloIdAndIdLabel(idTrello, idLabel);
+        return existingCard != null;
+    }
 
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(targetURI)
-                .GET()
-                .build();
+    @Override
+    public boolean cardExistByTrelloId(String idTrello) {
 
-        HttpClient httpClient = HttpClient.newHttpClient();
+        Card existingCard = cardRepository.getCardByIdTrello(idTrello);
+        return existingCard != null;
+    }
 
-        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+    @Override
+    public List<Card> getHighPriorityCards() {
+        Long idPriority = labelsRepository.getLabelIdByNameFromDb("Alta Priorità").getId();
+        return cardRepository.findByPriority(idPriority);
+    }
 
-        Gson gson = new Gson();
+    @Override
+    public List<Card> getMediumPriorityCards() {
+        Long idPriority = labelsRepository.getLabelIdByNameFromDb("Media Priorità").getId();
+        return cardRepository.findByPriority(idPriority);
+    }
 
-        CardDTO[] cardDTOs = gson.fromJson(response.body(), CardDTO[].class);
+    @Override
+    public List<Card> getLowPriorityCards() {
+        Long idPriority = labelsRepository.getLabelIdByNameFromDb("Bassa Priorità").getId();
+        return cardRepository.findByPriority(idPriority);
+    }
 
-        for (CardDTO cardDTO : cardDTOs) {
-            String date = cardDTO.getDateLastActivity().substring(0, 19);
-            cardDTO.setDateLastActivity(date);
-            Card card = cardDTO.toModel();
-            insert(card);
-        }
-
-        Card[] cards = new Card[cardDTOs.length];
-        for (int i = 0; i < cardDTOs.length; i++) {
-            cards[i] = cardDTOs[i].toModel();
-        }
-
-        return cards;
+    @Override
+    public List<Card> getExpiringIn5DaysCards() {
+        LocalDateTime startDate = LocalDateTime.now();
+        LocalDateTime endDate = LocalDateTime.now().plusDays(5L);
+        return cardRepository.getExpiringIn5DaysCards(startDate, endDate);
     }
 
 

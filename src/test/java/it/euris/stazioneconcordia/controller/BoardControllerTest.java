@@ -18,7 +18,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,7 +37,7 @@ class BoardControllerTest {
 
         Board board = Board
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Test name")
                 .description("Test desc")
                 .url("Test url")
@@ -51,7 +50,7 @@ class BoardControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/boards/v1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].name").value("Test name"))
@@ -73,12 +72,12 @@ class BoardControllerTest {
         when(boardService.insert(any())).thenReturn(board);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/boards/v1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(board.toDto())))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
@@ -93,17 +92,17 @@ class BoardControllerTest {
         when(boardService.update(any())).thenReturn(board);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/boards/v1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(board.toDto())))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
     public void shouldDeleteABoardById() throws Exception {
-        String idBoard = "1";
+        Long idBoard = 1L;
 
         when(boardService.deleteById(idBoard)).thenReturn(true);
 
@@ -114,7 +113,7 @@ class BoardControllerTest {
 
     @Test
     public void shouldGetBoardById() throws Exception {
-        String idBoard = "1";
+        Long idBoard = 1L;
 
         Board board = Board
                 .builder()
@@ -123,9 +122,9 @@ class BoardControllerTest {
 
         when(boardService.findById(idBoard)).thenReturn(board);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/boards/v1/{id}",idBoard))
+        mockMvc.perform(MockMvcRequestBuilders.get("/boards/v1/{id}", idBoard))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 }

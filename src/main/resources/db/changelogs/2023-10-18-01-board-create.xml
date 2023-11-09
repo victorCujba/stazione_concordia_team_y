@@ -14,14 +14,16 @@
         </preConditions>
         <comment>Board table create</comment>
         <createTable tableName="board">
-            <column name="id" type="VARCHAR(255)">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
                 <constraints primaryKey="true"/>
+            </column>
+            <column name="id_trello" type="VARCHAR(255)">
+                <constraints nullable="true"/>
             </column>
             <column name="name" type="VARCHAR(255)"/>
             <column name="description" type="VARCHAR(255)"/>
             <column name="url" type="VARCHAR(255)"/>
             <column name="date_last_activity" type="DATETIME()"/>
-            <column name="closed" type="BOOLEAN"/>
         </createTable>
         <rollback>
             <dropTable tableName="board"/>

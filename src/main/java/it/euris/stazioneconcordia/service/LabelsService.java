@@ -1,13 +1,19 @@
 package it.euris.stazioneconcordia.service;
 
-import it.euris.stazioneconcordia.data.dto.LabelsDTO;
 import it.euris.stazioneconcordia.data.model.Labels;
 
-public interface LabelsService {
-     Labels insert(Labels labels);
-    Labels findById(String idLabels);
+import java.util.List;
 
-    Labels[] getLabelsFromTrelloBoard(String idBoard, String key, String token);
+public interface LabelsService {
+    Labels insert(Labels labels);
+
+    Labels findById(Long idLabels);
+
+    Labels getLabelByIdTrelloFromDb(String idTrello);
+
+    List<String> getAllIdTrelloForLabels();
+
+    Long getDefaultLabelId();
 }
 
 

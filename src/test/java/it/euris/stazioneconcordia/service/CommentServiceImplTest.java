@@ -23,9 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceImplTest {
@@ -38,25 +36,25 @@ class CommentServiceImplTest {
 
     @Test
     void shouldReturnLastComment() {
-        Card card1 = Card.builder().id("1").build();
-        Card card2 = Card.builder().id("2").build();
+        Card card1 = Card.builder().id(1L).build();
+        Card card2 = Card.builder().id(2L).build();
         Comment comment1 = Comment
                 .builder()
-                .id("1")
+                .id(1L)
                 .card(card1)
                 .date(LocalDateTime.now().minusDays(1L))
                 .build();
 
         Comment comment2 = Comment
                 .builder()
-                .id("2")
+                .id(2L)
                 .card(card2)
                 .date(LocalDateTime.now().minusHours(1L))
                 .build();
 
         Comment comment3 = Comment
                 .builder()
-                .id("3")
+                .id(3L)
                 .card(card1)
                 .date(LocalDateTime.now().minusHours(15L))
                 .build();
@@ -76,7 +74,7 @@ class CommentServiceImplTest {
 
         Comment comment = Comment
                 .builder()
-                .id("1")
+                .id(1L)
                 .commentBody("Test body")
                 .build();
 
@@ -95,7 +93,7 @@ class CommentServiceImplTest {
     }
 
     @Test
-    void shouldInsertAComment(){
+    void shouldInsertAComment() {
 
         Comment comment = Comment
                 .builder()
@@ -114,11 +112,11 @@ class CommentServiceImplTest {
     }
 
     @Test
-    void shouldNotInsertAnyComment(){
+    void shouldNotInsertAnyComment() {
 
         Comment comment = Comment
                 .builder()
-                .id("1")
+                .id(1L)
                 .commentBody("Test body")
                 .date(LocalDateTime.parse("2023-10-18T12:00:00"))
                 .build();
@@ -132,11 +130,11 @@ class CommentServiceImplTest {
     }
 
     @Test
-    void shouldUpdateAComment(){
+    void shouldUpdateAComment() {
 
         Comment comment = Comment
                 .builder()
-                .id("1")
+                .id(1L)
                 .commentBody("Test body")
                 .date(LocalDateTime.parse("2023-10-18T12:00:00"))
                 .build();
@@ -151,7 +149,7 @@ class CommentServiceImplTest {
     }
 
     @Test
-    void shouldNotUpdateAnyComment(){
+    void shouldNotUpdateAnyComment() {
 
         Comment course = Comment
                 .builder()
@@ -169,9 +167,9 @@ class CommentServiceImplTest {
     @Test
     void shouldDeleteAComment() {
 
-        String id = "1";
+        Long id = 1L;
 
-        doNothing().when(commentRepository).deleteById(anyString());
+        doNothing().when(commentRepository).deleteById(anyLong());
         when(commentRepository.findById(id)).thenReturn(Optional.empty());
         assertTrue(commentService.deleteById(id));
         Mockito.verify(commentRepository, times(1)).deleteById(id);

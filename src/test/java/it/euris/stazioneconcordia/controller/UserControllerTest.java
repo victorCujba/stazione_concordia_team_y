@@ -1,10 +1,7 @@
 package it.euris.stazioneconcordia.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.euris.stazioneconcordia.data.model.Board;
-import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.data.model.User;
-import it.euris.stazioneconcordia.service.ListsService;
 import it.euris.stazioneconcordia.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +50,7 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/v1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].fullName").value("Test name"))
@@ -76,12 +73,12 @@ class UserControllerTest {
         when(userService.insert(any())).thenReturn(user);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/users/v1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(user.toDto())))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
@@ -98,12 +95,12 @@ class UserControllerTest {
         when(userService.update(any())).thenReturn(user);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/users/v1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(user.toDto())))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
@@ -132,9 +129,9 @@ class UserControllerTest {
 
         when(userService.findById(idUser)).thenReturn(user);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/v1/{id}",idUser))
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/v1/{id}", idUser))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 }

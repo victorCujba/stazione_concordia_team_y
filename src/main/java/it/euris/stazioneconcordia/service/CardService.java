@@ -1,17 +1,15 @@
 package it.euris.stazioneconcordia.service;
 
-import it.euris.stazioneconcordia.data.dto.CardDTO;
-import it.euris.stazioneconcordia.data.enums.Priority;
 import it.euris.stazioneconcordia.data.model.Card;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public interface CardService {
 
     List<Card> findAll();
 
-   List<Card>  findByPriority(Priority priority);
+    List<Card> findByLabels(Long idLabels);
 
     List<Card> findAllCardsWhitExpirationDateInLast5Days();
 
@@ -19,9 +17,24 @@ public interface CardService {
 
     Card update(Card card);
 
-    Boolean deleteById(String idCard);
+    Boolean deleteById(Long idCard);
 
-    Card findById(String idCard);
+    Card findById(Long idCard);
 
-    Card[] getCardsFromTrelloList(String idList, String key, String token);
+
+    Card getCardByIdTrelloFromDb(String idCard);
+
+    List<String> getAllIdTrelloForCardsFromDb();
+
+    boolean cardExistByTrelloIdAndLabel(String idTrello, Long idLabel);
+
+    boolean cardExistByTrelloId(String idTrello);
+    Card getCardIfExistByTrelloId(String idTrello);
+
+    List<Card> getHighPriorityCards();
+
+    List<Card> getMediumPriorityCards();
+
+    List<Card> getLowPriorityCards();
+    List<Card> getExpiringIn5DaysCards();
 }

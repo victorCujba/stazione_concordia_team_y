@@ -4,6 +4,8 @@ import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
 import it.euris.stazioneconcordia.data.model.User;
+import it.euris.stazioneconcordia.data.trelloDto.CommentDataDTO;
+import it.euris.stazioneconcordia.data.trelloDto.CommentTrelloDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,23 +20,35 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 public class CommentDTO implements Dto {
 
     private String id;
+    private String idTrello;
     private String date;
     private String commentBody;
     private String deleted;
-    private String idCard;
     private String idUser;
+    private String idCard;
 
 
     @Override
     public Comment toModel() {
         return Comment
                 .builder()
-                .id(id)
+                .id(stringToLong(id))
+                .idTrello(idTrello)
                 .date(stringToLocalDateTime(date))
                 .commentBody(commentBody)
                 .deleted(stringToBoolean(deleted))
-                .card(Card.builder().id(idCard).build())
-                .user(User.builder().id(idUser).build())
+                .card(Card.builder().idTrello(idCard).build())
+                .user(User.builder().id(stringToLong(idUser)).build())
+                .build();
+    }
+
+    @Override
+    public CommentTrelloDto toTrelloDto() {
+        return CommentTrelloDto.builder()
+                .id(id)
+                .idMemberCreator(idUser)
+                .data(CommentDataDTO.builder().text(commentBody).card(CardDTO.builder().idTrello(idCard).build()).build())
+                .date(date)
                 .build();
     }
 }

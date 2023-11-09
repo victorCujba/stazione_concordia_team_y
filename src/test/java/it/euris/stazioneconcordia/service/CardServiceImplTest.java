@@ -1,7 +1,7 @@
 package it.euris.stazioneconcordia.service;
 
-import it.euris.stazioneconcordia.data.enums.Priority;
 import it.euris.stazioneconcordia.data.model.Card;
+import it.euris.stazioneconcordia.data.model.Labels;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CardRepository;
@@ -23,9 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 class CardServiceImplTest {
@@ -37,28 +35,28 @@ class CardServiceImplTest {
     CardServiceImpl cardService;
 
     @Test
-    void shouldReturnCardsWithHighPriority() {
+    void shouldReturnCardsWithLabels() {
         Card card1 = Card
                 .builder()
-                .id("1")
-                .priority(Priority.LOW)
+                .id(1L)
+                .labels(Labels.builder().id(10L).build())
                 .build();
         Card card2 = Card
                 .builder()
-                .id("2")
-                .priority(Priority.MEDIUM)
+                .id(2L)
+                .labels(Labels.builder().id(11L).build())
                 .build();
         Card card3 = Card
                 .builder()
-                .id("3")
-                .priority(Priority.HIGH)
+                .id(3L)
+                .labels(Labels.builder().id(12L).build())
                 .build();
 
         List<Card> cards = List.of(card1, card2, card3);
 
         when(cardRepository.findAll()).thenReturn(cards);
 
-        List<Card> cardsWithPriority = cardService.findByPriority(Priority.HIGH);
+        List<Card> cardsWithPriority = cardService.findByLabels(12L);
 
         assertThat(cardsWithPriority)
                 .hasSize(1)
@@ -72,17 +70,17 @@ class CardServiceImplTest {
     void shouldReturnCardsWithExpirationDateInLast5Days() {
         Card card1 = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .expirationDate(LocalDateTime.now().minusDays(4L))
                 .build();
         Card card2 = Card
                 .builder()
-                .id("2")
+                .id(2L)
                 .expirationDate(LocalDateTime.now().minusDays(8L))
                 .build();
         Card card3 = Card
                 .builder()
-                .id("3")
+                .id(3L)
                 .expirationDate(LocalDateTime.now().minusDays(2L))
                 .build();
 
@@ -105,7 +103,7 @@ class CardServiceImplTest {
 
         Card card = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Test name")
                 .description("Test desc")
                 .build();
@@ -149,7 +147,7 @@ class CardServiceImplTest {
 
         Card card = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Test name")
                 .description("Test desc")
                 .build();
@@ -167,7 +165,7 @@ class CardServiceImplTest {
 
         Card card = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Test name")
                 .description("Test desc")
                 .build();
@@ -198,21 +196,21 @@ class CardServiceImplTest {
 
     @Test
     void shouldDeleteACard() {
-        String id = "12";
+        Long id = 12L;
 
-        doNothing().when(cardRepository).deleteById(anyString());
+        doNothing().when(cardRepository).deleteById(anyLong());
         when(cardRepository.findById(id)).thenReturn(Optional.empty());
         assertTrue(cardService.deleteById(id));
         Mockito.verify(cardRepository, times(1)).deleteById(id);
     }
 
     @Test
-    void shouldGetACardById(){
-        String id = "1";
+    void shouldGetACardById() {
+        Long id = 1L;
 
         Card card = Card
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("Test name")
                 .description("Test description")
                 .build();

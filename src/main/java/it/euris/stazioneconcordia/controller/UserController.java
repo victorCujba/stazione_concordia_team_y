@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/v1")
     public List<UserDTO> getAllUsers() {
@@ -25,13 +25,9 @@ public class UserController {
 
     @PostMapping("/v1")
     public UserDTO saveUser(@RequestBody UserDTO userDTO) {
-        try {
             User user = userDTO.toModel();
             return userService.insert(user).toDto();
-        } catch (IdMustBeNullException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+
     }
 
     @PutMapping("/v1")

@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.service;
 
 import it.euris.stazioneconcordia.data.model.Card;
 import it.euris.stazioneconcordia.data.model.Comment;
+import it.euris.stazioneconcordia.data.trelloDto.CommentTrelloDto;
 
 import java.util.List;
 
@@ -14,11 +15,11 @@ public interface CommentService {
 
     Comment update(Comment comment);
 
-    Boolean deleteById(String idComment);
+    Boolean deleteById(Long idComment);
 
-    Comment findById(String idComment);
+    Comment findById(Long idComment);
 
     Comment getLastComment(Card card);
 
-
+    Integer insertComment(Comment comment);
 }

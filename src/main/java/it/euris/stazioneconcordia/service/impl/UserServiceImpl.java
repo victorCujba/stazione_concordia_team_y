@@ -1,22 +1,13 @@
 package it.euris.stazioneconcordia.service.impl;
 
-import com.google.gson.Gson;
-import it.euris.stazioneconcordia.data.dto.BoardDTO;
-import it.euris.stazioneconcordia.data.dto.UserDTO;
-import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.model.User;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.UserRepository;
 import it.euris.stazioneconcordia.service.UserService;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.List;
 
 @Service
@@ -31,18 +22,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User insert(User user) {
-//
-//        if (user.getId() != null) {
-//            throw new IdMustBeNullException();
-//        }
+        if (user.getId() != null) {
+            throw new IdMustBeNullException();
+        }
         return userRepository.save(user);
     }
 
     @Override
     public User update(User user) {
-//        if (user.getId() == null) {
-//            throw new IdMustNotBeNullException();
-//        }
+        if (user.getId() == null) {
+            throw new IdMustNotBeNullException();
+        }
         return userRepository.save(user);
     }
 
@@ -60,19 +50,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @SneakyThrows
-    public User getUserFromTrello(String username, String key, String token) {
-        String url = "https://api.trello.com/1/members/" + username + "/?key=" + key + "&token=" + token;
-        URI targetURI = new URI(url);
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(targetURI)
-                .GET()
-                .build();
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        Gson gson = new Gson();
-        UserDTO userDTO = gson.fromJson(response.body(), UserDTO.class);
-        User user = userDTO.toModel();
-        return insert(user);
+    public User getUserByUserName(String userName) {
+        return userRepository.getUserIdByUsername(userName);
     }
+
+    @Override
+    public User getUserByIdTrelloFromDb(String idTrello) {
+        return userRepository.getByIdTrello(idTrello);
+    }
+
 }

@@ -2,14 +2,13 @@ package it.euris.stazioneconcordia.data.model;
 
 import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.dto.archetype.Model;
-import it.euris.stazioneconcordia.data.enums.Priority;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
@@ -20,22 +19,20 @@ import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "card")
-@SQLDelete(sql = "UPDATE card SET closed = true WHERE id = ?")
-@Where(clause = "closed = false")
 public class Card implements Model {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private String id;
+    private Long id;
+
+    @Column(name = "id_trello")
+    private String idTrello;
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "position")
     private Long position;
-
-    @Column(name = "priority")
-    @Enumerated(EnumType.STRING)
-    private Priority priority;
 
     @Column(name = "description")
     private String description;
@@ -50,10 +47,8 @@ public class Card implements Model {
     @Builder.Default
     private Boolean closed = false;
 
-// TODO magari gestire agiunta dei commenti ?
-//    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
-//    @Builder.Default
-//    private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
+    private List<Comment> comments;
 
     @ManyToOne
     @JoinColumn(name = "id_list")
@@ -62,18 +57,38 @@ public class Card implements Model {
     @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
     private List<CardState> stateHistory;
 
+    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
+    private List<CardUser> cardUsers;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_label")
+    private Labels labels;
+
+
     @Override
     public CardDTO toDto() {
         return CardDTO.builder()
-                .id(id)
+                .id(numberToString(id))
+                .idTrello(idTrello)
                 .name(name)
                 .position(numberToString(position))
-                .priority(priorityToString(priority))
+                .idLabels(List.of(numberToString(labels.getId())))
                 .description(description)
                 .closed(booleanToString(closed))
                 .expirationDate(localDateTimeToString(expirationDate))
                 .dateLastActivity(localDateTimeToString(dateLastActivity))
-                .idList(list.getId())
+                .idList(numberToString(list.getId()))
                 .build();
     }
+
+    public List<String> getCommentStrings() {
+        if (comments != null) {
+            return comments.stream()
+                    .map(Comment::getCommentBody)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
+
 }

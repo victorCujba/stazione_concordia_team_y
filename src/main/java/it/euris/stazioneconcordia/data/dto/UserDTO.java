@@ -2,13 +2,12 @@ package it.euris.stazioneconcordia.data.dto;
 
 import it.euris.stazioneconcordia.data.dto.archetype.Dto;
 import it.euris.stazioneconcordia.data.model.User;
-
+import it.euris.stazioneconcordia.data.trelloDto.UserTrelloDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 @Data
 @AllArgsConstructor
@@ -27,12 +26,24 @@ public class UserDTO implements Dto {
     public User toModel() {
         return User
                 .builder()
+                .idTrello(id)
+                .fullName(fullName)
+                .bio(bio)
+                .avatarUrl(avatarUrl)
+                .email(email)
+                .status(status)
+                .build();
+    }
+
+    @Override
+    public UserTrelloDto toTrelloDto() {
+        return UserTrelloDto
+                .builder()
                 .id(id)
                 .fullName(fullName)
                 .bio(bio)
                 .avatarUrl(avatarUrl)
                 .email(email)
-                .status(stringToBoolean(status))
                 .build();
     }
 }

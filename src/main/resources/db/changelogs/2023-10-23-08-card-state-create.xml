@@ -14,10 +14,10 @@
         </preConditions>
         <comment>Card Status table create</comment>
         <createTable tableName="card_state">
-            <column name="id" type="VARCHAR(255)">
+            <column name="id" type="BIGINT(20)">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="id_card" type="VARCHAR(255)"/>
+            <column name="id_card" type="BIGINT(20)"/>
             <column name="from_list" type="ENUM('TO_DO','WORKING_ON','FINISHED')"/>
             <column name="to_list" type="ENUM('TO_DO','WORKING_ON','FINISHED')"/>
             <column name="date_last_update" type="DATETIME()"/>

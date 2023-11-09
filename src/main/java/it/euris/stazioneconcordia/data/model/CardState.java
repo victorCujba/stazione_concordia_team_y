@@ -21,7 +21,7 @@ public class CardState implements Model {
 
     @Id
     @Column(name = "id")
-    private String id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "id_card")
@@ -42,8 +42,8 @@ public class CardState implements Model {
     public CardStateDTO toDto() {
         return CardStateDTO
                 .builder()
-                .id(id)
-                .idCard(card.getId())
+                .id(numberToString(id))
+                .idCard(numberToString(card.getId()))
                 .fromList(listLabelToString(fromList))
                 .toList(listLabelToString(toList))
                 .dateLastUpdate(localDateTimeToString(dateLastUpdate))

@@ -14,17 +14,19 @@
         </preConditions>
         <comment>Card table create</comment>
         <createTable tableName="card">
-            <column name="id" type="VARCHAR(255)">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
                 <constraints primaryKey="true"/>
+            </column>
+            <column name="id_trello" type="VARCHAR(255)">
+                <constraints nullable="true"/>
             </column>
             <column name="name" type="VARCHAR(255)"/>
             <column name="position" type="BIGINT(20)"/>
-            <column name="priority" type="ENUM('HIGH','MEDIUM','LOW')"/>
-            <column name="description" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(5000)"/>
             <column name="expiration_date" type="DATETIME()"/>
             <column name="date_last_activity" type="DATETIME()"/>
             <column name="closed" type="BOOLEAN"/>
-            <column name="id_list" type="VARCHAR(255)"/>
+            <column name="id_list" type="BIGINT(20)"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="card" baseColumnNames="id_list" constraintName="FK_LIST_ON_CARD"

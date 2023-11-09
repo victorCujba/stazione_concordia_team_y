@@ -1,5 +1,6 @@
 package it.euris.stazioneconcordia.controller;
 
+import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.dto.CardStateDTO;
 import it.euris.stazioneconcordia.data.enums.ListLabel;
 import it.euris.stazioneconcordia.data.model.Card;
@@ -11,12 +12,15 @@ import it.euris.stazioneconcordia.service.ListsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
 @RestController
 @RequestMapping("/cards-state")
 public class CardStateController {
+
 
     CardService cardService;
 
@@ -35,22 +39,43 @@ public class CardStateController {
         return cardStateService.findAll().stream().map(CardState::toDto).toList();
     }
 
+    @GetMapping("/v1/{idCard}")
+    public List<CardStateDTO> findCardStateByIdCard(@PathVariable("idCard") Long idCard) {
+        Card card = cardService.findById(idCard);
+
+        if (card.getStateHistory() == null || card.getStateHistory().isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<CardStateDTO> cardStateDTOList = new ArrayList<>();
+        for (CardState cardState : card.getStateHistory()) {
+            cardStateDTOList.add(cardState.toDto());
+        }
+        return cardStateDTOList;
+    }
+
     @PutMapping("/v1/move-card")
-    public void updateCardState(@RequestParam String idCard, @RequestParam ListLabel toListLabel) {
+    public void updateCardState(@RequestParam Long idCard, @RequestParam ListLabel toListLabel) {
 
         Card card = cardService.findById(idCard);
         Lists fromList = card.getList();
-        ListLabel fromListLabel = fromList.getLabel();
+//        ListLabel fromListLabel = fromList.getLabel();
         Lists toList = listsService.findByLabel(toListLabel);
 
         CardState cardState = CardState
                 .builder()
-                .id(card.getId())
                 .card(card)
-                .dateLastUpdate(LocalDateTime.now())
-                .fromList(fromListLabel)
+//                .dateLastUpdate(LocalDateTime.now())
+//                .fromList(fromListLabel)
                 .toList(toListLabel)
                 .build();
+
+        if (card.getStateHistory().isEmpty()) {
+            List<CardState> stateHistory = new ArrayList<>();
+            stateHistory.add(cardState);
+            card.setStateHistory(stateHistory);
+        } else {
+            card.getStateHistory().add(cardState);
+        }
 
 
         card.getStateHistory().add(cardState);
@@ -60,5 +85,12 @@ public class CardStateController {
         cardService.update(card);
 
 
+    }
+
+    @GetMapping("/v1/card-by-id-list")
+    public List<CardDTO> findCardsByListId(Long idList) {
+        Lists lists = listsService.findById(idList);
+        List<Card> cards = lists.getCards();
+        return cards.stream().map(Card::toDto).toList();
     }
 }

@@ -35,7 +35,7 @@ class ListsServiceImplTest {
 
         Lists list = Lists
                 .builder()
-                .id("1")
+                .id(1L)
                 .build();
 
         List<Lists> lists = List.of(list);
@@ -72,7 +72,7 @@ class ListsServiceImplTest {
     void shouldNotInsertAnyLists() {
         Lists list = Lists
                 .builder()
-                .id("1")
+                .id(1L)
                 .build();
 
 
@@ -87,10 +87,10 @@ class ListsServiceImplTest {
 
     @Test
     void shouldDeleteALists() {
-        //arrange
-        String id = "12";
 
-        doNothing().when(listsRepository).deleteById(anyString());
+        Long id = 12L;
+
+        doNothing().when(listsRepository).deleteById(anyLong());
         when(listsRepository.findById(id)).thenReturn(Optional.empty());
         assertTrue(listsService.deleteById(id));
         Mockito.verify(listsRepository, times(1)).deleteById(id);
@@ -108,12 +108,13 @@ class ListsServiceImplTest {
         assertThatThrownBy(() -> listsService.update(list))
                 .isInstanceOf(IdMustNotBeNullException.class);
     }
+
     @Test
     void shouldUpdateAnyLists() {
 
         Lists list = Lists
                 .builder()
-                .id("1")
+                .id(1L)
                 .name("test name")
                 .build();
         when(listsRepository.save(any())).thenReturn(list);
