@@ -16,6 +16,7 @@ public interface LabelsService {
     List<String> getAllIdTrelloForLabels();
 
     Long getDefaultLabelId();
+
 }
 
 

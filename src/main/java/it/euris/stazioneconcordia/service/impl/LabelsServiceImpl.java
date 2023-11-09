@@ -53,5 +53,4 @@ public class LabelsServiceImpl implements LabelsService {
         return labelsRepository.getDefaultLabel();
     }
 
-
 }

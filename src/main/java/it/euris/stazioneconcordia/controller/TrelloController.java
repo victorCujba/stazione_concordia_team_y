@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTimeToString;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 
 @AllArgsConstructor
@@ -95,6 +96,20 @@ public class TrelloController {
                 userService.update(updatedUser);
             }
         });
+    }
+    @PutMapping("/insert-cards-to-trello")
+    public void insertCardsFromDbToTrello(@RequestParam String idCard) {
+        CardTrelloDto cardTrelloDto= cardService.getCardByIdTrelloFromDb(idCard).toDto().toTrelloDto();
+        Card card =cardService.getCardByIdTrelloFromDb(idCard);
+
+        cardTrelloDto
+                .setIdList(cardService
+                .findById(card.getId())
+                .getList()
+                .getIdTrello());
+        cardTrelloDto
+                .setIdLabels(Collections.singletonList(card.getLabels().getIdTrello()));
+         cardTrelloService.update(idCard,cardTrelloDto);
     }
 
 

@@ -114,6 +114,11 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    public Card getCardIfExistByTrelloId(String idTrello) {
+        return null;
+    }
+
+    @Override
     public List<Card> getHighPriorityCards() {
         Long idPriority = labelsRepository.getLabelIdByNameIgnoreCase("Alta Priorità").getId();
         return cardRepository.findByIdLabel(idPriority);

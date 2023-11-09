@@ -34,7 +34,7 @@ public class Labels implements Model {
     @Column(name = "uses")
     private Long uses;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name = "id_board")
     private Board board;
 
