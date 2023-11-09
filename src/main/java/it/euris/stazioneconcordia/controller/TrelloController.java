@@ -109,7 +109,65 @@ public class TrelloController {
                 .getIdTrello());
         cardTrelloDto
                 .setIdLabels(Collections.singletonList(card.getLabels().getIdTrello()));
-         cardTrelloService.update(idCard,cardTrelloDto);
+         cardTrelloService.updateACard(idCard,cardTrelloDto);
+    }
+    @PostMapping("/insert-new-cards-to-trello")
+    public void insertNewCardsFromDbToTrello(@RequestParam Long idCard) {
+        CardTrelloDto cardTrelloDto= cardService.findById(idCard).toDto().toTrelloDto();
+        Card card =cardService.findById(idCard);
+
+        cardTrelloDto
+                .setIdList(card
+                .getList()
+                .getIdTrello());
+        cardTrelloDto
+                .setIdLabels(Collections.singletonList(card.getLabels().getIdTrello()));
+         cardTrelloService.createACard(cardTrelloDto);
+    }
+ @PostMapping("/insert-new-list-to-trello")
+    public void insertNewListFromDbToTrello(@RequestParam Long idList) {
+     ListsTrelloDto listsTrelloDto=listsService.findById(idList).toDto().toTrelloDto();
+        Lists lists =listsService.findById(idList);
+
+        listsTrelloDto.setIdBoard(lists.getBoard().getIdTrello());
+        listsTrelloDto.setName(lists.getName());
+         listsTrelloService.createANewList(listsTrelloDto);
+    }
+
+    @DeleteMapping("/delete-a-cards-to-trello")
+    public void deleteACardsToTrello(@RequestParam Long idCard) {
+        Card card = cardService.findById(idCard);
+
+        cardTrelloService.deleteACard(card.getIdTrello());
+    }
+    @DeleteMapping("/delete-a-comment-on-a-card-to-trello")
+    public void deleteACommentOnACardsToTrello(@RequestParam Long idComment) {
+        Comment comment = commentService.findById(idComment);
+
+        commentTrelloService.deleteACommentOnACard(comment.getIdTrello());
+    }
+    @PutMapping("/close-a-list-to-trello")
+    public void closeAListToTrello(@RequestParam Long idList) {
+        ListsTrelloDto listsTrelloDto=listsService.findById(idList).toDto().toTrelloDto();
+        listsTrelloDto.setClosed(String.valueOf(true));
+        Lists lists = listsService.findById(idList);
+
+        listsTrelloService.closeAList(lists.getIdTrello(),listsTrelloDto);
+    }
+    @PostMapping("/insert-new-comment-on-a-card-to-trello")
+    public void insertNewCommentOnACardsFromDbToTrello(@RequestParam String idCard,@RequestParam Long idComment) {
+        CommentTrelloDto commentTrelloDto= commentService.findById(idComment).toDto().toTrelloDto();
+
+        commentTrelloService.createANewCommentOnACard(idCard,commentTrelloDto);
+    }
+    @PutMapping("/insert-list-to-trello")
+    public void insertListFromDbToTrello(@RequestParam Long idList) {
+        ListsTrelloDto listsTrelloDto= listsService.findById(idList).toDto().toTrelloDto();
+        Lists list =listsService.findById(idList);
+
+        listsTrelloDto.setIdBoard(list.getBoard().getIdTrello());
+
+        listsTrelloService.updateAList(list.getIdTrello(),listsTrelloDto);
     }
 
 
