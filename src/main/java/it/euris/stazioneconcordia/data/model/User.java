@@ -7,6 +7,8 @@ import lombok.*;
 
 import java.util.List;
 
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.numberToString;
+
 
 @Builder
 @Getter
@@ -50,6 +52,7 @@ public class User implements Model {
     @Override
     public UserDTO toDto() {
         return UserDTO.builder()
+                .id(numberToString(id))
                 .id(idTrello)
                 .fullName(fullName)
                 .bio(bio)

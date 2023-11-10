@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.stringToLong;
+
 
 @Data
 @AllArgsConstructor
@@ -16,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class UserDTO implements Dto {
 
     private String id;
+    private String idTrello;
     private String fullName;
     private String bio;
     private String avatarUrl;
@@ -26,7 +29,8 @@ public class UserDTO implements Dto {
     public User toModel() {
         return User
                 .builder()
-                .idTrello(id)
+                .id(stringToLong(id))
+                .idTrello(idTrello)
                 .fullName(fullName)
                 .bio(bio)
                 .avatarUrl(avatarUrl)

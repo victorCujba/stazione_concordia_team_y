@@ -49,7 +49,7 @@ public class TrelloController {
     public void getInfoFromTrello(@RequestParam String idBoard) {
         insertBoardFromTrelloToDb(idBoard);
         insertLabelsFromTrelloToDb(idBoard);
-        insertUsersFromTrelloToDb(idBoard);
+        insertUsers(idBoard);
         listsTrelloController.findIfExistANewListOfDBAndPutOnTrello();
         insertListsFromTrelloToDb(idBoard);
         cardTrelloController.findIfExistANewCardOfDBAndPutOnTrello();
@@ -85,7 +85,7 @@ public class TrelloController {
 
     @PostMapping("/insert-users-from-trello")
     public void insertUsers(@RequestParam String idBoard) {
-        List<UserTrelloDto> userTrelloDtos = userTrelloService.getUsersFromTrelloByIdBoard(idBoard);
+        List<UserTrelloDto> userTrelloDtos = userTrelloController.getAllUsersFromBoard(idBoard);
 
         userTrelloDtos.forEach(userTrelloDto -> {
             UserDTO userDTO = userTrelloDto.trellotoDto();
@@ -110,6 +110,7 @@ public class TrelloController {
             Card updatedCard = cardDTO.toModel();
             updatedCard.setLabels(labelsService.getLabelByIdTrelloFromDb(updatedCard.getLabels().getIdTrello()));
             updatedCard.setList(listsService.getListByIdTrelloFromDb(updatedCard.getList().getIdTrello()));
+            updatedCard.setDateLastActivity(cardService.getCardByIdTrelloFromDb(updatedCard.getIdTrello()).getDateLastActivity());
 
             Card existingCard = cardService.getCardByIdTrelloFromDb(updatedCard.getIdTrello());
             if (existingCard == null) {
@@ -167,10 +168,12 @@ public class TrelloController {
         Board board = boardDTO.toModel();
         Board existingBoard=boardService.getBoardByIdTrelloFromDb(idBoard);
         if (existingBoard == null) {
+            board.setDateLastActivity(LocalDateTime.now());
             boardService.insert(board);
-
         } else {
-            boardTrelloController.boardCompareToBoard(board,existingBoard);
+            board.setId(existingBoard.getId());
+            board.setDateLastActivity(LocalDateTime.now());
+            boardService.update(board);
         }
     }
 
@@ -196,7 +199,13 @@ public class TrelloController {
        userTrelloController.getAllUsersFromBoard(idBoard).stream()
                 .map(UserTrelloDto::trellotoDto)
                 .map(UserDTO::toModel)
-                .forEach(userService::insert);
+                .forEach(user -> {
+                    if (userService.getUserByIdTrelloFromDb(user.getIdTrello())==null){
+                        userService.insert(user);
+                    }else {
+                        userService.update(user);
+                    }});
+
     }
 
     public void insertListsFromTrelloToDb(String idBoard) {
