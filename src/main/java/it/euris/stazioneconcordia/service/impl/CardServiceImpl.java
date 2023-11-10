@@ -1,6 +1,7 @@
 package it.euris.stazioneconcordia.service.impl;
 
 import it.euris.stazioneconcordia.data.model.Card;
+import it.euris.stazioneconcordia.data.model.Labels;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CardRepository;
@@ -11,7 +12,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -91,7 +91,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Long getCardByIdTrelloFromDb(String idTrelloCard) {
+    public Card getCardByIdTrelloFromDb(String idTrelloCard) {
         return cardRepository.getCardByIdTrello(idTrelloCard);
     }
 
@@ -109,50 +109,31 @@ public class CardServiceImpl implements CardService {
     @Override
     public boolean cardExistByTrelloId(String idTrello) {
 
-        Card existingCard = cardRepository.findByTrelloId(idTrello);
+        Card existingCard = cardRepository.getCardByIdTrello(idTrello);
         return existingCard != null;
     }
 
     @Override
-    public Integer insertIntoDb(Card card) {
-        Long labelId = labelsRepository.getLabelByIdTrello(card.getLabels().getIdTrello()).getId();
-        Long listId = listsRepository.getListByIdTrello(card.getList().getIdTrello()).getId();
-        Integer insertedCard = cardRepository.insert(
-                card.getIdTrello(),
-                card.getName(),
-                card.getPosition(),
-                card.getLabels().getName(),
-                card.getDescription(),
-                card.getExpirationDate(),
-                LocalDateTime.now(),
-                card.getClosed(),
-                listId,
-                labelId);
-
-        if (insertedCard != 1) {
-            System.out.println("Card non inserted");
-        } else {
-            System.out.println("Card created successfully!!! ");
-        }
-        return insertedCard;
+    public Card getCardIfExistByTrelloId(String idTrello) {
+        return null;
     }
 
     @Override
     public List<Card> getHighPriorityCards() {
-        Long idPriority = labelsRepository.getLabelIdByNameFromDb("Alta Priorità").getId();
-        return cardRepository.findByPriority(idPriority);
+        Long idPriority = labelsRepository.getLabelIdByNameIgnoreCase("Alta Priorità").getId();
+        return cardRepository.findByIdLabel(idPriority);
     }
 
     @Override
     public List<Card> getMediumPriorityCards() {
-        Long idPriority = labelsRepository.getLabelIdByNameFromDb("Media Priorità").getId();
-        return cardRepository.findByPriority(idPriority);
+        Long idPriority = labelsRepository.getLabelIdByNameIgnoreCase("Media Priorità").getId();
+        return cardRepository.findByIdLabel(idPriority);
     }
 
     @Override
     public List<Card> getLowPriorityCards() {
-        Long idPriority = labelsRepository.getLabelIdByNameFromDb("Bassa Priorità").getId();
-        return cardRepository.findByPriority(idPriority);
+        Long idPriority = labelsRepository.getLabelIdByNameIgnoreCase("Bassa Priorità").getId();
+        return cardRepository.findByIdLabel(idPriority);
     }
 
     @Override
@@ -160,6 +141,12 @@ public class CardServiceImpl implements CardService {
         LocalDateTime startDate = LocalDateTime.now();
         LocalDateTime endDate = LocalDateTime.now().plusDays(5L);
         return cardRepository.getExpiringIn5DaysCards(startDate, endDate);
+    }
+
+    @Override
+    public List<Card> getByLabelName(String labelName) {
+        Labels labels = labelsRepository.getLabelIdByNameIgnoreCase(labelName);
+        return cardRepository.findByIdLabel(labels.getId());
     }
 
 

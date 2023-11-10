@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,9 +54,6 @@ public class Card implements Model {
     @ManyToOne
     @JoinColumn(name = "id_list")
     private Lists list;
-
-    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
-    private List<CardState> stateHistory;
 
     @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
     private List<CardUser> cardUsers;

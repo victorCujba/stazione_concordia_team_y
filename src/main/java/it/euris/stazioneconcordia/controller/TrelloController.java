@@ -3,6 +3,8 @@ package it.euris.stazioneconcordia.controller;
 import it.euris.stazioneconcordia.data.dto.*;
 import it.euris.stazioneconcordia.data.model.*;
 import it.euris.stazioneconcordia.data.trelloDto.*;
+import it.euris.stazioneconcordia.repository.CardRepository;
+import it.euris.stazioneconcordia.repository.ListsRepository;
 import it.euris.stazioneconcordia.service.*;
 
 import it.euris.stazioneconcordia.service.trelloService.*;
@@ -12,9 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
-import static it.euris.stazioneconcordia.utility.DataConversionUtils.localDateTimeToString;
+import static it.euris.stazioneconcordia.utility.DataConversionUtils.*;
 
 
 @AllArgsConstructor
@@ -35,6 +39,7 @@ public class TrelloController {
     private CommentTrelloService commentTrelloService;
     private ListsTrelloService listsTrelloService;
     private UserTrelloService userTrelloService;
+    private ListsRepository listsRepository;
 
 
     @GetMapping("/sync")
@@ -43,7 +48,7 @@ public class TrelloController {
         insertLabelsFromTrelloToDb(idBoard);
         insertUsersFromTrelloToDb(idBoard);
         insertListsFromTrelloToDb(idBoard);
-        insertCardsFromTrelloToDb();
+        insertCardsFromTrelloToDb(idBoard);
         insertCommentsFromTrelloToDb();
 
     }
@@ -56,19 +61,290 @@ public class TrelloController {
     @PostMapping("/insertListFromTrello")
     public void insertList(@RequestParam String idBoard) {
         List<ListsTrelloDto> listsTrelloDtos = listsTrelloService.getListsByIdBoard(idBoard);
-        List<ListsDTO> listsDTOS = listsTrelloDtos.stream().map(ListsTrelloDto::trellotoDto).toList();
-        List<Lists> lists = listsDTOS.stream().map(ListsDTO::toModel).toList();
-        for (Lists list : lists)
-            if (list != null && listsService.getListByIdTrelloFromDb(list.getIdTrello()) != null) {
-                list.setBoard(boardService.getBoardByIdTrelloFromDb(idBoard));
-                list.setId(listsService.getListByIdTrelloFromDb(list.getIdTrello()).getId());
-                listsService.update(list);
+        Board board = boardService.getBoardByIdTrelloFromDb(idBoard);
+
+        listsTrelloDtos.forEach(listsTrelloDto -> {
+            ListsDTO listsDTO = listsTrelloDto.trellotoDto();
+            Lists updatedList = listsDTO.toModel();
+            updatedList.setBoard(board);
+
+            Lists existingList = listsService.getListByIdTrelloFromDb(updatedList.getIdTrello());
+
+            if (existingList == null) {
+                listsService.insert(updatedList);
             } else {
-                list.setBoard(boardService.getBoardByIdTrelloFromDb(idBoard));
-                listsService.insert(list);
+                listsCompareToLists(updatedList,existingList);
             }
+        });
+    }
+    public void findIfExistANewListOfDBAndPutOnTrello(){
+        List<Lists> listsOfDB =listsService.findAll();
+        listsOfDB.forEach(lists -> {
+           if(lists.getIdTrello().isEmpty()){
+               insertNewCardsFromDbToTrello(lists.getId()); }
+        });
+    }
+    public void findIfExistANewCommentOfDBAndPutOnTrello(){
+        List<Comment> commentOfDB =commentService.findAll();
+        commentOfDB.forEach(comment -> {
+           if(comment.getIdTrello().isEmpty()){
+               insertNewCommentOnACardsFromDbToTrello(comment.getId()); }
+        });
+    }
+    public void findIfExistANewCardOfDBAndPutOnTrello(){
+        List<Card> cardsOfDB =cardService.findAll();
+        cardsOfDB.forEach(card -> {
+           if(card.getIdTrello().isEmpty()){
+               insertNewCardsFromDbToTrello(card.getId()); }
+        });
+    }
+    public void findIfExistANewLabelOfDBAndPutOnTrello(){
+        List<Labels> labelsOfDB =labelsService.findAll();
+        labelsOfDB.forEach(labels -> {
+           if(labels.getIdTrello().isEmpty()){
+               insertNewLabelToTrello(labels.getId()); }
+        });
     }
 
+    public void listsCompareToLists(Lists newLists, Lists existingList ){
+
+        if (newLists.getDateLastActivity().isAfter(existingList.getDateLastActivity())||
+                newLists.getDateLastActivity().isEqual(existingList.getDateLastActivity() )){
+
+            newLists.setId(existingList.getId());
+            newLists.setDateLastActivity(LocalDateTime.now());
+            listsService.update(newLists);
+
+        }else{
+            updateAListFromDbToTrello(existingList.getId());
+        }
+    }
+
+
+
+    @PostMapping("/insert-users-from-trello")
+    public void insertUsers(@RequestParam String idBoard) {
+        List<UserTrelloDto> userTrelloDtos = userTrelloService.getUsersFromTrelloByIdBoard(idBoard);
+
+        userTrelloDtos.forEach(userTrelloDto -> {
+            UserDTO userDTO = userTrelloDto.trellotoDto();
+            User updatedUser = userDTO.toModel();
+
+            User existingUser = userService.getUserByIdTrelloFromDb(updatedUser.getIdTrello());
+            if (existingUser == null) {
+                userService.insert(updatedUser);
+            } else {
+                updatedUser.setId(existingUser.getId());
+                userService.update(updatedUser);
+            }
+        });
+    }
+    @PutMapping("/update-cards-to-trello")
+    public void updateCardsFromDbToTrello(@RequestParam Long idCard) {
+        CardTrelloDto cardTrelloDto= cardService.findById(idCard).toDto().toTrelloDto();
+        Card card =cardService.findById(idCard);
+
+        cardTrelloDto
+                .setIdList(cardService
+                .findById(card.getId())
+                .getList()
+                .getIdTrello());
+        cardTrelloDto
+                .setIdLabels(Collections.singletonList(card.getLabels().getIdTrello()));
+         cardTrelloService.updateACard(card.getIdTrello(),cardTrelloDto);
+    }
+    @PostMapping("/insert-new-cards-to-trello")
+    public void insertNewCardsFromDbToTrello(@RequestParam Long idCard) {
+        CardTrelloDto cardTrelloDto= cardService.findById(idCard).toDto().toTrelloDto();
+        Card card =cardService.findById(idCard);
+
+        cardTrelloDto
+                .setIdList(card
+                .getList()
+                .getIdTrello());
+        cardTrelloDto
+                .setIdLabels(Collections.singletonList(card.getLabels().getIdTrello()));
+         cardTrelloService.createACard(cardTrelloDto);
+    }
+    @DeleteMapping("/delete-a-cards-to-trello")
+    public void deleteACardsToTrello(@RequestParam Long idCard) {
+        Card card = cardService.findById(idCard);
+
+        cardTrelloService.deleteACard(card.getIdTrello());
+    }
+ @PostMapping("/insert-new-list-to-trello")
+    public void insertNewListFromDbToTrello(@RequestParam Long idList) {
+     ListsTrelloDto listsTrelloDto=listsService.findById(idList).toDto().toTrelloDto();
+        Lists lists =listsService.findById(idList);
+
+        listsTrelloDto.setIdBoard(lists.getBoard().getIdTrello());
+        listsTrelloDto.setName(lists.getName());
+         listsTrelloService.createANewList(listsTrelloDto);
+    }
+    @PutMapping("/close-a-list-to-trello")
+    public void closeAListToTrello(@RequestParam Long idList) {
+        ListsTrelloDto listsTrelloDto=listsService.findById(idList).toDto().toTrelloDto();
+        listsTrelloDto.setClosed(String.valueOf(true));
+        Lists lists = listsService.findById(idList);
+
+        listsTrelloService.closeAList(lists.getIdTrello(),listsTrelloDto);
+    }
+    @PutMapping("/update-list-to-trello")
+    public void updateAListFromDbToTrello(@RequestParam Long idList) {
+        ListsTrelloDto listsTrelloDto= listsService.findById(idList).toDto().toTrelloDto();
+        Lists list =listsService.findById(idList);
+
+        listsTrelloDto.setIdBoard(list.getBoard().getIdTrello());
+
+        listsTrelloService.updateAList(list.getIdTrello(),listsTrelloDto);
+    }
+
+
+    @DeleteMapping("/delete-a-label-to-trello")
+    public void deleteALabelToTrello(@RequestParam Long idLabel) {
+        Labels labels = labelsService.findById(idLabel);
+
+        commentTrelloService.deleteACommentOnACard(labels.getIdTrello());
+    }
+
+
+    @DeleteMapping("/delete-a-comment-on-a-card-to-trello")
+    public void deleteACommentOnACardsToTrello(@RequestParam Long idComment) {
+        Comment comment = commentService.findById(idComment);
+
+        commentTrelloService.deleteACommentOnACard(comment.getIdTrello());
+    }
+
+
+    @PostMapping("/insert-new-comment-on-a-card-to-trello")
+    public void insertNewCommentOnACardsFromDbToTrello(@RequestParam Long idComment) {
+        CommentTrelloDto commentTrelloDto= commentService.findById(idComment).toDto().toTrelloDto();
+        Comment comment=commentService.findById(idComment);
+        commentTrelloDto.setData(CommentDataDTO.builder().card(comment.getCard().toDto()).build());
+
+        commentTrelloService.createANewCommentOnACard(comment.getCard().getIdTrello(),commentTrelloDto);
+    }
+
+    @PostMapping("/insert-new-label-to-trello")
+    public void insertNewLabelToTrello(@RequestParam Long idLabel) {
+        LabelsTrelloDto labelsTrelloDto= labelsService.findById(idLabel).toDto().toTrelloDto();
+        Labels labels =labelsService.findById(idLabel);
+
+        labelsTrelloDto.setIdBoard(labels.getBoard().getIdTrello());
+        labelsTrelloDto.setName(labels.getName());
+        labelsTrelloDto.setColor(labels.getColor());
+
+       labelsTrelloService.createANewLabel(labelsTrelloDto);
+    }
+    @PutMapping("/update-a-label-to-trello")
+    public void updateALabelToTrello(@RequestParam Long idLabel) {
+        LabelsTrelloDto labelsTrelloDto= labelsService.findById(idLabel).toDto().toTrelloDto();
+        Labels labels =labelsService.findById(idLabel);
+
+        labelsTrelloDto.setIdBoard(labels.getBoard().getIdTrello());
+        labelsTrelloDto.setName(labels.getName());
+        labelsTrelloDto.setColor(labels.getColor());
+
+       labelsTrelloService.createANewLabel(labelsTrelloDto);
+    }
+    @PutMapping("/update-a-comment-to-trello")
+    public void updateACommentToTrello(@RequestParam Long idComment) {
+        CommentTrelloDto commentTrelloDto= commentService.findById(idComment).toDto().toTrelloDto();
+        Comment comment =commentService.findById(idComment);
+
+        commentTrelloDto.setId(comment.getIdTrello());
+        commentTrelloDto.setData(CommentDataDTO.builder().card(comment.getCard().toDto()).build());
+
+       commentTrelloService.updateACommentOnACard(comment.getIdTrello(),commentTrelloDto);
+    }
+
+
+    @PostMapping("/insert-cards-from-trello")
+    public void insertCards(@RequestParam String idBoard) {
+        List<CardTrelloDto> cardTrelloDtos = cardTrelloService.getCardsByIdBoard(idBoard);
+
+        cardTrelloDtos.forEach(cardTrelloDto -> {
+            CardDTO cardDTO = cardTrelloDto.trellotoDto();
+            Card updatedCard = cardDTO.toModel();
+            updatedCard.setLabels(labelsService.getLabelByIdTrelloFromDb(updatedCard.getLabels().getIdTrello()));
+            updatedCard.setList(listsService.getListByIdTrelloFromDb(updatedCard.getList().getIdTrello()));
+
+            Card existingCard = cardService.getCardByIdTrelloFromDb(updatedCard.getIdTrello());
+            if (existingCard == null) {
+                cardService.insert(updatedCard);
+            } else {
+               cardCompareToCard(updatedCard,existingCard);
+
+            }
+        });
+    }
+    public void cardCompareToCard(Card newCard, Card existingCard ){
+
+        if (newCard.getDateLastActivity().isAfter(existingCard.getDateLastActivity())||
+                newCard.getDateLastActivity().isEqual(existingCard.getDateLastActivity() )){
+
+            newCard.setId(existingCard.getId());
+            newCard.setDateLastActivity(LocalDateTime.now());
+            cardService.update(newCard);
+
+        }else{
+            updateCardsFromDbToTrello(existingCard.getId());
+        }
+    }
+    @PostMapping("/insert-labels-from-trello")
+    public void insertLabels(@RequestParam String idBoard) {
+        List<LabelsTrelloDto> labelsTrelloDtos = labelsTrelloService.getLabelsByIdBoard(idBoard);
+
+        labelsTrelloDtos.forEach(labelsTrelloDto -> {
+            LabelsDTO labelsDTO = labelsTrelloDto.trellotoDto();
+            Labels updatedLabels = labelsDTO.toModel();
+            updatedLabels.setBoard(boardService.getBoardByIdTrelloFromDb(idBoard));
+
+            Labels existingLabel = labelsService.getLabelByIdTrelloFromDb(updatedLabels.getIdTrello());
+            if (existingLabel == null) {
+                labelsService.insert(updatedLabels);
+            } else {
+                updatedLabels.setId(existingLabel.getId());
+                labelsService.update(updatedLabels);
+            }
+        });
+    }
+
+    @PostMapping("/insert-comments-from-trello")
+    public void insertComments(@RequestParam String idBoard) {
+
+
+    }
+
+    public void insertCommentsFromTrelloToDb() {
+        List<CommentTrelloDto> commentList = new ArrayList<>();
+
+        List<String> idTrelloCardList = cardService.getAllIdTrelloForCardsFromDb();
+        for (String idCard : idTrelloCardList) {
+            List<CommentTrelloDto> commentTrelloDtos = getCommentsFromCardByIdCard(idCard);
+            commentList.addAll(commentTrelloDtos);
+        }
+
+        for (CommentTrelloDto commentTrelloDto : commentList) {
+            CommentDTO commentDTO = commentTrelloDto.trellotoDto();
+            Comment comment = commentDTO.toModel();
+            commentService.insertComment(comment);
+        }
+
+    }
+    public void commentCompareToComment(Comment newComment, Comment existingComment ){
+
+        if (newComment.getDate().isAfter(existingComment.getDate())||
+                newComment.getDate().isEqual(existingComment.getDate() )){
+
+            newComment.setId(existingComment.getId());
+            newComment.setDate(LocalDateTime.now());
+            commentService.update(newComment);
+
+        }else{
+            updateACommentToTrello(existingComment.getId());
+        }
+    }
 
     public BoardTrelloDTO getBoardFromTrello(String idBoard) {
         return boardTrelloService.getBoardFromTrelloByIdBoard(idBoard);
@@ -195,7 +471,7 @@ public class TrelloController {
     }
 
 
-    public void insertCardsFromTrelloToDb() {
+    public void insertCardsFromTrelloToDb(String idBoard) {
         List<CardTrelloDto> cardTrelloDtos = new ArrayList<>();
 
         for (String idList : getAllIdTrelloForListsFromDb()) {
@@ -234,7 +510,7 @@ public class TrelloController {
             card.trellotoDto().toModel().setList(Lists.builder().id(idListFromDb).build());
             card.trellotoDto().toModel().setLabels(Labels.builder().id(idLabelFromDb).build());
             card.trellotoDto().toModel().setList(Lists.builder().id(idLabelFromDb).build());
-            cardService.insertIntoDb(card.trellotoDto().toModel());
+//            cardService.insertIntoDb(card.trellotoDto().toModel());
         }
 
     }
@@ -248,22 +524,6 @@ public class TrelloController {
         return listsService.getAllIdTrelloForLists();
     }
 
-    public void insertCommentsFromTrelloToDb() {
-        List<CommentTrelloDto> commentList = new ArrayList<>();
-
-        List<String> idTrelloCardList = cardService.getAllIdTrelloForCardsFromDb();
-        for (String idCard : idTrelloCardList) {
-            List<CommentTrelloDto> commentTrelloDtos = getCommentsFromCardByIdCard(idCard);
-            commentList.addAll(commentTrelloDtos);
-        }
-
-        for (CommentTrelloDto commentTrelloDto : commentList) {
-            CommentDTO commentDTO = commentTrelloDto.trellotoDto();
-            Comment comment = commentDTO.toModel();
-            commentService.insertComment(comment);
-        }
-
-    }
 
     public List<CommentTrelloDto> getCommentsFromCardByIdCard(String idCard) {
         return commentTrelloService.getCommentsFromCardByIdCard(idCard);
@@ -291,11 +551,11 @@ public class TrelloController {
 
     @PostMapping("/comment")
     public CommentDTO addCommentToCardByIdCard(String idCardTrello, String userName, String commentBody) {
-        String idUser = userService.getUserByUserName(userName).getId();
+//        String idUser = userService.getUserByUserName(userName).getId();
         CommentDTO commentToInsert = CommentDTO.builder().idCard(idCardTrello)
                 .commentBody(commentBody)
                 .idCard(idCardTrello)
-                .idUser(idUser)
+//                .idUser(idUser)
                 .date(localDateTimeToString(LocalDateTime.now()))
                 .idTrello("testIdTrello")
                 .build();

@@ -3,6 +3,7 @@ package it.euris.stazioneconcordia.controller;
 
 import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.model.Card;
+import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.service.CardService;
@@ -13,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 @RestController
@@ -54,18 +55,36 @@ public class CardController {
             );
         }
     }
+
     @PutMapping("/v1/move")
-    public CardDTO moveCard(@RequestParam Long idCard , @RequestParam Long idList) {
+    public CardDTO moveCard(@RequestParam Long idCard, @RequestParam Long idListTo) {
         try {
+
+            if (cardService.findById(idCard).getList() == null) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "List id must not be null");
+            }
+            Long idOriginList = cardService.findById(idCard).getList().getId();
+            Lists originList = listsService.findById(idOriginList);
+            Lists toLists = listsService.findById(idListTo);
+
             Card card = cardService.findById(idCard);
-            card.setList(listsService.findById(idList));
-           // card.setLabels(labelsService.findById(idLabels));
-            card.setDateLastActivity(LocalDateTime.now());
-            return cardService.update(card).toDto();
-        } catch (IdMustNotBeNullException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, e.getMessage()
-            );
+            card.setList(toLists);
+
+            originList.getCards().remove(card);
+            listsService.update(originList);
+            {
+                if (originList.getCards().contains(card)) {
+                    throw new ResponseStatusException(
+                            HttpStatus.BAD_REQUEST, "This card has been moved to another list1 !"
+                    );
+                }
+                listsService.update(toLists);
+                return cardService.update(card).toDto();
+            }
+
+        } catch (ResponseStatusException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -86,13 +105,18 @@ public class CardController {
                 .map(Card::toDto)
                 .toList();
     }
+    @GetMapping("/v1/labels/{name}")
+    public List<CardDTO> findByLabelName(@PathVariable("name") String labelName) {
+        try {
+            return cardService.getByLabelName(labelName).stream()
+                    .map(Card::toDto)
+                    .toList();
+        } catch (NullPointerException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Label name : " + labelName + " doesn't  exist, please insert valid label name."
+            );
+        }
 
-    @GetMapping("/v1/labels/{id-labels}")
-    public List<CardDTO> findByLabels(@PathVariable("id-labels") Long idLabels) {
-        return cardService.findByLabels(idLabels)
-                .stream()
-                .map(Card::toDto)
-                .toList();
     }
 
 

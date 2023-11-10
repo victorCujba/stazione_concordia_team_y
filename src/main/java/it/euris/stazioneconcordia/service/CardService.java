@@ -1,5 +1,6 @@
 package it.euris.stazioneconcordia.service;
 
+import it.euris.stazioneconcordia.data.dto.CardDTO;
 import it.euris.stazioneconcordia.data.model.Card;
 
 import java.util.List;
@@ -22,20 +23,22 @@ public interface CardService {
     Card findById(Long idCard);
 
 
-    Long getCardByIdTrelloFromDb(String idCard);
+    Card getCardByIdTrelloFromDb(String idCard);
 
     List<String> getAllIdTrelloForCardsFromDb();
 
     boolean cardExistByTrelloIdAndLabel(String idTrello, Long idLabel);
 
     boolean cardExistByTrelloId(String idTrello);
-
-    Integer insertIntoDb(Card card);
+    Card getCardIfExistByTrelloId(String idTrello);
 
     List<Card> getHighPriorityCards();
 
     List<Card> getMediumPriorityCards();
 
     List<Card> getLowPriorityCards();
+
     List<Card> getExpiringIn5DaysCards();
+
+    List<Card> getByLabelName(String labelName);
 }

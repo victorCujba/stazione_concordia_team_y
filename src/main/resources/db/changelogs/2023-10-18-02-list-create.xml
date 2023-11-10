@@ -24,6 +24,7 @@
             <column name="position" type="BIGINT(20)"/>
             <column name="closed" type="BOOLEAN"/>
             <column name="id_board" type="BIGINT(20)"/>
+            <column name="date_last_activity" type="DATETIME()"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="list" baseColumnNames="id_board" constraintName="FK_BOARD_ON_LIST"

@@ -68,22 +68,23 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Integer insertComment(Comment comment) {
-        Long cardId = cardRepository.getCardByIdTrello(comment.getCard().getIdTrello());
-        Integer insertComment = commentRepository.insertComment(
-                comment.getIdTrello(),
-                comment.getDate(),
-                comment.getCommentBody(),
-                comment.getDeleted(),
-                cardId,
-                comment.getUser().getId()
-
-        );
-        if (insertComment != 1) {
-            System.out.println("Comment non inserted");
-        } else {
-            System.out.println("Comment created successfully!!! ");
-        }
-        return insertComment;
+//        Long cardId = cardRepository.getCardByIdTrello(comment.getCard().getIdTrello());
+//        Integer insertComment = commentRepository.insertComment(
+//                comment.getIdTrello(),
+//                comment.getDate(),
+//                comment.getCommentBody(),
+//                comment.getDeleted(),
+////                cardId,
+////                comment.getUser().getId()
+//
+//        );
+//        if (insertComment != 1) {
+//            System.out.println("Comment non inserted");
+//        } else {
+//            System.out.println("Comment created successfully!!! ");
+//        }
+//        return insertComment;
+        return  null;
     }
 
 }

@@ -3,6 +3,7 @@ package it.euris.stazioneconcordia.service.trelloService.impl;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
+import it.euris.stazioneconcordia.service.ListsService;
 import it.euris.stazioneconcordia.service.trelloService.CardTrelloService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -21,6 +22,7 @@ import static it.euris.stazioneconcordia.service.trello.utils.TrelloConstants.*;
 @AllArgsConstructor
 @Service
 public class CardTrelloServiceImpl implements CardTrelloService {
+    private ListsService listsService;
 
     @Override
     @SneakyThrows
@@ -102,11 +104,72 @@ public class CardTrelloServiceImpl implements CardTrelloService {
         System.out.println("Response Body: " + responseBody);
         return cardTrelloDto;
     }
+    @SneakyThrows
+    @Override
+    public void updateACard(String idCard, CardTrelloDto cardTrelloDto) {
+        URI targetUri = new URI(buildUrlUpdateACardToTrello(idCard));
+        Gson gson = new Gson();
+        String requestBody = gson.toJson(cardTrelloDto);
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetUri)
+                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Accept", "application/json")
+                .header("Content-type", "application/json")
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        System.out.println("HTTP Status Code: " + statusCode);
+        System.out.println("Response Body: " + responseBody);
+    }
+    @SneakyThrows
+    @Override
+    public void createACard(CardTrelloDto cardTrelloDto) {
+        URI targetUri = new URI(buildUrlCreateACard());
+        Gson gson = new Gson();
+        String requestBody = gson.toJson(cardTrelloDto);
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetUri)
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Accept", "application/json")
+                .header("Content-type", "application/json")
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        System.out.println("HTTP Status Code: " + statusCode);
+        System.out.println("Response Body: " + responseBody);
+    }
+    @SneakyThrows
+    @Override
+    public void deleteACard(String idCard) {
+        URI targetUri = new URI(buildUrlDeleteACard(idCard));
+
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetUri)
+                .DELETE()
+                .header("Accept", "application/json")
+                .header("Content-type", "application/json")
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        System.out.println("HTTP Status Code: " + statusCode);
+        System.out.println("Response Body: " + responseBody);
+    }
+
 
     private String buildUrlPutCardToAnotherListRequest(String idCard, String idList) {
         return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_PUT_MOVE_CARD_BY_ID_LIST_AND_ID_CARD)
                 .buildAndExpand(idCard, idList, KEY_VALUE, TOKEN_VALUE).toString();
     }
+
 
 
     private String buildUrlGetCardFromTrelloByIdCard(String idCard) {
@@ -123,6 +186,19 @@ public class CardTrelloServiceImpl implements CardTrelloService {
         return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_GET_CARDS_BY_ID_BOARD)
                 .buildAndExpand(idTrelloBoard, KEY_VALUE, TOKEN_VALUE).toString();
     }
+    private String buildUrlUpdateACardToTrello(String idTrelloCard) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_UPDATE_CARD)
+                .buildAndExpand(idTrelloCard, KEY_VALUE, TOKEN_VALUE).toString();
+    }
+    private String buildUrlCreateACard() {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_CREATE_CARD)
+                .buildAndExpand( KEY_VALUE, TOKEN_VALUE).toString();
+    }
+    private String buildUrlDeleteACard(String idCard) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_DELETE_CARD)
+                .buildAndExpand(idCard,KEY_VALUE, TOKEN_VALUE).toString();
+    }
+
 
     private static Type getListType() {
         return new TypeToken<List<CardTrelloDto>>() {

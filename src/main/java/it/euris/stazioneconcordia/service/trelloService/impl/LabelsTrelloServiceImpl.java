@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.service.trelloService.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import it.euris.stazioneconcordia.data.trelloDto.CommentTrelloDto;
 import it.euris.stazioneconcordia.data.trelloDto.LabelsTrelloDto;
 import it.euris.stazioneconcordia.service.trelloService.LabelsTrelloService;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,65 @@ public class LabelsTrelloServiceImpl implements LabelsTrelloService {
         return gson.fromJson(response.body(), listType);
 
     }
+    @SneakyThrows
+    @Override
+    public void deleteALabel(String idLabel) {
+        URI targetUri = new URI(buildUrlDeleteALabel(idLabel));
+
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetUri)
+                .DELETE()
+                .header("Accept", "application/json")
+                .header("Content-type", "application/json")
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        System.out.println("HTTP Status Code: " + statusCode);
+        System.out.println("Response Body: " + responseBody);
+    }
+    @SneakyThrows
+    @Override
+    public void createANewLabel( LabelsTrelloDto labelsTrelloDto) {
+        URI targetUri = new URI(buildUrlCreateALabel());
+        Gson gson = new Gson();
+        String requestBody = gson.toJson(labelsTrelloDto);
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetUri)
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Accept", "application/json")
+                .header("Content-type", "application/json")
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        System.out.println("HTTP Status Code: " + statusCode);
+        System.out.println("Response Body: " + responseBody);
+    }
+    @SneakyThrows
+    @Override
+    public void updateALabel( LabelsTrelloDto labelsTrelloDto) {
+        URI targetUri = new URI(buildUrlCreateALabel());
+        Gson gson = new Gson();
+        String requestBody = gson.toJson(labelsTrelloDto);
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetUri)
+                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Accept", "application/json")
+                .header("Content-type", "application/json")
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        System.out.println("HTTP Status Code: " + statusCode);
+        System.out.println("Response Body: " + responseBody);
+    }
 
     private Type getListType() {
         return new TypeToken<List<LabelsTrelloDto>>() {}.getType();
@@ -46,5 +106,19 @@ public class LabelsTrelloServiceImpl implements LabelsTrelloService {
     private String buildUrlGetLabelsFromTrelloByIdBoard(String idBoard) {
         return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_GET_LABELS_BY_ID_BOARD)
                 .buildAndExpand(idBoard, KEY_VALUE, TOKEN_VALUE).toString();
+
     }
+    private String buildUrlDeleteALabel(String idLabel) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_DELETE_A_LABEL)
+                .buildAndExpand(idLabel,KEY_VALUE, TOKEN_VALUE).toString();
+    }
+    private String buildUrlUpdateALabel(String idLabel) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_CREATE_NEW_COMMENT_ON_A_CARD)
+                .buildAndExpand(idLabel,KEY_VALUE, TOKEN_VALUE).toString();
+    }
+    private String buildUrlCreateALabel() {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_CREATE_A_LABEL)
+                .buildAndExpand(KEY_VALUE, TOKEN_VALUE).toString();
+    }
+
 }

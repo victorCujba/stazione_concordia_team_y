@@ -8,7 +8,6 @@ import lombok.*;
 import java.util.List;
 
 
-
 @Builder
 @Getter
 @Setter
@@ -18,8 +17,12 @@ import java.util.List;
 @Table(name = "user")
 public class User implements Model {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private String id;
+    private Long id;
+
+    @Column(name = "id_trello")
+    private String idTrello;
 
     @Column(name = "full_name")
     private String fullName;
@@ -42,12 +45,12 @@ public class User implements Model {
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<CardUser> cardUsersq;
+    private List<CardUser> cardUsers;
 
     @Override
     public UserDTO toDto() {
         return UserDTO.builder()
-                .id(id)
+                .id(idTrello)
                 .fullName(fullName)
                 .bio(bio)
                 .avatarUrl(avatarUrl)
