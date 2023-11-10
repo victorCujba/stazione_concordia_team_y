@@ -40,7 +40,7 @@ public class Lists implements Model {
     @Builder.Default
     private Boolean closed = false;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name = "id_board")
     private Board board;
 

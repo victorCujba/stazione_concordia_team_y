@@ -3,6 +3,7 @@ package it.euris.stazioneconcordia.service.trelloService.impl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.euris.stazioneconcordia.data.trelloDto.BoardTrelloDTO;
+import it.euris.stazioneconcordia.data.trelloDto.CardTrelloDto;
 import it.euris.stazioneconcordia.service.trelloService.BoardTrelloService;
 import it.euris.stazioneconcordia.utility.LocalDateTimeTypeAdapter;
 import lombok.AllArgsConstructor;
@@ -45,10 +46,57 @@ public class BoardTrelloServiceImpl implements BoardTrelloService {
         System.out.println(boardTrelloDTO.toString());
         return boardTrelloDTO;
     }
+    @SneakyThrows
+    @Override
+    public void updateABoard(String idBoard,BoardTrelloService boardTrelloService) {
+        URI targetUri = new URI(buildUrlForUpdateABoard(idBoard));
+        Gson gson = new Gson();
+        String requestBody = gson.toJson(boardTrelloService);
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetUri)
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Accept", "application/json")
+                .header("Content-type", "application/json")
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        System.out.println("HTTP Status Code: " + statusCode);
+        System.out.println("Response Body: " + responseBody);
+    }
+    @SneakyThrows
+    @Override
+    public void deleteABoard(String idBoard) {
+        URI targetUri = new URI(buildUrlForDeleteABoard(idBoard));
+
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetUri)
+                .DELETE()
+                .header("Accept", "application/json")
+                .header("Content-type", "application/json")
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        System.out.println("HTTP Status Code: " + statusCode);
+        System.out.println("Response Body: " + responseBody);
+    }
 
 
     private String buildUrlForGetBoardFromTrelloByIdBoard(String idBoard) {
         return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_GET_BOARD_BY_ID_BOARD)
+                .buildAndExpand(idBoard, KEY_VALUE, TOKEN_VALUE).toString();
+    }
+    private String buildUrlForUpdateABoard(String idBoard) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_UPDATE_BOARD)
+                .buildAndExpand(idBoard, KEY_VALUE, TOKEN_VALUE).toString();
+    }
+    private String buildUrlForDeleteABoard(String idBoard) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_DELETE_BOARD)
                 .buildAndExpand(idBoard, KEY_VALUE, TOKEN_VALUE).toString();
     }
 

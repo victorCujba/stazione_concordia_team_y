@@ -40,7 +40,7 @@ public class Board implements Model {
     private LocalDateTime dateLastActivity;
 
 
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(cascade=CascadeType.MERGE)
     @JoinColumn(name = "id_board")
     private List<Lists> lists;
 
