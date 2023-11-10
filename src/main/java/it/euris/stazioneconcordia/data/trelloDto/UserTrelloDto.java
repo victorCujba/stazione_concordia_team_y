@@ -22,7 +22,7 @@ public class UserTrelloDto implements TrelloDto {
     public UserDTO trellotoDto() {
         return UserDTO
                 .builder()
-                .id(id)
+                .idTrello(id)
                 .fullName(fullName)
                 .bio(bio)
                 .avatarUrl(avatarUrl)
