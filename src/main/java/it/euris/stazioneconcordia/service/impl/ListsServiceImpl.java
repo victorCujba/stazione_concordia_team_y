@@ -5,7 +5,6 @@ import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
 import it.euris.stazioneconcordia.repository.CardRepository;
-import it.euris.stazioneconcordia.repository.CardStateRepository;
 import it.euris.stazioneconcordia.repository.ListsRepository;
 import it.euris.stazioneconcordia.service.ListsService;
 import lombok.AllArgsConstructor;
@@ -21,7 +20,6 @@ public class ListsServiceImpl implements ListsService {
 
     CardRepository cardRepository;
 
-    CardStateRepository cardStateRepository;
 
     @Override
     public List<Lists> findAll() {

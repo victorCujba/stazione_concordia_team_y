@@ -12,4 +12,5 @@ public interface CommentTrelloService {
     List<CommentTrelloDto> getCommentsFromCardByIdCard(String idCard);
     void createANewCommentOnACard(String idCard, CommentTrelloDto commentTrelloDto);
     void deleteACommentOnACard(String idComment);
+    void updateACommentOnACard(String idCard, CommentTrelloDto commentTrelloDto);
 }

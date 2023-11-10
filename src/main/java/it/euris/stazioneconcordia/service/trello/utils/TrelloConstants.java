@@ -61,11 +61,14 @@ public interface TrelloConstants {
     String URL_API_TRELLO_UPDATE_CARD = "https://api.trello.com/1/cards/{id}?key={key}&token={token}";
     String URL_API_TRELLO_CREATE_CARD = "https://api.trello.com/1/cards?key={key}&token={token}";
     String URL_API_TRELLO_DELETE_CARD = "https://api.trello.com/1/cards/{id}?key={key}&token={token}";
+    String URL_API_TRELLO_DELETE_A_LABEL = "https://api.trello.com/1/labels/{id}?key={key}&token={token}";
+    String URL_API_TRELLO_CREATE_A_LABEL = "https://api.trello.com/1/labels?key={key}&token={token}";
     String URL_API_TRELLO_DELETE_COMMENT_ON_A_CARD = "https://api.trello.com/1/cards/{id}/actions/{idAction}/comments?key={key}&token={token}";
     String URL_API_TRELLO_UPDATE_LIST = "https://api.trello.com/1/lists/{id}?key={key}&token={token}";
     String URL_API_TRELLO_CREATE_A_NEW_LIST = "https://api.trello.com/1/lists?key={key}&token={token}";
     String URL_API_TRELLO_CLOSE_A_LIST = "https://api.trello.com/1/lists/{id}/closed?key={key}&token={token}";
     String URL_API_TRELLO_CREATE_NEW_COMMENT_ON_A_CARD = "https://api.trello.com/1/cards/{id}/actions/comments?key={key}&token={token}";
+    String URL_API_TRELLO_UPDATE_A_COMMENT_ON_A_CARD = "https://api.trello.com/1/cards/{id}/actions/{idAction}/comments?key={key}&token={token}";
     String URL_API_TRELLO_GET_USER_BY_ID_USER = "https://api.trello.com/1/members/{id}?key={key}&token={token}";
 
 
