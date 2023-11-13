@@ -73,6 +73,7 @@ public class CardTrelloController {
                 newCard.getDateLastActivity().isEqual(existingCard.getDateLastActivity() )){
 
             newCard.setId(existingCard.getId());
+            newCard.setDateLastActivity(newCard.getDateLastActivity());
             newCard.setDateLastActivity(LocalDateTime.now());
             cardService.update(newCard);
 
