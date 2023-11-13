@@ -51,7 +51,7 @@ public class TrelloController {
         insertLabelsFromTrelloToDb(idBoard);
         insertUsers(idBoard);
         insertListsFromTrelloToDb(idBoard);
-        insertCardsFromTrelloToDb(idBoard);
+        insertCards(idBoard);
         insertCommentsFromTrelloToDb();
 
     }
@@ -70,13 +70,15 @@ public class TrelloController {
             ListsDTO listsDTO = listsTrelloDto.trellotoDto();
             Lists updatedList = listsDTO.toModel();
             updatedList.setBoard(board);
-            updatedList.setDateLastActivity(listsService.getListByIdTrelloFromDb(updatedList.getIdTrello()).getDateLastActivity());
+            updatedList.setDateLastActivity(LocalDateTime.now());
 
             Lists existingList = listsService.getListByIdTrelloFromDb(updatedList.getIdTrello());
             if (existingList == null) {
                 listsService.insert(updatedList);
             } else {
-                listsTrelloController.listsCompareToLists(updatedList,existingList);
+                updatedList.setId(existingList.getId());
+                updatedList.setBoard(existingList.getBoard());
+                listsService.update(updatedList);
             }
         });
     }
@@ -108,7 +110,7 @@ public class TrelloController {
             Card updatedCard = cardDTO.toModel();
             updatedCard.setLabels(labelsService.getLabelByIdTrelloFromDb(updatedCard.getLabels().getIdTrello()));
             updatedCard.setList(listsService.getListByIdTrelloFromDb(updatedCard.getList().getIdTrello()));
-            updatedCard.setDateLastActivity(cardService.getCardByIdTrelloFromDb(updatedCard.getIdTrello()).getDateLastActivity());
+
 
             Card existingCard = cardService.getCardByIdTrelloFromDb(updatedCard.getIdTrello());
             if (existingCard == null) {
