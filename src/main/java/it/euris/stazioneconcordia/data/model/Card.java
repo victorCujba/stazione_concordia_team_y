@@ -56,9 +56,6 @@ public class Card implements Model {
     private Lists list;
 
     @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
-    private List<CardState> stateHistory;
-
-    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
     private List<CardUser> cardUsers;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

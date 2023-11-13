@@ -39,6 +39,11 @@ public class LabelsServiceImpl implements LabelsService {
     }
 
     @Override
+    public List<Labels> findAll() {
+        return labelsRepository.findAll();
+    }
+
+    @Override
     public Labels getLabelByIdTrelloFromDb(String idTrello) {
         return labelsRepository.getLabelByIdTrello(idTrello);
     }

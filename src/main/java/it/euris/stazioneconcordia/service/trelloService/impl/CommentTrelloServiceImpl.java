@@ -40,6 +40,78 @@ public class CommentTrelloServiceImpl implements CommentTrelloService {
 
         return gson.fromJson(response.body(), listType);
     }
+    @SneakyThrows
+    @Override
+    public void createANewCommentOnACard(String idCard, CommentTrelloDto commentTrelloDto) {
+        URI targetUri = new URI(buildUrlCreateNewCommentOnACard(idCard));
+        Gson gson = new Gson();
+        String requestBody = gson.toJson(commentTrelloDto);
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetUri)
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Accept", "application/json")
+                .header("Content-type", "application/json")
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        System.out.println("HTTP Status Code: " + statusCode);
+        System.out.println("Response Body: " + responseBody);
+    }
+    @SneakyThrows
+    @Override
+    public void updateACommentOnACard(String idCard, CommentTrelloDto commentTrelloDto) {
+        URI targetUri = new URI(buildUrlCreateNewCommentOnACard(idCard));
+        Gson gson = new Gson();
+        String requestBody = gson.toJson(commentTrelloDto);
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetUri)
+                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Accept", "application/json")
+                .header("Content-type", "application/json")
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        System.out.println("HTTP Status Code: " + statusCode);
+        System.out.println("Response Body: " + responseBody);
+    }
+    @SneakyThrows
+    @Override
+    public void deleteACommentOnACard(String idComment) {
+        URI targetUri = new URI(buildUrlDeleteAComment(idComment));
+
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(targetUri)
+                .DELETE()
+                .header("Accept", "application/json")
+                .header("Content-type", "application/json")
+                .build();
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        String responseBody = response.body();
+
+        System.out.println("HTTP Status Code: " + statusCode);
+        System.out.println("Response Body: " + responseBody);
+    }
+
+    private String buildUrlCreateNewCommentOnACard(String idCard) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_CREATE_NEW_COMMENT_ON_A_CARD)
+                .buildAndExpand(idCard,KEY_VALUE, TOKEN_VALUE).toString();
+    }
+    private String buildUrlDeleteAComment(String idComment) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_DELETE_COMMENT_ON_A_CARD)
+                .buildAndExpand(idComment,KEY_VALUE, TOKEN_VALUE).toString();
+    }
+    private String buildUrlUpdateAComment(String idComment) {
+        return UriComponentsBuilder.fromHttpUrl(URL_API_TRELLO_UPDATE_A_COMMENT_ON_A_CARD)
+                .buildAndExpand(idComment,KEY_VALUE, TOKEN_VALUE).toString();
+    }
 
     private Type getListType() {
         return new TypeToken<List<CommentTrelloDto>>() {

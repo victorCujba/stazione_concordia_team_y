@@ -12,8 +12,9 @@ public interface CardTrelloService {
     List<CardTrelloDto> getCardsByIdList(String idTrelloList);
 
     CardTrelloDto getCardByIdCard(String idCard);
-    void update(String idCard, CardTrelloDto cardDTO);
-
+    void updateACard(String idCard, CardTrelloDto cardDTO);
+    void createACard(CardTrelloDto cardTrelloDto);
+    void deleteACard(String idCard);
     CardTrelloDto putCardToAnotherListByIdCardAndIdList(String idCard, String idList);
 //     void update(String idCard, CardDTO cardDTO) throws URISyntaxException, IOException, InterruptedException;
 

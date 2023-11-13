@@ -10,6 +10,7 @@ public interface LabelsService {
     Labels update(Labels labels);
 
     Labels findById(Long idLabels);
+    List<Labels> findAll();
 
     Labels getLabelByIdTrelloFromDb(String idTrello);
 
