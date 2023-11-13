@@ -36,7 +36,7 @@ class UserControllerTest {
 
         User user = User
                 .builder()
-                .id("1")
+                .id(1L)
                 .fullName("Test name")
                 .bio("Test bio")
                 .avatarUrl("Test url")
@@ -63,7 +63,7 @@ class UserControllerTest {
 
         User user = User
                 .builder()
-                .id("1")
+                .id(1L)
                 .fullName("Test name")
                 .bio("Test bio")
                 .avatarUrl("Test url")
@@ -85,7 +85,7 @@ class UserControllerTest {
     public void shouldUpdateAUser() throws Exception {
         User user = User
                 .builder()
-                .id("1")
+                .id(1L)
                 .fullName("Test name")
                 .bio("Test bio")
                 .avatarUrl("Test url")
@@ -120,7 +120,7 @@ class UserControllerTest {
 
         User user = User
                 .builder()
-                .id("1")
+                .id(1L)
                 .fullName("Test name")
                 .bio("Test bio")
                 .avatarUrl("Test url")

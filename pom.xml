@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>it.euris</groupId>
 	<artifactId>stazioneconcordia</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-RELEASE</version>
 	<name>Stazione Concordia</name>
 	<description>Academy Project for Stazione Concordia (Team Y)</description>
 	<properties>

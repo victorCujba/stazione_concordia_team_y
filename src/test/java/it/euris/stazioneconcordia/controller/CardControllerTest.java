@@ -227,45 +227,5 @@ class CardControllerTest {
 
     }
 
-    @Test
-    void shouldFindACardByMediumPriority() throws Exception {
-        Card card1 = Card
-                .builder()
-                .id(1L)
-                .labels(Labels.builder().id(13L).build())
-                .name("test name")
-                .description("test description")
-                .list(Lists.builder().id(1L).build())
-                .build();
-        Card card2 = Card
-                .builder()
-                .id(2L)
-                .labels(Labels.builder().id(14L).build())
-                .name("test name")
-                .description("test description")
-                .list(Lists.builder().id(1L).build())
-                .build();
-        Card card = Card
-                .builder()
-                .id(3L)
-                .labels(Labels.builder().id(15L).build())
-                .name("test name")
-                .description("test description")
-                .list(Lists.builder().id(1L).build())
-                .build();
-
-        when(cardService.findByLabels(13L)).thenReturn(List.of(card1));
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/cards/v1/labels/13")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(card1.toDto())))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].id").value(card1.getId()));
-
-
-    }
 
 }

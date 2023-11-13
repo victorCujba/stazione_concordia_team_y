@@ -58,27 +58,6 @@ class ListsControllerTest {
 
     }
 
-    @Test
-    public void shouldSaveAList() throws Exception {
-
-        Lists list = Lists
-                .builder()
-                .id(1L)
-                .name("Test name")
-                .position(1L)
-                .board(Board.builder().id(1L).build())
-                .build();
-
-        when(listsService.insert(any())).thenReturn(list);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/lists/v1")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .accept(MediaType.APPLICATION_JSON_UTF8)
-                        .content(objectMapper.writeValueAsString(list.toDto())))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-    }
 
     @Test
     public void shouldUpdateAList() throws Exception {

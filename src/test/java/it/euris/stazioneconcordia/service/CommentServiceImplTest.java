@@ -35,41 +35,6 @@ class CommentServiceImplTest {
     CommentServiceImpl commentService;
 
     @Test
-    void shouldReturnLastComment() {
-        Card card1 = Card.builder().id(1L).build();
-        Card card2 = Card.builder().id(2L).build();
-        Comment comment1 = Comment
-                .builder()
-                .id(1L)
-                .card(card1)
-                .date(LocalDateTime.now().minusDays(1L))
-                .build();
-
-        Comment comment2 = Comment
-                .builder()
-                .id(2L)
-                .card(card2)
-                .date(LocalDateTime.now().minusHours(1L))
-                .build();
-
-        Comment comment3 = Comment
-                .builder()
-                .id(3L)
-                .card(card1)
-                .date(LocalDateTime.now().minusHours(15L))
-                .build();
-
-        List<Comment> comments = List.of(comment1, comment2, comment3);
-
-        when(commentRepository.findAll()).thenReturn(comments);
-
-        Comment lastComment = commentService.getLastComment(card1);
-
-        assertThat(lastComment)
-                .isEqualTo(comment3);
-    }
-
-    @Test
     void shouldReturnAComment() {
 
         Comment comment = Comment

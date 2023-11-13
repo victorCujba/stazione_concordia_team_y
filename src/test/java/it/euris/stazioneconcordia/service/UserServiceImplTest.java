@@ -36,7 +36,7 @@ class UserServiceImplTest {
 
         User user1 = User
                 .builder()
-                .id("1")
+                .id(1L)
                 .build();
 
         List<User> users = List.of(user1);
@@ -114,7 +114,7 @@ class UserServiceImplTest {
 
         User user1 = User
                 .builder()
-                .id("1")
+                .id(1L)
                 .fullName("test name")
                 .bio("test bio")
                 .build();
