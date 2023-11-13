@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -57,26 +58,27 @@ public class CardController {
     }
 
     @PutMapping("/v1/move")
-    public CardDTO moveCard(@RequestParam Long idCard, @RequestParam Long idListTo) {
+    public CardDTO moveCard(@RequestParam Long idCard, @RequestParam Long idList) {
         try {
 
-            if (cardService.findById(idCard).getList() == null) {
+            if (listsService.findById(idList) == null) {
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST, "List id must not be null");
             }
             Long idOriginList = cardService.findById(idCard).getList().getId();
             Lists originList = listsService.findById(idOriginList);
-            Lists toLists = listsService.findById(idListTo);
+            Lists toLists = listsService.findById(idList);
 
             Card card = cardService.findById(idCard);
             card.setList(toLists);
+            card.setDateLastActivity(LocalDateTime.now());
 
             originList.getCards().remove(card);
             listsService.update(originList);
             {
                 if (originList.getCards().contains(card)) {
                     throw new ResponseStatusException(
-                            HttpStatus.BAD_REQUEST, "This card has been moved to another list1 !"
+                            HttpStatus.BAD_REQUEST, "This card has been moved to another list !"
                     );
                 }
                 listsService.update(toLists);
