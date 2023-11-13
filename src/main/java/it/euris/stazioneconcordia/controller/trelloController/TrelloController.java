@@ -110,11 +110,11 @@ public class TrelloController {
 //            updatedCard.setDateLastActivity(cardService.getCardByIdTrelloFromDb(updatedCard.getIdTrello()).getDateLastActivity());
 //
             Card existingCard = cardService.getCardByIdTrelloFromDb(updatedCard.getIdTrello());
-//            if (existingCard == null) {
+            if (existingCard == null) {
                 cardService.insert(updatedCard);
-//            } else {
-//               cardTrelloController.cardCompareToCard(updatedCard,existingCard);
-//            }
+            } else {
+               cardTrelloController.cardCompareToCard(updatedCard,existingCard);
+            }
         });
     }
     @PostMapping("/insert-labels-from-trello")
