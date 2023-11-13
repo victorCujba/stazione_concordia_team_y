@@ -34,11 +34,10 @@ public class CardServiceImpl implements CardService {
     public List<Card> findByLabels(Long idLabels) {
 
         List<Card> cards = cardRepository.findAll();
-        List<Card> cardsWithPriority = cards.stream()
+
+        return cards.stream()
                 .filter(card -> Objects.equals(card.getLabels().getId(), idLabels))
                 .collect(Collectors.toList());
-
-        return cardsWithPriority;
     }
 
 

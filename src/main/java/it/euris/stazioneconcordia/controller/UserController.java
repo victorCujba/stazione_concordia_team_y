@@ -42,12 +42,12 @@ public class UserController {
     }
 
     @DeleteMapping("/v1/{id}")
-    public Boolean deleteUser(@PathVariable("id") String idUser) {
+    public Boolean deleteUser(@PathVariable("id") Long idUser) {
         return userService.deleteById(idUser);
     }
 
     @GetMapping("/v1/{id}")
-    public UserDTO getUserById(@PathVariable("id") String idUser) {
+    public UserDTO getUserById(@PathVariable("id") Long idUser) {
         return userService.findById(idUser).toDto();
     }
 }

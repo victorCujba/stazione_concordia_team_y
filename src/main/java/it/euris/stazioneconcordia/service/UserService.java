@@ -12,9 +12,9 @@ public interface UserService {
 
     User update(User user);
 
-    Boolean deleteById(String idUser);
+    Boolean deleteById(Long idUser);
 
-    User findById(String idUser);
+    User findById(Long idUser);
 
 
     User getUserByUserName(String userName);

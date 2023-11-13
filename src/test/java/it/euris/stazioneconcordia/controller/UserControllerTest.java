@@ -105,7 +105,7 @@ class UserControllerTest {
 
     @Test
     public void shouldDeleteAUserById() throws Exception {
-        String idUser = "1";
+        Long idUser = 1L;
 
         when(userService.deleteById(idUser)).thenReturn(true);
 
@@ -116,7 +116,7 @@ class UserControllerTest {
 
     @Test
     public void shouldGetUserById() throws Exception {
-        String idUser = "1";
+        Long idUser = 1L;
 
         User user = User
                 .builder()

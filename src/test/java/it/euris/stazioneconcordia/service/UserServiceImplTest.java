@@ -88,9 +88,9 @@ class UserServiceImplTest {
     @Test
     void shouldDeleteAUser() {
         //arrange
-        String id = "12";
+        Long id = 12L;
 
-        doNothing().when(userRepository).deleteById(anyString());
+        doNothing().when(userRepository).deleteById(anyLong());
         when(userRepository.findById(id)).thenReturn(Optional.empty());
         assertTrue(userService.deleteById(id));
         Mockito.verify(userRepository, times(1)).deleteById(id);
