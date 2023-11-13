@@ -50,11 +50,8 @@ public class TrelloController {
         insertBoardFromTrelloToDb(idBoard);
         insertLabelsFromTrelloToDb(idBoard);
         insertUsers(idBoard);
-        listsTrelloController.findIfExistANewListOfDBAndPutOnTrello();
         insertListsFromTrelloToDb(idBoard);
-        cardTrelloController.findIfExistANewCardOfDBAndPutOnTrello();
         insertCardsFromTrelloToDb(idBoard);
-        commentTrelloController.findIfExistANewCommentOfDBAndPutOnTrello();
         insertCommentsFromTrelloToDb();
 
     }
@@ -73,6 +70,7 @@ public class TrelloController {
             ListsDTO listsDTO = listsTrelloDto.trellotoDto();
             Lists updatedList = listsDTO.toModel();
             updatedList.setBoard(board);
+            updatedList.setDateLastActivity(listsService.getListByIdTrelloFromDb(updatedList.getIdTrello()).getDateLastActivity());
 
             Lists existingList = listsService.getListByIdTrelloFromDb(updatedList.getIdTrello());
             if (existingList == null) {
