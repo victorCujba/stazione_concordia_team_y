@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="2023-10-18-06-card-alter" author="Matteo Buosi">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="card"/>
+        </preConditions>
+
+        <addColumn tableName="card">
+            <column name="id_user" type="BIGINT(20)"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="card" baseColumnNames="id_user" constraintName="FK_USER_ON_CARD" referencedTableName="user"
+                                 referencedColumnNames="id"/>
+
+        <rollback>
+            <dropColumn tableName="card" columnName="id_user"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

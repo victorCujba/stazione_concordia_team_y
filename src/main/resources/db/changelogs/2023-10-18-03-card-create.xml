@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="2023-10-18-03-card-create" author="Matteo Buosi">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="card"/>
+            </not>
+        </preConditions>
+        <comment>Card table create</comment>
+        <createTable tableName="card">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="id_trello" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="position" type="BIGINT(20)"/>
+            <column name="description" type="VARCHAR(5000)"/>
+            <column name="expiration_date" type="DATETIME()"/>
+            <column name="date_last_activity" type="DATETIME()"/>
+            <column name="closed" type="BOOLEAN"/>
+            <column name="id_list" type="BIGINT(20)"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="card" baseColumnNames="id_list" constraintName="FK_LIST_ON_CARD"
+                                 referencedTableName="list"
+                                 referencedColumnNames="id"/>
+
+        <rollback>
+            <dropTable tableName="card"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

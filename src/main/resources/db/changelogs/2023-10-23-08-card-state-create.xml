@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="2023-10-22-08-card-state-create" author="Matteo Buosi">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="card_state"/>
+            </not>
+        </preConditions>
+        <comment>Card Status table create</comment>
+        <createTable tableName="card_state">
+            <column name="id" type="BIGINT(20)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="id_card" type="BIGINT(20)"/>
+            <column name="from_list" type="ENUM('TO_DO','WORKING_ON','FINISHED')"/>
+            <column name="to_list" type="ENUM('TO_DO','WORKING_ON','FINISHED')"/>
+            <column name="date_last_update" type="DATETIME()"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="card_state" baseColumnNames="id_card" constraintName="FK_CARD_ON_CARD_STATE"
+                                 referencedTableName="card"
+                                 referencedColumnNames="id"/>
+        <rollback>
+            <dropTable tableName="card_state"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

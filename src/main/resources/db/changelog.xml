@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <include file="db/changelogs/2023-10-18-01-board-create.xml"/>
+    <include file="db/changelogs/2023-10-18-02-list-create.xml"/>
+    <include file="db/changelogs/2023-10-18-03-card-create.xml"/>
+    <include file="db/changelogs/2023-10-18-04-user-create.xml"/>
+    <include file="db/changelogs/2023-10-18-05-comment-create.xml"/>
+    <include file="db/changelogs/2023-10-18-06-card-alter.xml"/>
+    <include file="db/changelogs/2023-10-18-07-key_token-create.xml"/>
+    <include file="db/changelogs/2023-10-23-08-card-state-create.xml"/>
+    <include file="db/changelogs/2023-10-24-09-labels-create.xml"/>
+    <include file="db/changelogs/2023-10-25-10-card-alter.xml"/>
+    <include file="db/changelogs/2023-11-06-11-card-user-table-create.xml"/>
+
+
+
+</databaseChangeLog>
