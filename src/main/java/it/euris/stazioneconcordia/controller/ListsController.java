@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.controller;
 
 
 import it.euris.stazioneconcordia.data.dto.ListsDTO;
+import it.euris.stazioneconcordia.data.model.Board;
 import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.exception.IdMustBeNullException;
 import it.euris.stazioneconcordia.exception.IdMustNotBeNullException;
@@ -29,19 +30,24 @@ public class ListsController {
     }
 
     @PostMapping("/v1")
-    public ListsDTO insert(@RequestParam String idBoard, @RequestParam String name) {
+    public ListsDTO insert(@RequestParam String idBoard, @RequestParam String name,@RequestParam Long position) {
         try {
             Lists lists = Lists.builder()
-                    .board(boardService.getBoardByIdTrelloFromDb(idBoard))
+
                     .name(name)
                     .dateLastActivity(LocalDateTime.now())
+                    .position(position)
                     .build();
+
+
+            lists.setBoard(boardService.getBoardByIdTrelloFromDb(idBoard));
             return listsService.insert(lists).toDto();
         } catch (IdMustBeNullException e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, e.getMessage()
             );
         }
+
     }
 
     @PutMapping("/v1")

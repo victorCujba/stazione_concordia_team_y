@@ -2,6 +2,7 @@ package it.euris.stazioneconcordia.controller.trelloController;
 
 import it.euris.stazioneconcordia.data.model.Lists;
 import it.euris.stazioneconcordia.data.trelloDto.ListsTrelloDto;
+import it.euris.stazioneconcordia.service.BoardService;
 import it.euris.stazioneconcordia.service.ListsService;
 import it.euris.stazioneconcordia.service.trelloService.ListsTrelloService;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 public  class ListsTrelloController {
     private ListsService listsService;
     private ListsTrelloService listsTrelloService;
+    private BoardService boardService;
 
 
     public List<ListsTrelloDto> getAllListsFromBoard(String idBoard) {
@@ -27,8 +29,10 @@ public  class ListsTrelloController {
     public void findIfExistANewListOfDBAndPutOnTrello(){
         List<Lists> listsOfDB =listsService.findAll();
         listsOfDB.forEach(lists -> {
-            if(lists.getIdTrello().isEmpty()){
-                insertNewListFromDbToTrello(lists.getId()); }
+            if(lists.getIdTrello()==null){
+                insertNewListFromDbToTrello(lists.getId());
+             listsService.deleteById(lists.getId());
+            }
         });
     }
     public void listsCompareToLists(Lists newLists, Lists existingList ){
@@ -49,7 +53,8 @@ public  class ListsTrelloController {
         ListsTrelloDto listsTrelloDto=listsService.findById(idList).toDto().toTrelloDto();
         Lists lists =listsService.findById(idList);
 
-        listsTrelloDto.setIdBoard(lists.getBoard().getIdTrello());
+
+        listsTrelloDto.setIdBoard(boardService.findById(lists.getBoard().getId()).getIdTrello());
         listsTrelloDto.setName(lists.getName());
         listsTrelloService.createANewList(listsTrelloDto);
     }
